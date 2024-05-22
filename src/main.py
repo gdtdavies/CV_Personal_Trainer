@@ -16,8 +16,20 @@ def calculate_angle(a, b, c):
         
     return round(angle, 2)
 
+def calulate_distance_ratio(a, b, c, d):
+    a = np.array(a)  
+    b = np.array(b)  
+    c = np.array(c)  
+    d = np.array(d)  
+    
+    dist1 = np.sqrt((a[0] - b[0])**2 + (a[1] - b[1])**2)
+    dist2 = np.sqrt((c[0] - d[0])**2 + (c[1] - d[1])**2)
+    
+    return round(dist1/dist2, 3)
+    
+
 def display_text(img, text, position):
-    cv2.putText(img, text, position, cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 100, 50), 1, cv2.LINE_AA)
+    cv2.putText(img, text, position, cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 100, 50), 6, cv2.LINE_AA)
 
 def main():
     mp_drawing = mp.solutions.drawing_utils
@@ -69,17 +81,24 @@ def main():
                 a_l_shoulder = calculate_angle(l_elbow, l_shoulder, l_hip)
                 a_r_shoulder = calculate_angle(r_elbow, r_shoulder, r_hip)
                 
+                stance_ratio = calulate_distance_ratio(l_hip, r_hip, l_knee, r_knee)
+                
                 display_text(img, str(a_l_elbow), tuple(np.multiply(l_elbow, [640, 480]).astype(int)))
                 display_text(img, str(a_r_elbow), tuple(np.multiply(r_elbow, [640, 480]).astype(int)))
                 display_text(img, str(a_l_shoulder), tuple(np.multiply(l_shoulder, [640, 480]).astype(int)))
                 display_text(img, str(a_r_shoulder), tuple(np.multiply(r_shoulder, [640, 480]).astype(int)))
+                display_text(img, str(a_l_knee), tuple(np.multiply(l_knee, [640, 480]).astype(int)))
+                display_text(img, str(a_r_knee), tuple(np.multiply(r_knee, [640, 480]).astype(int)))
                 
-                #dont draw the face connections
+                display_text(img, str(stance_ratio), tuple(np.multiply(l_hip, [640, 480]).astype(int)))
+                
                 mp_drawing.draw_landmarks(img, results.pose_landmarks, mp_pose.POSE_CONNECTIONS)
             except:
                 pass
             
-            
+            # Increase window size
+            cv2.namedWindow('MediaPipe Pose', cv2.WINDOW_NORMAL)
+            cv2.resizeWindow('MediaPipe Pose', 1280, 960)
             cv2.imshow('MediaPipe Pose', img)
             if cv2.waitKey(10) & 0xFF == ord('q'):
                 break
