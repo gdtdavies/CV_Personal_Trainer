@@ -123,3 +123,9 @@ venv.bak/
 .mypy_cache/
 .dmypy.json
 dmypy.json
+
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.synctex.gz
