@@ -5,12 +5,14 @@
 \documentclass[runningheads]{llncs}
 %
 \usepackage{graphicx}
+\usepackage{rotating}
 % Used for displaying a sample figure. If possible, figure files should
 % be included in EPS format.
 \usepackage[english]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{csquotes}% Recommended
+\usepackage{pgfgantt}
 
 \usepackage[style=authoryear-ibid,backend=biber]{biblatex}
 
@@ -45,11 +47,11 @@
 % Ethical approval (where applicable)
 % If your project is likely to involve human participants in a low-risk capacity (e.g., a user study) then you must complete an ethics application via LEAS. Your LEAS application must be submitted to the LEAS service by the same deadline as the proposal. You should discuss this with your supervisor before completing your ethics application, your supervisor will provide support for this. Consideration of ethical issues must also be evidenced in the ‘Ethical Considerations’ section of the project proposal.
 
-\section{Introduction}
+\section{Introduction} % ~700 words
     In many stories of science-fiction, there are robots that are intelligent, borderline human in the way they talk, the way they walk, and the way they interact with their environments. These kinds of robots seem to be creatures that won't exist any time soon, and they probably won't, but with every advancement in the field of robotics and autonomous systems, we step closer to that reality. One key sense that helps a robot communicate and understand its environment is sight, and the area of robotics that strives towards the goal of giving machines the sense of sight is computer vision. 
 
     \subsection{Area of Research}
-        Human Pose Estimation (HPE) is an area of research within computer vision that aims to teach robots how to make sense of the human form and the motions it is capable of performing. It involves the identification and classification of the joints in the human body, capturing a set of coordinates for each joint, known as a key point, that can describe the pose of a person. HPE has a wide set of uses in many fields: In games, with motion capture technologies reliant on HPE, it allows developers to code program more realistic and fluid character movements. In healthcare, healthcare providers can monitor a patient's movements and detect any abnormalities. Augmented reality, allows the user to interact with the digital content in more natural and intuitive ways with gestures. And finally, the use-case that is the primary focus of this project, is sports training. HPE can be used to analyse a user's performance, identify areas for improvement, and develop personalised training programs based on the physical level of the user. For example, HPE could be used to analyse a runner's form, e.g. How straight is their back? What part of the foot they are landing on? Are they leaning more to one side?..., and providing feedback on how to improve their technique. HPE can be used to collect data about any exercises where the movement of the body is vital to its effectiveness.
+        Human Pose Estimation (HPE) is an area of research within computer vision that aims to teach robots how to make sense of the human form and the motions it is capable of performing. It involves the identification and classification of the joints in the human body, capturing a set of coordinates for each joint, known as a key point, that can describe the pose of a person. HPE has a wide set of uses in many fields: In games, with motion capture technologies reliant on HPE, it allows developers to code program more realistic and fluid character movements. In healthcare, healthcare providers can monitor a patient's movements and detect any abnormalities. Augmented reality, allows the user to interact with the digital content in more natural and intuitive ways with gestures. And finally, the use-case that is the primary focus of this project, is sports training. HPE can be used to analyse a user's performance, identify areas for improvement, and develop personalised training programs based on the physical level of the user. For example, HPE could be used to analyse a runner's form, e.g. How straight is their back? What part of the foot are they landing on? Are they leaning more to one side?..., and provide feedback on how to improve their technique. HPE can be used to collect data about any exercises where the movement of the body is vital to its effectiveness.
     
     \subsection{Relevance to the Degree Programme}
         I am enrolled in the MSc programme Robotics and Autonomous Systems at the Univerity of Lincoln through the AgriFoRwArdS CDT.\@ Throughout the first two semesters, I studied the principles of robotics, artificial intelligence, machine learning, and computer vision. Principles from all of these subjects are applied within the area of research on human pose estimation. As to my affiliation with the AgriFoRwArdS CDT, their focus is on the production and use of AI, ML, and CV applications to help the farming and agricultural industries, as Lincolnshire is an agricultural region of the UK.\@ Human pose estimation has previously been used in agritech applications \parencite{app12168160}, with its ability to facilitate human-robot interactions in the field for fruit picking, robotic carts will follow the worker through the field to hold the produce and take it away once full. HPE allows these robots to understand gesture commands the worker may give it, and gives the robot an understanding of humans that allows it to find and follow them without driving into them.
@@ -61,7 +63,7 @@
 
 
 
-\section{Aims and Objectives}
+\section{Aims and Objectives} % ~300 words
 %You should formulate these clearly, explaining what problems are to be explored and why they are worth exploring. You should have a single overarching aim that comprises your overall research question.
     \subsection{Issues to Explore}
 
@@ -70,33 +72,132 @@
     \subsection{End Goal}
 
 
-\section{Literature Survey}
+\section{Literature Survey} % ~700 words
 %Provide a short literature survey based on key pieces of work. For example, 3 or 4 relevant papers on the topic of interest will suffice.
 
-    \subsection{Paper 1}
+    \subsection{BlazePose: On-device Real-time Body Pose tracking \parencite{bazarevsky2020blazeposeondevicerealtimebody}}
+        This 2020 Google Research by Valentin Bazarevsky et al.\@ demonstrates a particular type of convolutional neural network architecture called BlazePose which was created specifically for the real-time mobile human posture estimation task. 
+        With the ability to build 33 body keypoints for an individual and operating at over 30 frames per second on a Pixel 2, it is perfect for real-time applications such as fitness tracking and sign language recognition. BlazePose's primary contributions are a lightweight body pose estimate neural network and a novel body pose tracking method. 
+        Regression and heatmaps are both used by the network to determine keypoint coordinates, which probably improves efficiency and accuracy. An important development in the realm of on-device real-time body posture monitoring is this technology. It is a useful instrument for a variety of applications due to its efficiency and adaptability. BlazePose has a bright future ahead of it, and it will be interesting to watch how this technology develops and is applied in many real-world scenarios.
+        \begin{figure}[htbp]
+            \centering
+            \includegraphics[width=0.33\textwidth]{figures/BlazePose.png}
+            \caption{BlazePose results on yoga and fitness poses}
+        \end{figure}
 
-    \subsection{Paper 2}
+    \subsection{Realtime Multi-Person 2D Pose Estimation using Part Affinity Fields \parencite{cao2017realtimemultiperson2dpose}}
+        In this 2017 paper by Zhe Cao et al., an effective technique for predicting posture for several people is Real-Time Multi-Person 2D posture estimate using Part Affinity Fields (PAFs) is presented. This method seeks to identify several individuals' 2D postures inside a picture. The system gains the ability to link body parts with specific persons in the image by using a nonparametric representation called Part Affinity Fields (PAFs). PAFs, or groups of 2D vector fields, represent the limbs' orientation and posture inside an image. Regardless of the number of persons in the image, the system's architecture for a greedy bottom-up parsing phase that produces exceptional accuracy and real-time speed.\\
 
-    \subsection{Paper 3}
+        \begin{figure}[htbp]
+            \centering
+            \includegraphics[width=0.5\textwidth]{figures/multipose.png}
+            \caption{Top: Multi-person pose estimation. Body parts belonging to the same person are linked. Bottom left: Part Affinity Fields (PAFs) corresponding to the limb connecting right elbow and right wrist. The color encodes orientation. Bottom right: A zoomed in view of the predicted PAFs. At each pixel in the field, a 2D vector encodes the position and orientation of the limbs.}
+        \end{figure}
 
-    \subsection{Paper 4}
+        It is therefore especially appropriate for use cases that include real-time data. The main contribution of this strategy is the separation of image population and runtime complexity. Compared to previous methods, which often saw increased computational costs as the number of participants increased, this represents a significant breakthrough. In summary, real-time multi-person 2D posture estimation using Part Affinity Fields presents this innovative and efficient approach for multi-person posture estimation. Because it can do real-time inference regardless of the amount of people in the image, it is a helpful tool in its sector. 
+
+    \subsection{Simple Baselines for Human Pose Estimation and Tracking \parencite{xiao2018simplebaselineshumanpose}}
+        Simple Baselines for Human Pose Estimation and Tracking by Bin Xiao et al.\@ is a significant addition to the field of human pose estimation. This study provides baseline methods that are practical and easy to apply for coming up with and evaluating new ideas in the sector.
+        The main contribution of this study is the baseline tracking and posture estimation algorithms established. These methods are surprisingly effective, producing state-of-the-art performance on challenging benchmarks.\\
+
+        \begin{figure}[htbp]
+            \centering
+            \includegraphics[width=0.5\textwidth]{figures/sample.png}
+            \caption{Some sample results on PoseTrack Challenge test set}
+        \end{figure}
+
+        This approach's simplicity is one of its main advantages. This work shows that a straightforward approach may still provide outstanding results, even in the face of the growing complexity of algorithms and systems in this sector. For the purpose of developing and assessing new techniques, this simplifies the process of analysing and comparing algorithms. It can be concluded that Simple Baselines for Human Pose Estimation and Tracking offers a productive and successful method for these tasks. Its ease of use and potency make it a useful instrument in its field, and there is a lot of room for expansion.
+
+    \subsection{Pose2Seg: Detection Free Human Instance Segmentation \parencite{zhang2019pose2segdetectionfreehuman}}
+        Pose2Seg, created by Song-Hai Zhang et al., is an innovative approach to human instance segmentation. This method provides a unique posture-based instance segmentation framework for humans, which divides instances based on human position, as opposed to proposal region identification. Usually, image instance segmentation begins with object detection and proceeds to segment the object from the detection bounding-box. Conversely, Pose2Seg takes into account the uniqueness of the ``human'' category, which is precisely specified by the posture skeleton. The human posture skeleton may be used to identify instances with severe occlusion instead of bounding-boxes.\\
+        
+        \begin{figure}[htbp]
+            \centering
+            \includegraphics[width=0.5\textwidth]{figures/Pose2Seg.png}
+            \caption{Heavily occluded people are better separated using human pose than using bounding-box.}
+        \end{figure}
+
+        This method shows that the pose-based framework can better handle occlusion and obtain higher accuracy on the human instance segmentation test compared to the most sophisticated detection-based approach. Additionally, the publication ``Occluded Human (OCHuman)'' introduces a new benchmark for occluded persons with full annotations, including instance masks, bounding boxes, and human position. This dataset has 8110 meticulously annotated human occurrences dispersed throughout 4731 images. All things considered, Pose2Seg offers a fresh and effective method for segmenting human instances. Its detection-free segmentation based on human postural capability makes it a top tool in its field with a lot of future application possibilities. 
+    \subsubsection{Summary}
+        The science of human posture evaluation has greatly benefited from these four publications. BlazePose makes real-time body location tracking of mobile devices easy and effective. To illustrate the effectiveness of nonparametric representations in the precise estimation of multi-person poses, Realtime Multi-Person 2D Pose Estimation uses component affinity fields. The realistic baseline techniques for posture estimation and tracking provided by Simple Baselines for Human posture Estimation and Tracking emphasise the importance of simplicity in obtaining high performance. Pose2Seg offers a unique pose-based instance segmentation framework and is the last illustration of the potential for detection-free human instance segmentation. By building on the concepts of others, proposing fresh ideas, and refining previously established methods, each study advances the subject of human pose assessment.
 
 
-\section{Research Methods}
+
+\section{Research Methods} % ~250 words
 % Briefly discuss the research methods that may be appropriate for the proposed research. For example, are they quantitative or qualitative and how would you deploy them? Will you use any publicly available data?
 
 
-\section{Ethical Considerations}
+\section{Ethical Considerations} % ~250 words
 % In consultation with your supervisor, you must evidence any ethical issues in this section and clearly identify if you have submitted an ethical application via LEAS.
 
-
-\section{Project Plan and Risk Analysis}
+\section{Project Plan and Risk Analysis} % ~300 words 
 % A documented project plan spanning the full timeframe of the project. Timescales and milestones/deliverables should be provided for each of the project objectives. This may take the form of a Gantt chart, with granularity of no more than one week. The risk analysis should identify and explain specific risks, their likelihood, and assessed impact, with a mitigation strategy for each. Generic risks (e.g., illness, loss of data, IT problems etc.) are common to all projects and should NOT be included here.
     \subsection{Project Plan}
+        \begin{figure}[tbp]
+            \centering
+            \begin{sideways}
+                \begin{ganttchart}[y unit title=0.4cm,
+                    y unit chart=0.5cm,
+                    x unit = 0.2cm,
+                    vgrid,hgrid, 
+                    title label anchor/.style={below=-1.6ex},
+                    % title label font=\tiny,
+                    title left shift=.05,
+                    title right shift=-.05,
+                    title height=1,
+                    progress label text={},
+                    bar height=0.7,
+                    group right shift=0,
+                    group top shift=.6,
+                    group height=.3]{1}{77}
 
+                    %labels
+                    \gantttitle{July}{31}
+                    \gantttitle{August}{31} 
+                    \gantttitle{Sep}{15} \\
+                    
+                    \gantttitle{week 1}{7}
+                    \gantttitle{week 2}{7}
+                    \gantttitle{week 3}{7}
+                    \gantttitle{week 4}{7}
+                    \gantttitle{week 5}{7}
+                    \gantttitle{week 6}{7}
+                    \gantttitle{week 7}{7}
+                    \gantttitle{week 8}{7}
+                    \gantttitle{week 9}{7}
+                    \gantttitle{week 10}{7}
+                    \gantttitle{week 11}{7}\\
+
+
+                    %tasks
+                    \ganttbar[progress=0]{CDT Summer School}{7}{13} \\
+                    \ganttbar[progress=0]{CDT Annual Conference}{22}{23}\\
+                    \ganttbar{Proposal Writing}{1}{3} \\
+                    \ganttmilestone{Proposal submission}{4}\\
+                    \ganttbar{Coding}{5}{6}
+                    \ganttbar{Coding}{14}{21}
+                    \ganttbar{Coding}{24}{53}\\
+                    \ganttbar{Paper Writing}{45}{59}\\
+                    \ganttmilestone{Sumbission Deadline}{60}\\
+                    \ganttbar{Viva Preparation}{62}{70}\\
+                    \ganttmilestone{In Person Viva}{71}
+
+                    
+                    %relations 
+                    \ganttlink{elem2}{elem3}
+                    \ganttlink{elem4}{elem5}
+                    \ganttlink{elem5}{elem6}
+                    \ganttlink[link type=dr]{elem6}{elem7}
+                    \ganttlink{elem7}{elem8}
+                    \ganttlink{elem9}{elem10}
+
+                \end{ganttchart}
+            \end{sideways}
+        \caption{Gantt Chart}
+        \end{figure}
     \subsection{Risk Analysis}
 
 \newpage
 \printbibliography
-\centering{\large{\textbf{Word Count: 765}}}
+\centering{\large{\textbf{Word Count: 1730}}}
 \end{document}
