@@ -66,10 +66,21 @@
 \section{Aims and Objectives} % ~300 words
 %You should formulate these clearly, explaining what problems are to be explored and why they are worth exploring. You should have a single overarching aim that comprises your overall research question.
     \subsection{Issues to Explore}
+        There are many issues relating to the subject of human pose estimation. Namely, how to detect keypoints on the human body more efficiently to allow for real-time detection and processing. How to effectively infer the positions of keypoints occluded by other body parts or obstacles. And how to use the data to derive recommendations on how to improve the user's form.
 
     \subsection{Motivation}
+        Over the last few decades, the percentage of people who are either overweight or obese has steadily increased. This is a concerning trend as being obese increases the risk of many other health conditions such as type 2 diabetes, coronary heart disease, some types of cancer, and stroke \parencite{NHS-obesity}. As seen in Figure~\ref{fig:obesity}, over 60\% of the UK population is considered overweight or obese. \\
+
+        \begin{figure}[htbp]
+            \centering
+            \includegraphics[width=0.33\textwidth]{figures/obesity.png}
+            \caption{Percentage of people who are either obses or overweight, by year (Source: Health Survey for England, 2018)}\label{fig:obesity}
+        \end{figure}
+
+        To help solve that issue, it is important to encourage people to workout, but going to the gym can be daunting, especially when you don't know how to perform exercises properly. Creating an AI personal trainer will give people the knowledge and confidence to exercise more at home or the gym. Furthermore, exercise has many benefits other than weight loss, it reduces the risk of the issues mentioned above and has been shown to improve mental health \parencite{NHS-benefits}.
 
     \subsection{End Goal}
+        The end goal of this project is to create an AI fitness personal trainer application capable of using video input to detect the presence of the user, finding and identifying the keypoints on the user's body, analysing the poses created by the connections between the keypoints (while making inferences on the position of occluded keypoints), and of giving the user recommendations on how to improve the user's form to help minimise the risk of injury and maximise the effectiveness of the chosen exercise. If there is time, a potential add-on would be to make this a smartphone application for ease of use.
 
 
 \section{Literature Survey} % ~700 words
@@ -199,5 +210,5 @@
 
 \newpage
 \printbibliography
-\centering{\large{\textbf{Word Count: 1730}}}
+\centering{\large{\textbf{Word Count: 2052}}}
 \end{document}
