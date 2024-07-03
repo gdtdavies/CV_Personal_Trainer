@@ -65,6 +65,16 @@
 
 \section{Aims and Objectives} % ~300 words
 %You should formulate these clearly, explaining what problems are to be explored and why they are worth exploring. You should have a single overarching aim that comprises your overall research question.
+    \subsection{Aims}
+        
+        \begin{itemize}
+            \item Specific: The goal of this project is to create an AI fitness personal trainer application capable of using video input to detect the presence of the user, finding and identifying the keypoints on the user's body, analysing the poses created by the connections between the keypoints (while making inferences on the position of occluded keypoints), and of giving the user recommendations on how to improve the user's form to help minimise the risk of injury and maximise the effectiveness of the chosen exercise. If there is time, a potential add-on would be to make this a smartphone application for ease of use.
+            \item Mesurable: The success of this application can be measured by its ability to detect certain movements. First by its ability to detect the human shape then the exercises and the form.
+            \item Achievable: This task is certainly acheivable, I have previous experience with image processing using python.
+            \item Relavant: This project is worthwhile for many reasons, a few of them I describe in section 2.3. below.
+            \item Timebound: The deadline for this research project is currently set to the 29th of August 2024. Giving a two month timeframe to complete the project.
+        \end{itemize}    
+
     \subsection{Issues to Explore}
         There are many issues relating to the subject of human pose estimation. Namely, how to detect keypoints on the human body more efficiently to allow for real-time detection and processing. How to effectively infer the positions of keypoints occluded by other body parts or obstacles. And how to use the data to derive recommendations on how to improve the user's form.
 
@@ -79,8 +89,7 @@
 
         To help solve that issue, it is important to encourage people to workout, but going to the gym can be daunting, especially when you don't know how to perform exercises properly. Creating an AI personal trainer will give people the knowledge and confidence to exercise more at home or the gym. Furthermore, exercise has many benefits other than weight loss, it reduces the risk of the issues mentioned above and has been shown to improve mental health \parencite{NHS-benefits}.
 
-    \subsection{End Goal}
-        The end goal of this project is to create an AI fitness personal trainer application capable of using video input to detect the presence of the user, finding and identifying the keypoints on the user's body, analysing the poses created by the connections between the keypoints (while making inferences on the position of occluded keypoints), and of giving the user recommendations on how to improve the user's form to help minimise the risk of injury and maximise the effectiveness of the chosen exercise. If there is time, a potential add-on would be to make this a smartphone application for ease of use.
+    
 
 
 \section{Literature Survey} % ~700 words
@@ -136,15 +145,24 @@
 
 \section{Research Methods} % ~250 words
 % Briefly discuss the research methods that may be appropriate for the proposed research. For example, are they quantitative or qualitative and how would you deploy them? Will you use any publicly available data?
+    This research project will attempt to provide a framework for performing physical interventions that enhance the physical well-being of patient populations and to extract skeleton-based features that can quantify the physical status of each user. To avoid ethical concerns, there will be no data collection or participant enrollment in this research project. This research will involve the process of analysing numerical data from video frames. This numerical data will refer to the coordinates of the key points and which keypoints are linked. Therefore, this research is quantitative.\\
+    This research will act as a study about the creation of an application which provides a framework for sports professionals to set their desired ranges of motion and form constraints on specific exercises to create personalised workout regimens.  \\
+    The extracted video markers will be analysed to determine the efficacy and accuracy of the pose estimation techniques used. Each individual exercise type will require its own model trained for that specific movement. Video markers will be extracted from recording I will take of myself and the ones provided by my supervisor to evaluate pose estimation accuracy.\\
+    The expected outcome is to have many models capable of detecting the user's poses and extracting useful and relevant data for sports professionals, regular gym goers, and home workout enjoyers to understand and use.
+
+
+
 
 
 \section{Ethical Considerations} % ~250 words
 % In consultation with your supervisor, you must evidence any ethical issues in this section and clearly identify if you have submitted an ethical application via LEAS.
+    After careful consideration, my supervisor and I have decided to avoid the need to submit an ethical application by not collecting any data ourselves or involving any external human participation. All the data used will be either given to me by my supervisor or produced by myself for testing and validation procedures only.
 
 \section{Project Plan and Risk Analysis} % ~300 words 
 % A documented project plan spanning the full timeframe of the project. Timescales and milestones/deliverables should be provided for each of the project objectives. This may take the form of a Gantt chart, with granularity of no more than one week. The risk analysis should identify and explain specific risks, their likelihood, and assessed impact, with a mitigation strategy for each. Generic risks (e.g., illness, loss of data, IT problems etc.) are common to all projects and should NOT be included here.
     \subsection{Project Plan}
-        \begin{figure}[tbp]
+        Figure~\ref{fig:gantt} is a gantt chart showing the phases of work I will be attempting to follow over the course of this project. The two greyed out bars are periods where I will be unable to work on this project as I'll be travalling on AgriFoRwArdS CDT duties. There are three major milestones for this project, the submission date for this proposal on the 4th of July, the sumbmission date for this projecton the 29th of August, and the in person viva defence of the MSc on the week of the 16th of September.
+        \begin{figure}[htbp]
             \centering
             \begin{sideways}
                 \begin{ganttchart}[y unit title=0.4cm,
@@ -160,12 +178,12 @@
                     bar height=0.7,
                     group right shift=0,
                     group top shift=.6,
-                    group height=.3]{1}{77}
+                    group height=.3]{1}{84}
 
                     %labels
                     \gantttitle{July}{31}
                     \gantttitle{August}{31} 
-                    \gantttitle{Sep}{15} \\
+                    \gantttitle{September}{22} \\
                     
                     \gantttitle{week 1}{7}
                     \gantttitle{week 2}{7}
@@ -177,7 +195,8 @@
                     \gantttitle{week 8}{7}
                     \gantttitle{week 9}{7}
                     \gantttitle{week 10}{7}
-                    \gantttitle{week 11}{7}\\
+                    \gantttitle{week 11}{7}
+                    \gantttitle{week 12}{7}\\
 
 
                     %tasks
@@ -186,12 +205,14 @@
                     \ganttbar{Proposal Writing}{1}{3} \\
                     \ganttmilestone{Proposal submission}{4}\\
                     \ganttbar{Coding}{5}{6}
-                    \ganttbar{Coding}{14}{21}
+                    \ganttbar{Coding}{14}{21}\\
+                    \ganttmilestone{First system version}{21}\\
                     \ganttbar{Coding}{24}{53}\\
+                    \ganttmilestone{Final sytem version}{53}\\
                     \ganttbar{Paper Writing}{45}{59}\\
                     \ganttmilestone{Sumbission Deadline}{60}\\
-                    \ganttbar{Viva Preparation}{62}{70}\\
-                    \ganttmilestone{In Person Viva}{71}
+                    \ganttbar{Viva Preparation}{62}{77}\\
+                    \ganttmilestone{In Person Viva}{78}
 
                     
                     %relations 
@@ -204,10 +225,50 @@
 
                 \end{ganttchart}
             \end{sideways}
-        \caption{Gantt Chart}
+        \caption{Gantt Chart}~\label{fig:gantt}
         \end{figure}
     \subsection{Risk Analysis}
+        \begin{table}[htbp]
+            \centering
+            \resizebox{\columnwidth}{!}{%
+            \begin{tabular}{|c|c|c|c|c|l}
+            \cline{1-5}
+            ID &
+            Description &
+            Impact &
+            Likelihood &
+            \begin{tabular}[c]{@{}c@{}}mitigation \\ strategy\end{tabular} &
+            \\ \cline{1-5}
+            R1 &
+            \begin{tabular}[c]{@{}c@{}}A progam\\ doesn't work or is\\ incompatable with my\\ machine\end{tabular} &
+            high &
+            medium &
+            \begin{tabular}[c]{@{}c@{}}find a alternative\\ program\end{tabular} &
+            \\ \cline{1-5}
+            R2 &
+            \begin{tabular}[c]{@{}c@{}}The landmark detection\\ doesn't function for \\ everyone\end{tabular} &
+            low &
+            medium &
+            \begin{tabular}[c]{@{}c@{}}We won't be able\\ to know if that is\\ the case\end{tabular} &
+            \\ \cline{1-5}
+            R3 &
+            \begin{tabular}[c]{@{}c@{}}Too much data is created\\ for my computer to store\end{tabular} &
+            high &
+            low &
+            \begin{tabular}[c]{@{}c@{}}Reduce the amount\\ of data and make \\ smaller models\end{tabular} &
+            \\ \cline{1-5}
+            R4 &
+            \begin{tabular}[c]{@{}c@{}}The movement detections\\ are slow which cause them\\ to be inaccurate\end{tabular} &
+            high &
+            medium &
+            \begin{tabular}[c]{@{}c@{}}Reduce the amount\\ of keypoints to detect\\ to the strictly necessairy\\ ones\end{tabular} &
+            \\ \cline{1-5}
+            \end{tabular}%
+            }
+            \caption{Table describing the potential risks, how severe they are, how likely they are, and what to do if they occur}~\label{tab:risk}
+        \end{table}
 
+    
 \newpage
 \printbibliography
 \centering{\large{\textbf{Word Count: 2052}}}
