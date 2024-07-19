@@ -13,6 +13,22 @@ class ChestGUI:
         self.label = tk.Label(self.win, text="Chest", font=("Arial", 24))
         self.label.pack()
         
+        #--------------------------------------------------------------------------------------------------------------
+        
+        #bench press button
+        self.bench_press_button = tk.Button(self.win, text="Bench Press", font=("Arial", 18), command=self.not_implemented)
+        self.bench_press_button.pack(pady=10)
+        
+        #dumbbell press button
+        self.dumbbell_press_button = tk.Button(self.win, text="Dumbbell Press", font=("Arial", 18), command=self.not_implemented)
+        self.dumbbell_press_button.pack(pady=10)
+        
+        #pec-fly button
+        self.pec_fly_button = tk.Button(self.win, text="Fly", font=("Arial", 18), command=self.not_implemented)
+        self.pec_fly_button.pack(pady=10)
+        
+        #--------------------------------------------------------------------------------------------------------------
+        
         #back button
         self.back_button = tk.Button(self.win, text="Back", font=("Arial", 18), command=self.open_menu)
         self.back_button.pack(pady=10)
@@ -22,6 +38,9 @@ class ChestGUI:
         exit_button.pack(pady=10)
         
         self.win.mainloop()
+        
+    def not_implemented(self):
+        messagebox.showinfo("Not Implemented", "This feature is not implemented yet.")
         
     def on_closing(self):
         if messagebox.askyesno("Quit", "Do you want to quit?"):

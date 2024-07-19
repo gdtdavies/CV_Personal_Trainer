@@ -10,11 +10,11 @@ class HomeGUI:
         self.win.title("Computer Vision Personal Trainer")
         
         #login button
-        self.login_button = tk.Button(self.win, text="Login", font=("Arial", 18))
+        self.login_button = tk.Button(self.win, text="Login", font=("Arial", 18), command=self.not_implemented)
         self.login_button.pack(pady=10)
         
         #register button
-        self.register_button = tk.Button(self.win, text="Register", font=("Arial", 18))
+        self.register_button = tk.Button(self.win, text="Register", font=("Arial", 18), command=self.not_implemented)
         self.register_button.pack(pady=10)
         
         #login as guest button (open menu.py)
@@ -32,6 +32,9 @@ class HomeGUI:
         self.win.destroy()
         import menu
         menu.MenuGUI()
+        
+    def not_implemented(self):
+        messagebox.showinfo("Not Implemented", "This feature is not implemented yet.")
         
     def on_closing(self):
         if messagebox.askyesno("Quit", "Do you want to quit?"):

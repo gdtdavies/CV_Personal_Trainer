@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 
-class ShouldersGUI:
+class CardioGUI:
     
     def __init__(self):
         self.win = tk.Tk()
@@ -10,8 +10,16 @@ class ShouldersGUI:
         self.win.title("Computer Vision Personal Trainer")
         
         #label
-        self.label = tk.Label(self.win, text="Shoulders", font=("Arial", 24))
+        self.label = tk.Label(self.win, text="Cardio", font=("Arial", 24))
         self.label.pack()
+        
+        #--------------------------------------------------------------------------------------------------------------
+        
+        #treadmill button
+        self.treadmill_button = tk.Button(self.win, text="Treadmill", font=("Arial", 18), command=self.not_implemented)
+        self.treadmill_button.pack(pady=10)
+        
+        #--------------------------------------------------------------------------------------------------------------
         
         #back button
         self.back_button = tk.Button(self.win, text="Back", font=("Arial", 18), command=self.open_menu)
@@ -23,6 +31,9 @@ class ShouldersGUI:
         
         self.win.mainloop()
         
+    def not_implemented(self):
+        messagebox.showinfo("Not Implemented", "This feature is not implemented yet.")
+        
     def on_closing(self):
         if messagebox.askyesno("Quit", "Do you want to quit?"):
             self.win.destroy()
@@ -33,4 +44,4 @@ class ShouldersGUI:
         menu.MenuGUI()
         
 if __name__ == "__main__":
-    ShouldersGUI()
+    CardioGUI()

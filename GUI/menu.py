@@ -32,13 +32,13 @@ class MenuGUI:
         
         buttonframe.pack(fill='x')
         
-        # Exit button
-        exit_button = tk.Button(self.win, text="Exit", font=("Arial", 18), command=self.on_closing)
-        exit_button.pack(pady=10)
-        
         # back button
         back_button = tk.Button(self.win, text="Back", font=("Arial", 18), command=self.open_home)
         back_button.pack(pady=10)
+        
+        # Exit button
+        exit_button = tk.Button(self.win, text="Exit", font=("Arial", 18), command=self.on_closing)
+        exit_button.pack(pady=10)
                 
         # Run the main loop
         self.win.mainloop()
