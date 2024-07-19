@@ -1,8 +1,8 @@
 import tkinter as tk
 from tkinter import messagebox
 
+
 class LegsGUI:
-    
     def __init__(self):
         self.win = tk.Tk()
         
@@ -12,9 +12,7 @@ class LegsGUI:
         #label
         self.label = tk.Label(self.win, text="Legs", font=("Arial", 24))
         self.label.pack()
-        
-        #--------------------------------------------------------------------------------------------------------------
-        
+
         #squat button
         self.squat_button = tk.Button(self.win, text="Squat", font=("Arial", 18), command=self.not_implemented)
         self.squat_button.pack(pady=10)
@@ -34,9 +32,7 @@ class LegsGUI:
         #calf raise button
         self.calf_raise_button = tk.Button(self.win, text="Calf Raise", font=("Arial", 18), command=self.not_implemented)
         self.calf_raise_button.pack(pady=10)
-        
-        #--------------------------------------------------------------------------------------------------------------
-        
+
         #back button
         self.back_button = tk.Button(self.win, text="Back", font=("Arial", 18), command=self.open_menu)
         self.back_button.pack(pady=10)
@@ -58,6 +54,7 @@ class LegsGUI:
         self.win.destroy()
         import menu
         menu.MenuGUI()
-        
+
+
 if __name__ == "__main__":
     LegsGUI()

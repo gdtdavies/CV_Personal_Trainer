@@ -1,7 +1,8 @@
 import tkinter as tk
 from tkinter import messagebox
 
-class ChestGUI:
+
+class ShouldersGUI:
     
     def __init__(self):
         self.win = tk.Tk()
@@ -10,25 +11,25 @@ class ChestGUI:
         self.win.title("Computer Vision Personal Trainer")
         
         #label
-        self.label = tk.Label(self.win, text="Chest", font=("Arial", 24))
+        self.label = tk.Label(self.win, text="Shoulders", font=("Arial", 24))
         self.label.pack()
+
+        #shoulder press button
+        self.shoulder_press_button = tk.Button(self.win, text="Shoulder Press", font=("Arial", 18), command=self.not_implemented)
+        self.shoulder_press_button.pack(pady=10)
         
-        #--------------------------------------------------------------------------------------------------------------
+        #lateral raise button
+        self.lateral_raise_button = tk.Button(self.win, text="Lateral Raise", font=("Arial", 18), command=self.not_implemented)
+        self.lateral_raise_button.pack(pady=10)
         
-        #bench press button
-        self.bench_press_button = tk.Button(self.win, text="Bench Press", font=("Arial", 18), command=self.not_implemented)
-        self.bench_press_button.pack(pady=10)
+        #front raise button
+        self.front_raise_button = tk.Button(self.win, text="Front Raise", font=("Arial", 18), command=self.not_implemented)
+        self.front_raise_button.pack(pady=10)
         
-        #dumbbell press button
-        self.dumbbell_press_button = tk.Button(self.win, text="Dumbbell Press", font=("Arial", 18), command=self.not_implemented)
-        self.dumbbell_press_button.pack(pady=10)
-        
-        #pec-fly button
-        self.pec_fly_button = tk.Button(self.win, text="Fly", font=("Arial", 18), command=self.not_implemented)
-        self.pec_fly_button.pack(pady=10)
-        
-        #--------------------------------------------------------------------------------------------------------------
-        
+        #face pull button
+        self.face_pull_button = tk.Button(self.win, text="Face Pull", font=("Arial", 18), command=self.not_implemented)
+        self.face_pull_button.pack(pady=10)
+
         #back button
         self.back_button = tk.Button(self.win, text="Back", font=("Arial", 18), command=self.open_menu)
         self.back_button.pack(pady=10)
@@ -50,6 +51,7 @@ class ChestGUI:
         self.win.destroy()
         import menu
         menu.MenuGUI()
-        
+
+
 if __name__ == "__main__":
-    ChestGUI()
+    ShouldersGUI()

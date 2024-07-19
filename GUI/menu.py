@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 
+
 class MenuGUI:
     def __init__(self):
         self.win = tk.Tk()
@@ -54,34 +55,35 @@ class MenuGUI:
         
     def open_arms(self):
         self.win.destroy()
-        from workouts.arms import arms
-        arms.ArmsGUI()
+        from workouts.arms.armsGUI import ArmsGUI
+        ArmsGUI()
         
     def open_back(self):
         self.win.destroy()
-        from workouts.back import back
-        back.BackGUI()
+        from workouts.back.backGUI import BackGUI
+        BackGUI()
         
     def open_cardio(self):
         self.win.destroy()
-        from workouts.cardio import cardio
-        cardio.CardioGUI()
+        from workouts.cardio.cardioGUI import CardioGUI
+        CardioGUI()
         
     def open_chest(self):
         self.win.destroy()
-        from workouts.chest import chest
-        chest.ChestGUI()
+        from workouts.chest.chestGUI import ChestGUI
+        ChestGUI()
         
     def open_legs(self):
         self.win.destroy()
-        from workouts.legs import legs
-        legs.LegsGUI()
+        from workouts.legs.legsGUI import LegsGUI
+        LegsGUI()
         
     def open_shoulders(self):
         self.win.destroy()
-        from workouts.shoulders import shoulders
-        shoulders.ShouldersGUI()
-        
+        from workouts.shoulders.shouldersGUI import ShouldersGUI
+        ShouldersGUI()
+
+
 if __name__ == "__main__":
     MenuGUI()
     

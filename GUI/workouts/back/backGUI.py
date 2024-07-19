@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 
+
 class BackGUI:
     
     def __init__(self):
@@ -12,9 +13,7 @@ class BackGUI:
         #label
         self.label = tk.Label(self.win, text="Back", font=("Arial", 24))
         self.label.pack()
-        
-        #--------------------------------------------------------------------------------------------------------------
-        
+
         #deadlift button
         self.deadlift_button = tk.Button(self.win, text="Deadlift", font=("Arial", 18), command=self.not_implemented)
         self.deadlift_button.pack(pady=10)
@@ -34,9 +33,7 @@ class BackGUI:
         #straight arm pulldown button
         self.straight_arm_pulldown_button = tk.Button(self.win, text="Straight Arm Pulldown", font=("Arial", 18), command=self.not_implemented)
         self.straight_arm_pulldown_button.pack(pady=10)
-        
-        #--------------------------------------------------------------------------------------------------------------
-        
+
         #back button
         self.back_button = tk.Button(self.win, text="Back", font=("Arial", 18), command=self.open_menu)
         self.back_button.pack(pady=10)
@@ -58,6 +55,7 @@ class BackGUI:
         self.win.destroy()
         import menu
         menu.MenuGUI()
-        
+
+
 if __name__ == "__main__":
     BackGUI()
