@@ -3,15 +3,25 @@ import cv2
 import numpy as np
 from mediapipe.framework.formats.landmark_pb2 import NormalizedLandmarkList
 
+from tkinter import ttk
+from PIL import Image, ImageTk
 
-class BicepCurler:
 
-    def __init__(self):
+class BicepCurlsApp(ttk.Frame):
+
+    def __init__(self, parent):
+        super().__init__(parent)
+
         self.mp_drawing = mp.solutions.drawing_utils
         self.mp_pose = mp.solutions.pose
         self.pose = self.mp_pose.Pose(
             min_detection_confidence=0.8, min_tracking_confidence=0.5)
+
         self.cap = cv2.VideoCapture(0)
+        self.image_label = ttk.Label(self)
+        self.image_label.pack()
+
+        self.run()
 
     @staticmethod
     def calculate_angle(a, b, c):
@@ -69,32 +79,23 @@ class BicepCurler:
             # Render detections
             self.mp_drawing.draw_landmarks(img, landmark_list, [(0, 2), (2, 4), (1, 3), (3, 5)])
         except AttributeError:
-            # print("No pose detected")
+            # no landmarks detected
             pass
 
     def rep_counter(self, reps):
         pass
 
     def run(self):
-        while self.cap.isOpened():
-            ret, frame = self.cap.read()
+        # while self.cap.isOpened():
+        ret, frame = self.cap.read()
 
-            if not ret:
-                print("Ignoring empty camera frame.")
-                continue
-
+        if ret:
             results, img = self.make_detections(frame)
-
             self.display_skeleton(img, results)
-            cv2.imshow('Mediapipe Feed', img)
 
-            if cv2.waitKey(10) & 0xFF == ord('q'):
-                break
-
-        self.cap.release()
-        cv2.destroyAllWindows()
-
-
-if __name__ == "__main__":
-    bicep_curler = BicepCurler()
-    bicep_curler.run()
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+            img_pil = Image.fromarray(img)
+            img_tk = ImageTk.PhotoImage(image=img_pil)
+            self.image_label.imgtk = img_tk
+            self.image_label.configure(image=img_tk)
+        self.after(10, self.run)

@@ -41,8 +41,8 @@ class ArmsGUI:
 
     def open_curls(self):
         self.win.destroy()
-        from .bicep_curls import BicepCurlsApp
-        BicepCurlsApp()
+        from .bicep_curls import BicepCurlsGUI
+        BicepCurlsGUI()
 
     def open_menu(self):
         self.win.destroy()
