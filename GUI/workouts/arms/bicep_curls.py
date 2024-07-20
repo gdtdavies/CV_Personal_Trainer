@@ -11,11 +11,11 @@ from src.workouts.arms.bicep_curls import BicepCurlsApp
 class BicepCurlsGUI(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.geometry("1280x960")
+        self.geometry("1280x480")
         self.title("Bicep Curls")
 
         app = BicepCurlsApp(self)
-        app.pack()
+        app.pack(side=tk.LEFT)
 
         self.label = tk.Label(self, text="Bicep Curls", font=("Arial", 24))
         self.label.pack()
