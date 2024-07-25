@@ -9,8 +9,13 @@ from PIL import Image, ImageTk
 
 class BicepCurlsApp(ttk.Frame):
 
-    def __init__(self, parent):
+    def __init__(self, parent, rep_vars):
         super().__init__(parent)
+
+        self.side = 'left'
+        self.rep_count_l = rep_vars[0]
+        self.rep_count_r = rep_vars[1]
+        self.rep_stage = 'down'
 
         self.mp_drawing = mp.solutions.drawing_utils
         self.mp_pose = mp.solutions.pose
@@ -56,34 +61,66 @@ class BicepCurlsApp(ttk.Frame):
         try:
             landmarks = results.pose_landmarks.landmark
 
-            r_shoulder = [landmarks[11].x, landmarks[11].y]
-            l_shoulder = [landmarks[12].x, landmarks[12].y]
-            r_elbow = [landmarks[13].x, landmarks[13].y]
-            l_elbow = [landmarks[14].x, landmarks[14].y]
-            r_wrist = [landmarks[15].x, landmarks[15].y]
-            l_wrist = [landmarks[16].x, landmarks[16].y]
+            if self.side == "right":
+                shoulder = [landmarks[11].x, landmarks[11].y]
+                elbow = [landmarks[13].x, landmarks[13].y]
+                wrist = [landmarks[15].x, landmarks[15].y]
+            elif self.side == 'left':
+                shoulder = [landmarks[12].x, landmarks[12].y]
+                elbow = [landmarks[14].x, landmarks[14].y]
+                wrist = [landmarks[16].x, landmarks[16].y]
+            else:
+                raise ValueError("Side must be 'left' or 'right'")
 
             # Create a list of landmarks for the elbow angle calculation
             landmark_list = NormalizedLandmarkList()
-            for landmark in landmarks[11:17]:
-                landmark_list.landmark.add(x=landmark.x, y=landmark.y, z=landmark.z)
+            landmark_list.landmark.add(x=shoulder[0], y=shoulder[1], z=0.0)
+            landmark_list.landmark.add(x=elbow[0], y=elbow[1], z=0.0)
+            landmark_list.landmark.add(x=wrist[0], y=wrist[1], z=0.0)
 
             # Calculate the angles between the landmarks
-            a_l_elbow = self.calculate_angle(l_shoulder, l_elbow, l_wrist)
-            a_r_elbow = self.calculate_angle(r_shoulder, r_elbow, r_wrist)
+            a_elbow = self.calculate_angle(shoulder, elbow, wrist)
 
             # Display the angles (in degrees) on the screen
-            self.display_text(img, str(a_l_elbow), tuple(np.multiply(l_elbow, [640, 480]).astype(int)))
-            self.display_text(img, str(a_r_elbow), tuple(np.multiply(r_elbow, [640, 480]).astype(int)))
+            self.display_text(img, str(a_elbow), tuple(np.multiply(elbow, [640, 480]).astype(int)))
+
+            # count reps
+            self.rep_counter(a_elbow)
 
             # Render detections
-            self.mp_drawing.draw_landmarks(img, landmark_list, [(0, 2), (2, 4), (1, 3), (3, 5)])
+            self.mp_drawing.draw_landmarks(img, landmark_list, [(0, 1), (1, 2)])
         except AttributeError:
             # no landmarks detected
             pass
 
-    def rep_counter(self, reps):
-        pass
+    def rep_counter(self, angle):
+        if self.side != "left" and self.side != "right":
+            raise ValueError("Side must be 'left' or 'right'")
+
+        # Get the current count
+        count = self.rep_count_l.get() if self.side == "left" else self.rep_count_r.get()
+
+        if angle > 160 and self.rep_stage == "up":
+            self.rep_stage = "down"
+            print(f'down {count}')
+        elif angle < 30 and self.rep_stage == "down":
+            self.rep_stage = "up"
+            count += 1  # Increment the count
+            print(f'up {count}')
+
+        # Update the IntVar with the new count
+        if self.side == "left":
+            self.rep_count_l.set(count)
+        else:
+            self.rep_count_r.set(count)
+
+    def left_side(self):
+        self.side = "left"
+        self.rep_stage = "down"
+
+    def right_side(self):
+        self.side = "right"
+        self.rep_stage = "down"
 
     def run(self):
         # while self.cap.isOpened():
