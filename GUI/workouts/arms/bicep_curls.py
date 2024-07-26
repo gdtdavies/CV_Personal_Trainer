@@ -34,9 +34,8 @@ class BicepCurlsGUI(tk.Tk):
 
         # -Application--------------------------------------------------------------------------------------------------
 
-        app = BicepCurlsApp(self, (self.left_var, self.right_var))
-        # app = tk.Frame(self, bg=cp['background'], width=640, height=480)
-        app.pack(side=tk.LEFT)
+        self.app = BicepCurlsApp(self, (self.left_var, self.right_var))
+        self.app.pack(side=tk.LEFT)
 
         # --------------------------------------------------------------------------------------------------------------
         # MENU LAYOUT---------------------------------------------------------------------------------------------------
@@ -51,7 +50,7 @@ class BicepCurlsGUI(tk.Tk):
         # --------------------------------------------------------------------------------------------------------------
 
         # Main frame for columns
-        main_frame = tk.Frame(self, border=self.border, relief=tk.RAISED, bg=cp['background'])
+        main_frame = tk.Frame(self, border=self.border, relief=tk.RAISED, bg=cp['bg'])
         main_frame.pack(fill=tk.BOTH, expand=True)
 
         # --------------------------------------------------------------------------------------------------------------
@@ -59,36 +58,36 @@ class BicepCurlsGUI(tk.Tk):
         # --------------------------------------------------------------------------------------------------------------
 
         # -Left column-------------------------------------------------------------------------------------------------
-        left_column = tk.Frame(main_frame, border=self.border, relief=tk.RAISED, bg=cp['background'])
+        left_column = tk.Frame(main_frame, border=self.border, relief=tk.RAISED, bg=cp['bg'])
         left_column.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
         # Split left column into three rows
-        left_top = tk.Frame(left_column, border=self.border, relief=tk.FLAT, width=213, bg=cp['background'])
-        left_middle = tk.Frame(left_column, border=self.border, relief=tk.RAISED, width=213, bg=cp['background'])
-        left_bottom = tk.Frame(left_column, border=self.border, relief=tk.FLAT, width=213, bg=cp['background'])
+        left_top = tk.Frame(left_column, border=self.border, relief=tk.FLAT, width=213, bg=cp['bg'])
+        left_middle = tk.Frame(left_column, border=self.border, relief=tk.RAISED, width=213, bg=cp['bg'])
+        left_bottom = tk.Frame(left_column, border=self.border, relief=tk.FLAT, width=213, bg=cp['bg'])
         left_top.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
         left_middle.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
         left_bottom.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
         # -Middle column------------------------------------------------------------------------------------------------
 
-        middle_column = tk.Frame(main_frame, border=self.border, bg=cp['background'])
+        middle_column = tk.Frame(main_frame, border=self.border, bg=cp['bg'])
         middle_column.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
         # Split middle column into two rows
-        middle_top = tk.Frame(middle_column, border=self.border, width=214, bg=cp['background'])
-        middle_bottom = tk.Frame(middle_column, border=self.border, width=214, bg=cp['background'])
+        middle_top = tk.Frame(middle_column, border=self.border, width=214, bg=cp['bg'])
+        middle_bottom = tk.Frame(middle_column, border=self.border, width=214, bg=cp['bg'])
         middle_top.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
         middle_bottom.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
         # -Right column-------------------------------------------------------------------------------------------------
 
-        right_column = tk.Frame(main_frame, border=self.border, relief=tk.RAISED, bg=cp['background'])
+        right_column = tk.Frame(main_frame, border=self.border, relief=tk.RAISED, bg=cp['bg'])
         right_column.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
         # Split right column into two rows
-        right_top = tk.Frame(right_column, border=self.border, relief=tk.FLAT, width=213, bg=cp['background'])
-        right_bottom = tk.Frame(right_column, border=self.border, relief=tk.RAISED, width=213, bg=cp['background'])
+        right_top = tk.Frame(right_column, border=self.border, relief=tk.FLAT, width=213, bg=cp['bg'])
+        right_bottom = tk.Frame(right_column, border=self.border, relief=tk.RAISED, width=213, bg=cp['bg'])
         right_top.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
         right_bottom.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
@@ -100,20 +99,20 @@ class BicepCurlsGUI(tk.Tk):
 
         self.lr_var = tk.StringVar(value="left")
 
-        radio_frame = tk.Frame(left_top, bg=cp['background'])
+        radio_frame = tk.Frame(left_top, bg=cp['bg'])
         radio_frame.pack(anchor=tk.CENTER, expand=True)
 
-        self.radio_label = tk.Label(radio_frame, text="Which arm?", font=regular_font, bg=cp['background'])
+        self.radio_label = tk.Label(radio_frame, text="Which arm?", font=regular_font, bg=cp['bg'])
         self.radio_label.pack(side=tk.TOP)
 
         self.left_button = tk.Radiobutton(
-            radio_frame, text="Left", font=radio_font, variable=self.lr_var, value="left", command=app.left_side,
+            radio_frame, text="Left", font=radio_font, variable=self.lr_var, value="left", command=self.app.left_side,
             bg=cp['button'])
         self.right_button = tk.Radiobutton(
-            radio_frame, text="Right", font=radio_font, variable=self.lr_var, value="right", command=app.right_side,
+            radio_frame, text="Right", font=radio_font, variable=self.lr_var, value="right", command=self.app.right_side,
             bg=cp['button'])
         self.both_button = tk.Radiobutton(
-            radio_frame, text="Both", font=radio_font, variable=self.lr_var, value="both", command=app.both_sides,
+            radio_frame, text="Both", font=radio_font, variable=self.lr_var, value="both", command=self.app.both_sides,
             bg=cp['button'])
 
         self.left_button.pack(side=tk.LEFT)
@@ -122,19 +121,19 @@ class BicepCurlsGUI(tk.Tk):
 
         # -Parameters frame---------------------------------------------------------------------------------------------
 
-        workout_frame = tk.Frame(left_middle, bg=cp['background'])
+        workout_frame = tk.Frame(left_middle, bg=cp['bg'])
         workout_frame.pack(anchor=tk.CENTER, expand=True)
-        weight_frame = tk.Frame(workout_frame, bg=cp['background'])
-        rest_frame = tk.Frame(workout_frame, bg=cp['background'])
+        weight_frame = tk.Frame(workout_frame, bg=cp['bg'])
+        rest_frame = tk.Frame(workout_frame, bg=cp['bg'])
         weight_frame.pack(anchor=tk.CENTER)
         rest_frame.pack(anchor=tk.CENTER)
 
-        self.weight_label = tk.Label(weight_frame, text="Weight(kg): ", font=regular_font, bg=cp['background'])
+        self.weight_label = tk.Label(weight_frame, text="Weight(kg): ", font=regular_font, bg=cp['bg'])
         self.weight_entry = tk.Entry(weight_frame, font=regular_font, width=5)
         self.weight_label.pack(side=tk.LEFT)
         self.weight_entry.pack(side=tk.LEFT)
 
-        self.rest_label = tk.Label(rest_frame, text="Rest(sec): ", font=regular_font, bg=cp['background'])
+        self.rest_label = tk.Label(rest_frame, text="Rest(sec): ", font=regular_font, bg=cp['bg'])
         self.rest_entry = tk.Entry(rest_frame, font=regular_font, width=5)
         self.rest_label.pack(side=tk.LEFT)
         self.rest_entry.pack(side=tk.LEFT)
@@ -143,15 +142,15 @@ class BicepCurlsGUI(tk.Tk):
                                      command=self.save_params)
         self.save_params.pack(anchor=tk.CENTER, pady=10)
         
-        set_weight_frame = tk.Frame(workout_frame, bg=cp['background'])
+        set_weight_frame = tk.Frame(workout_frame, bg=cp['bg'])
         set_weight_frame.pack(anchor=tk.CENTER)
-        set_rest_frame = tk.Frame(workout_frame, bg=cp['background'])
+        set_rest_frame = tk.Frame(workout_frame, bg=cp['bg'])
         set_rest_frame.pack(anchor=tk.CENTER)
 
-        self.set_weight_label = tk.Label(set_weight_frame, text="Set Weight: ", font=regular_font, bg=cp['background'])
-        self.set_weight_value = tk.Label(set_weight_frame, textvariable=self.weight, font=regular_font, bg=cp['background'])
-        self.set_rest_label = tk.Label(set_rest_frame, text="Set Rest Time: ", font=regular_font, bg=cp['background'])
-        self.set_rest_value = tk.Label(set_rest_frame, textvariable=self.rest_time, font=regular_font, bg=cp['background'])
+        self.set_weight_label = tk.Label(set_weight_frame, text="Set Weight: ", font=regular_font, bg=cp['bg'])
+        self.set_weight_value = tk.Label(set_weight_frame, textvariable=self.weight, font=regular_font, bg=cp['bg'])
+        self.set_rest_label = tk.Label(set_rest_frame, text="Set Rest Time: ", font=regular_font, bg=cp['bg'])
+        self.set_rest_value = tk.Label(set_rest_frame, textvariable=self.rest_time, font=regular_font, bg=cp['bg'])
 
         self.set_weight_label.pack(side=tk.LEFT)
         self.set_weight_value.pack(side=tk.LEFT)
@@ -160,13 +159,13 @@ class BicepCurlsGUI(tk.Tk):
 
         # -Next set frame-----------------------------------------------------------------------------------------------
 
-        next_frame = tk.Frame(left_bottom, bg=cp['background'])
+        next_frame = tk.Frame(left_bottom, bg=cp['bg'])
         next_frame.pack(anchor=tk.CENTER, expand=True)
-        next_set_frame = tk.Frame(next_frame, bg=cp['background'])
+        next_set_frame = tk.Frame(next_frame, bg=cp['bg'])
         next_set_frame.pack(anchor=tk.CENTER)
 
-        self.rest_timer_label = tk.Label(next_set_frame, text="Rest Timer: ", font=regular_font, bg=cp['background'])
-        self.rest_timer_value = tk.Label(next_set_frame, text="", font=regular_font, bg=cp['background'])
+        self.rest_timer_label = tk.Label(next_set_frame, text="Rest Timer: ", font=regular_font, bg=cp['bg'])
+        self.rest_timer_value = tk.Label(next_set_frame, text="", font=regular_font, bg=cp['bg'])
         self.next_set_button = tk.Button(next_frame, text='Next Set', font=regular_font, bg=cp['button'],
                                          command=self.next_set)
 
@@ -180,7 +179,7 @@ class BicepCurlsGUI(tk.Tk):
 
         # -Message frame------------------------------------------------------------------------------------------------
 
-        message_frame = tk.Frame(middle_top, bg=cp['background'])
+        message_frame = tk.Frame(middle_top, bg=cp['bg'])
         message_frame.pack(anchor=tk.CENTER, expand=True)
 
         self.message_label = tk.Label(message_frame, text="", font=regular_font, bg=cp['label'])
@@ -188,10 +187,10 @@ class BicepCurlsGUI(tk.Tk):
 
         # -Image frame--------------------------------------------------------------------------------------------------
 
-        image_frame = tk.Frame(middle_bottom, bg=cp['background'])
+        image_frame = tk.Frame(middle_bottom, bg=cp['bg'])
         image_frame.pack(anchor=tk.S, expand=True)
 
-        self.image_label = tk.Label(image_frame, bg=cp['background'])
+        self.image_label = tk.Label(image_frame, bg=cp['bg'])
         self.image_label.pack(anchor=tk.S)
 
         self.load_image()
@@ -202,19 +201,19 @@ class BicepCurlsGUI(tk.Tk):
 
         # -Reps frame---------------------------------------------------------------------------------------------------
 
-        reps_frame = tk.Frame(right_top, bg=cp['background'])
+        reps_frame = tk.Frame(right_top, bg=cp['bg'])
         reps_frame.pack(anchor=tk.CENTER, expand=True)
 
-        left_frame = tk.Frame(reps_frame, bg=cp['background'])
-        right_frame = tk.Frame(reps_frame, bg=cp['background'])
+        left_frame = tk.Frame(reps_frame, bg=cp['bg'])
+        right_frame = tk.Frame(reps_frame, bg=cp['bg'])
 
-        self.left_label = tk.Label(left_frame, text="Left reps: ", font=regular_font, bg=cp['background'])
-        self.rep_count_l = tk.Label(left_frame, textvariable=self.left_var, font=regular_font, bg=cp['background'])
+        self.left_label = tk.Label(left_frame, text="Left reps: ", font=regular_font, bg=cp['bg'])
+        self.rep_count_l = tk.Label(left_frame, textvariable=self.left_var, font=regular_font, bg=cp['bg'])
         self.left_label.pack(side=tk.LEFT)
         self.rep_count_l.pack(side=tk.LEFT)
 
-        self.right_label = tk.Label(right_frame, text="Right reps: ", font=regular_font, bg=cp['background'])
-        self.rep_count_r = tk.Label(right_frame, textvariable=self.right_var, font=regular_font, bg=cp['background'])
+        self.right_label = tk.Label(right_frame, text="Right reps: ", font=regular_font, bg=cp['bg'])
+        self.rep_count_r = tk.Label(right_frame, textvariable=self.right_var, font=regular_font, bg=cp['bg'])
         self.right_label.pack(side=tk.LEFT)
         self.rep_count_r.pack(side=tk.LEFT)
 
@@ -223,11 +222,11 @@ class BicepCurlsGUI(tk.Tk):
 
         # -Buttons frame------------------------------------------------------------------------------------------------
 
-        button_frame = tk.Frame(right_bottom, bg=cp['background'])
+        button_frame = tk.Frame(right_bottom, bg=cp['bg'])
         button_frame.pack(anchor=tk.CENTER, expand=True)
 
         self.save_button = tk.Button(button_frame, text='Save', font=regular_font, bg=cp['button'],
-                                     command=app.save_workout)
+                                     command=self.app.save_workout)
         self.back_button = tk.Button(button_frame, text='Back', font=regular_font, bg=cp['button'],
                                      command=self.open_menu)
         self.exit_button = tk.Button(button_frame, text='Exit', font=regular_font, bg=cp['button'],
@@ -287,6 +286,7 @@ class BicepCurlsGUI(tk.Tk):
             self.destroy()
 
     def open_menu(self):
+        self.app.close()
         self.destroy()
         from GUI.workouts.arms.armsGUI import ArmsGUI
         ArmsGUI()

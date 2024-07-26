@@ -179,3 +179,8 @@ class BicepCurlsApp(ttk.Frame):
             self.image_label.imgtk = img_tk
             self.image_label.configure(image=img_tk)
         self.after(10, self.run)
+
+    def close(self):
+        self.cap.release()
+        self.destroy()
+        cv2.destroyAllWindows()
