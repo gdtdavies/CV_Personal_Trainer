@@ -1,12 +1,8 @@
 import os
 import sys
 import tkinter as tk
-from tkinter import messagebox, font
+from tkinter import messagebox
 from PIL import Image, ImageTk
-
-sys.path.append(os.path.join(os.path.dirname(__file__), '../../../'))
-from GUI.colour_palette import colours as cp
-from src.workouts.arms.bicep_curls import BicepCurlsApp
 
 
 class BicepCurlsGUI(tk.Tk):
@@ -15,13 +11,12 @@ class BicepCurlsGUI(tk.Tk):
     def __init__(self):
         super().__init__()
         self.geometry("1280x480")
-        self.title("Bicep Curls")
+        self.title("Computer Vision Personal Trainer")
 
-        # -Fonts--------------------------------------------------------------------------------------------------------
-
-        title_font = font.Font(family="Square Block", size=48)
-        regular_font = font.Font(family="Square Block", size=15)
-        radio_font = font.Font(family="Square Block", size=12)
+        sys.path.append(os.path.join(os.path.dirname(__file__), '../../../'))
+        from GUI.colour_palette import colours as cp
+        from src.workouts.arms.bicep_curls import BicepCurlsApp
+        from GUI.fonts import title_font, regular_font, radio_font
 
         # -Variables----------------------------------------------------------------------------------------------------
 
@@ -47,21 +42,19 @@ class BicepCurlsGUI(tk.Tk):
         self.title.pack(fill=tk.BOTH)
         title_frame.pack(fill=tk.BOTH)
 
-        # --------------------------------------------------------------------------------------------------------------
-
         # Main frame for columns
         main_frame = tk.Frame(self, border=self.border, relief=tk.RAISED, bg=cp['bg'])
         main_frame.pack(fill=tk.BOTH, expand=True)
 
         # --------------------------------------------------------------------------------------------------------------
-        # COLUMN LAYOUT FOR MAIN FRAME---------------------------------------------------------------------------------
+        # COLUMN LAYOUT FOR MAIN FRAME----------------------------------------------------------------------------------
         # --------------------------------------------------------------------------------------------------------------
 
-        # -Left column-------------------------------------------------------------------------------------------------
+        # -Left column--------------------------------------------------------------------------------------------------
+
         left_column = tk.Frame(main_frame, border=self.border, relief=tk.RAISED, bg=cp['bg'])
         left_column.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
-        # Split left column into three rows
         left_top = tk.Frame(left_column, border=self.border, relief=tk.FLAT, width=213, bg=cp['bg'])
         left_middle = tk.Frame(left_column, border=self.border, relief=tk.RAISED, width=213, bg=cp['bg'])
         left_bottom = tk.Frame(left_column, border=self.border, relief=tk.FLAT, width=213, bg=cp['bg'])
@@ -106,14 +99,14 @@ class BicepCurlsGUI(tk.Tk):
         self.radio_label.pack(side=tk.TOP)
 
         self.left_button = tk.Radiobutton(
-            radio_frame, text="Left", font=radio_font, variable=self.lr_var, value="left", command=self.app.left_side,
-            bg=cp['button'])
+            radio_frame, text="Left", font=radio_font, variable=self.lr_var, value="left",
+            command=self.app.left_side, bg=cp['button'])
         self.right_button = tk.Radiobutton(
-            radio_frame, text="Right", font=radio_font, variable=self.lr_var, value="right", command=self.app.right_side,
-            bg=cp['button'])
+            radio_frame, text="Right", font=radio_font, variable=self.lr_var, value="right",
+            command=self.app.right_side, bg=cp['button'])
         self.both_button = tk.Radiobutton(
-            radio_frame, text="Both", font=radio_font, variable=self.lr_var, value="both", command=self.app.both_sides,
-            bg=cp['button'])
+            radio_frame, text="Both", font=radio_font, variable=self.lr_var, value="both",
+            command=self.app.both_sides, bg=cp['button'])
 
         self.left_button.pack(side=tk.LEFT)
         self.right_button.pack(side=tk.LEFT)
