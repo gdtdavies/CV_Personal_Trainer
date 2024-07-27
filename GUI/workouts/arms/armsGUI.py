@@ -7,6 +7,7 @@ from PIL import Image, ImageTk
 
 class ArmsGUI(tk.Tk):
 
+    img_loc = os.path.join(os.path.dirname(__file__), 'assets/')
     def __init__(self):
         super().__init__()
         self.geometry("640x480")
@@ -49,13 +50,13 @@ class ArmsGUI(tk.Tk):
         tricep_label = tk.Label(workout_column, text="Tricep Pushdown", font=f['regular'], bg=cp['label'])
 
         # -Images-------------------------------------------------------------------------------------------------------
-        bicep_image = Image.open("assets/bicep_curl.png")
+        bicep_image = Image.open(self.img_loc + "bicep_curl.png")
         bicep_image = bicep_image.resize((107, 94))
         bicep_image = ImageTk.PhotoImage(bicep_image)
         bicep_image_label = tk.Label(workout_column, image=bicep_image, bg=cp['label'])
         bicep_image_label.image = bicep_image
 
-        tricep_image = Image.open("assets/tricep_pushdown.png")
+        tricep_image = Image.open(self.img_loc + "tricep_pushdown.png")
         tricep_image = tricep_image.resize((107, 94))
         tricep_image = ImageTk.PhotoImage(tricep_image)
         tricep_image_label = tk.Label(workout_column, image=tricep_image, bg=cp['label'])
