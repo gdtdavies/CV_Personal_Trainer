@@ -1,3 +1,5 @@
+import os
+import sys
 import tkinter as tk
 from tkinter import messagebox
 
@@ -8,6 +10,10 @@ class MenuGUI:
 
         self.win.geometry("1280x960")
         self.win.title("Computer Vision Personal Trainer")
+
+        sys.path.append(os.path.join(os.path.dirname(__file__), '../../../'))
+        from GUI.colour_palette import colours as cp
+        from GUI.fonts import Fonts
 
         label = tk.Label(self.win, text="Computer Vision Personal Trainer", font=("Arial", 24))
         label.pack()
@@ -55,32 +61,32 @@ class MenuGUI:
         
     def open_arms(self):
         self.win.destroy()
-        from workouts.arms.armsGUI import ArmsGUI
+        from GUI.workouts.arms.armsGUI import ArmsGUI
         ArmsGUI()
         
     def open_back(self):
         self.win.destroy()
-        from workouts.back.backGUI import BackGUI
+        from GUI.workouts.back.backGUI import BackGUI
         BackGUI()
         
     def open_cardio(self):
         self.win.destroy()
-        from workouts.cardio.cardioGUI import CardioGUI
+        from GUI.workouts.cardio.cardioGUI import CardioGUI
         CardioGUI()
         
     def open_chest(self):
         self.win.destroy()
-        from workouts.chest.chestGUI import ChestGUI
+        from GUI.workouts.chest.chestGUI import ChestGUI
         ChestGUI()
         
     def open_legs(self):
         self.win.destroy()
-        from workouts.legs.legsGUI import LegsGUI
+        from GUI.workouts.legs.legsGUI import LegsGUI
         LegsGUI()
         
     def open_shoulders(self):
         self.win.destroy()
-        from workouts.shoulders.shouldersGUI import ShouldersGUI
+        from GUI.workouts.shoulders.shouldersGUI import ShouldersGUI
         ShouldersGUI()
 
 

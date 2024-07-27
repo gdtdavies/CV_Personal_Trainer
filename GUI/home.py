@@ -15,7 +15,7 @@ class HomeGUI:
         self.login_button.pack(pady=10)
         
         # register button
-        self.register_button = tk.Button(self.win, text="Register", font=("Arial", 18), command=self.not_implemented)
+        self.register_button = tk.Button(self.win, text="Register", font=("Arial", 18), command=self.open_register)
         self.register_button.pack(pady=10)
         
         # login as guest button (open menu.py)
@@ -39,8 +39,10 @@ class HomeGUI:
         import login
         login.LoginGUI()
         
-    def not_implemented(self):
-        messagebox.showinfo("Not Implemented", "This feature is not implemented yet.")
+    def open_register(self):
+        self.win.destroy()
+        import register
+        register.RegisterGUI()
         
     def on_closing(self):
         if messagebox.askyesno("Quit", "Do you want to quit?"):
