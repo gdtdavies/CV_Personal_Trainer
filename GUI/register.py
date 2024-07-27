@@ -29,35 +29,28 @@ class RegisterGUI(tk.Tk):
         main_frame.pack(side=tk.TOP, expand=True, ipady=30, ipadx=30)
 
         register_frame = tk.Frame(main_frame, bg=cp['bg'])
-        register_frame.pack(anchor=tk.CENTER, expand=True)
+        register_frame.pack(anchor=tk.CENTER, fill=tk.BOTH, expand=True)
+        register_frame.grid_rowconfigure(0, weight=1)
+        register_frame.grid_rowconfigure(1, weight=1)
+        register_frame.grid_rowconfigure(2, weight=1)
+        register_frame.grid_columnconfigure(0, weight=1)
+        register_frame.grid_columnconfigure(1, weight=1)
 
-        username_frame = tk.Frame(register_frame, bg=cp['bg'])
-        username_frame.pack(side=tk.TOP, expand=True)
+        self.username_label = tk.Label(register_frame, text="Username", font=f['regular'], bg=cp['label'])
+        self.username_entry = tk.Entry(register_frame, font=f['regular'], width=self.entry_width)
+        self.password_label = tk.Label(register_frame, text="Password", font=f['regular'], bg=cp['label'])
+        self.password_entry = tk.Entry(register_frame, font=f['regular'], show="*", width=self.entry_width)
+        self.c_password_label = tk.Label(register_frame, text="Confirm Password", font=f['regular'], bg=cp['label'])
+        self.c_password_entry = tk.Entry(register_frame, font=f['regular'], show="*", width=self.entry_width)
 
-        self.username_label = tk.Label(username_frame, text="Username", font=f['regular'], bg=cp['label'])
-        self.username_entry = tk.Entry(username_frame, font=f['regular'], width=self.entry_width)
-        self.username_label.pack(side=tk.LEFT, pady=10)
-        self.username_entry.pack(side=tk.LEFT, pady=10)
+        self.username_label.grid(row=0, column=0, pady=10)
+        self.username_entry.grid(row=0, column=1, pady=10)
+        self.password_label.grid(row=1, column=0, pady=10)
+        self.password_entry.grid(row=1, column=1, pady=10)
+        self.c_password_label.grid(row=2, column=0, pady=10)
+        self.c_password_entry.grid(row=2, column=1, pady=10)
 
-        password_frame = tk.Frame(register_frame, bg=cp['bg'])
-        password_frame.pack(side=tk.TOP, expand=True)
-
-        self.password_label = tk.Label(password_frame, text="Password", font=f['regular'], bg=cp['label'])
-        self.password_entry = tk.Entry(password_frame, font=f['regular'], show="*", width=self.entry_width)
-        self.password_label.pack(side=tk.LEFT, pady=10)
-        self.password_entry.pack(side=tk.LEFT, pady=10)
-
-        confirm_password_frame = tk.Frame(register_frame, bg=cp['bg'])
-        confirm_password_frame.pack(side=tk.TOP, expand=True)
-
-        self.confirm_password_label = tk.Label(confirm_password_frame, text="Confirm Password", font=f['regular'],
-                                               bg=cp['label'])
-        self.confirm_password_entry = tk.Entry(confirm_password_frame, font=f['regular'], show="*",
-                                               width=self.entry_width)
-        self.confirm_password_label.pack(side=tk.LEFT, pady=10)
-        self.confirm_password_entry.pack(side=tk.LEFT, pady=10)
-
-        register_button = tk.Button(register_frame, text="Register", font=f['regular'], bg=cp['button'],
+        register_button = tk.Button(main_frame, text="Register", font=f['regular'], bg=cp['button'],
                                     command=self.register_user)
         register_button.pack(side=tk.TOP, pady=10)
 
