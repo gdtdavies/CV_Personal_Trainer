@@ -1,52 +1,79 @@
+import os
+import sys
 import tkinter as tk
 from tkinter import messagebox
 
 
-class HomeGUI:
+class HomeGUI(tk.Tk):
     
     def __init__(self):
-        self.win = tk.Tk()
+        super().__init__()
+        self.geometry("640x400")
+        self.title("Computer Vision Personal Trainer")
+
+        sys.path.append(os.path.join(os.path.dirname(__file__), '../../../'))
+        from GUI.colour_palette import colours as cp
+        from GUI.fonts import Fonts
+
+        f = Fonts().get_fonts()
+
+        # title frame
+        title_frame = tk.Frame(self)
+        self.title = tk.Label(title_frame, text="CV-PT", font=f['title'], bg=cp['label'], border=3, relief=tk.SUNKEN)
+        self.title.pack(fill=tk.BOTH)
+        title_frame.pack(fill=tk.BOTH)
+
+        # main frame
+        main_frame = tk.Frame(self, bg=cp['bg'], border=3, relief=tk.RAISED)
+        main_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+        # menu frame
+        menu_frame = tk.Frame(main_frame, bg=cp['bg'])
+        menu_frame.pack(anchor=tk.CENTER, expand=True, pady=30, padx=30)
+
+        # buttons
+        login_button = tk.Button(menu_frame, text="Login", font=f['regular'], bg=cp['button'],
+                                 command=self.open_login)
+        login_button.pack(side=tk.TOP, pady=10)
+        register_button = tk.Button(menu_frame, text="Register", font=f['regular'], bg=cp['button'],
+                                    command=self.open_register)
+        register_button.pack(side=tk.TOP, pady=10)
+        guest_button = tk.Button(menu_frame, text="Login as Guest", font=f['regular'], bg=cp['button'],
+                                 command=self.open_menu)
+        guest_button.pack(side=tk.TOP, pady=10)
+
+        # side frame
+        side_frame = tk.Frame(self, bg=cp['label'])
+        side_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+        # exit frame
+        exit_frame = tk.Frame(side_frame, bg=cp['label'])
+        exit_frame.pack(anchor=tk.CENTER, expand=True)
+
+        exit_button = tk.Button(exit_frame, text="Exit", font=f['regular'], bg=cp['button'], command=self.on_closing)
+        exit_button.pack(side=tk.TOP, pady=10)
         
-        self.win.geometry("1280x960")
-        self.win.title("Computer Vision Personal Trainer")
-        
-        # login button
-        self.login_button = tk.Button(self.win, text="Login", font=("Arial", 18), command=self.open_login)
-        self.login_button.pack(pady=10)
-        
-        # register button
-        self.register_button = tk.Button(self.win, text="Register", font=("Arial", 18), command=self.open_register)
-        self.register_button.pack(pady=10)
-        
-        # login as guest button (open menu.py)
-        self.guest_button = tk.Button(self.win, text="Login as Guest", font=("Arial", 18), command=self.open_menu)
-        self.guest_button.pack(pady=10)      
-                
-        # exit button
-        self.exit_button = tk.Button(self.win, text="Exit", font=("Arial", 18), command=self.on_closing)
-        self.exit_button.pack(pady=10)
-        
-        self.win.protocol("WM_DELETE_WINDOW", self.on_closing)      
-        self.win.mainloop()
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)      
+        self.mainloop()
         
     def open_menu(self):
-        self.win.destroy()
-        import menu
-        menu.MenuGUI()
+        self.destroy()
+        from GUI.menu import MenuGUI
+        MenuGUI()
 
     def open_login(self):
-        self.win.destroy()
-        import login
-        login.LoginGUI()
+        self.destroy()
+        from GUI.login import LoginGUI
+        LoginGUI()
         
     def open_register(self):
-        self.win.destroy()
-        import register
-        register.RegisterGUI()
+        self.destroy()
+        from GUI.register import RegisterGUI
+        RegisterGUI()
         
     def on_closing(self):
         if messagebox.askyesno("Quit", "Do you want to quit?"):
-            self.win.destroy()
+            self.destroy()
         
         
 if __name__ == "__main__":
