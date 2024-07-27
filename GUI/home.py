@@ -8,7 +8,7 @@ class HomeGUI(tk.Tk):
     
     def __init__(self):
         super().__init__()
-        self.geometry("640x400")
+        self.geometry("440x400")
         self.title("Computer Vision Personal Trainer")
 
         sys.path.append(os.path.join(os.path.dirname(__file__), '../../../'))
@@ -17,37 +17,48 @@ class HomeGUI(tk.Tk):
 
         f = Fonts().get_fonts()
 
-        # title frame
+        # --------------------------------------------------------------------------------------------------------------
+        # HEADER--------------------------------------------------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
+
         title_frame = tk.Frame(self)
         self.title = tk.Label(title_frame, text="CV-PT", font=f['title'], bg=cp['label'], border=3, relief=tk.SUNKEN)
         self.title.pack(fill=tk.BOTH)
         title_frame.pack(fill=tk.BOTH)
 
-        # main frame
+        # --------------------------------------------------------------------------------------------------------------
+        # HOME LAYOUT---------------------------------------------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
+
         main_frame = tk.Frame(self, bg=cp['bg'], border=3, relief=tk.RAISED)
         main_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
-        # menu frame
         menu_frame = tk.Frame(main_frame, bg=cp['bg'])
         menu_frame.pack(anchor=tk.CENTER, expand=True, pady=30, padx=30)
 
-        # buttons
+        # -Login--------------------------------------------------------------------------------------------------------
         login_button = tk.Button(menu_frame, text="Login", font=f['regular'], bg=cp['button'],
                                  command=self.open_login)
         login_button.pack(side=tk.TOP, pady=10)
+
+        # -Register-----------------------------------------------------------------------------------------------------
         register_button = tk.Button(menu_frame, text="Register", font=f['regular'], bg=cp['button'],
                                     command=self.open_register)
         register_button.pack(side=tk.TOP, pady=10)
+
+        # -Guest--------------------------------------------------------------------------------------------------------
         guest_button = tk.Button(menu_frame, text="Login as Guest", font=f['regular'], bg=cp['button'],
                                  command=self.open_menu)
         guest_button.pack(side=tk.TOP, pady=10)
 
-        # side frame
+        # --------------------------------------------------------------------------------------------------------------
+        # SIDE----------------------------------------------------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
+
         side_frame = tk.Frame(self, bg=cp['label'])
         side_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
-        # exit frame
-        exit_frame = tk.Frame(side_frame, bg=cp['label'])
+        exit_frame = tk.Frame(side_frame, bg=cp['bg'], border=3, relief=tk.RAISED, padx=10, pady=10)
         exit_frame.pack(anchor=tk.CENTER, expand=True)
 
         exit_button = tk.Button(exit_frame, text="Exit", font=f['regular'], bg=cp['button'], command=self.on_closing)

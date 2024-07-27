@@ -96,6 +96,7 @@ class ArmsGUI(tk.Tk):
         exit_button = tk.Button(button_column, text="Exit", font=f['regular'], bg=cp['button'], command=self.on_closing)
         exit_button.pack(side=tk.TOP, padx=10, pady=10)
 
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
         self.mainloop()
 
     def not_implemented(self):

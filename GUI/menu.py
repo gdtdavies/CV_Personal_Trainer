@@ -7,7 +7,7 @@ from tkinter import messagebox
 class MenuGUI(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.geometry("640x350")
+        self.geometry("440x300")
         self.title("Computer Vision Personal Trainer")
 
         sys.path.append(os.path.join(os.path.dirname(__file__), '../../../'))
@@ -16,26 +16,32 @@ class MenuGUI(tk.Tk):
 
         f = Fonts().get_fonts()
 
-        # Title frame
+        # --------------------------------------------------------------------------------------------------------------
+        # HEADER--------------------------------------------------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
+
         title_frame = tk.Frame(self)
-        self.title = tk.Label(title_frame, text="MENU", font=f['title'], bg=cp['label'])
+        self.title = tk.Label(title_frame, text="MENU", font=f['title'], bg=cp['label'], border=3, relief=tk.SUNKEN)
         self.title.pack(fill=tk.BOTH)
         title_frame.pack(fill=tk.BOTH)
 
-        # Main frame
+        # --------------------------------------------------------------------------------------------------------------
+        # MENU LAYOUT---------------------------------------------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
+
         main_frame = tk.Frame(self, bg=cp['bg'], border=3, relief=tk.RAISED)
         main_frame.pack(fill=tk.BOTH, expand=True)
 
-        # Menu frame
+        # -Menu Frame---------------------------------------------------------------------------------------------------
         menu_frame = tk.Frame(main_frame, bg=cp['bg'])
-        menu_frame.pack(anchor=tk.CENTER, fill=tk.BOTH, expand=True, pady=30, padx=30)
+        menu_frame.pack(anchor=tk.CENTER, fill=tk.BOTH, expand=True, pady=15, padx=15)
         menu_frame.grid_rowconfigure(0, weight=1)
         menu_frame.grid_rowconfigure(1, weight=1)
         menu_frame.grid_columnconfigure(0, weight=1)
         menu_frame.grid_columnconfigure(1, weight=1)
         menu_frame.grid_columnconfigure(2, weight=1)
 
-        # Buttons
+        # -Buttons------------------------------------------------------------------------------------------------------
         arms_button = tk.Button(menu_frame, text="Arms", font=f['regular'], bg=cp['button'],
                                 command=self.open_arms)
         back_button = tk.Button(menu_frame, text="Back", font=f['regular'], bg=cp['button'],
@@ -49,6 +55,7 @@ class MenuGUI(tk.Tk):
         shoulders_button = tk.Button(menu_frame, text="Shoulders", font=f['regular'], bg=cp['button'],
                                      command=self.open_shoulders)
 
+        # -Grid---------------------------------------------------------------------------------------------------------
         arms_button.grid(row=0, column=0, sticky="nsew", padx=1, pady=1)
         back_button.grid(row=0, column=1, sticky="nsew", padx=1, pady=1)
         cardio_button.grid(row=0, column=2, sticky="nsew", padx=1, pady=1)
@@ -56,10 +63,14 @@ class MenuGUI(tk.Tk):
         legs_button.grid(row=1, column=1, sticky="nsew", padx=1, pady=1)
         shoulders_button.grid(row=1, column=2, sticky="nsew", padx=1, pady=1)
 
+        # --------------------------------------------------------------------------------------------------------------
+        # FOOTER--------------------------------------------------------------------------------------------------------
+        # --------------------------------------------------------------------------------------------------------------
+
         footer_frame = tk.Frame(self, bg=cp['label'])
         footer_frame.pack(side=tk.TOP, expand=True, fill=tk.BOTH)
 
-        buttons_frame = tk.Frame(footer_frame, bg=cp['label'])
+        buttons_frame = tk.Frame(footer_frame, bg=cp['bg'], border=3, relief=tk.RAISED, padx=10, pady=10)
         buttons_frame.pack(anchor=tk.CENTER, expand=True)
 
         back_button = tk.Button(buttons_frame, text="Back", font=f['regular'], bg=cp['button'], command=self.open_home)
@@ -68,7 +79,7 @@ class MenuGUI(tk.Tk):
         exit_button = tk.Button(buttons_frame, text="Exit", font=f['regular'], bg=cp['button'], command=self.on_closing)
         exit_button.pack(side=tk.RIGHT, padx=10)
 
-        # Run the main loop
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
         self.mainloop()
         
     def on_closing(self):
