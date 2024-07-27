@@ -14,7 +14,9 @@ class ArmsGUI(tk.Tk):
 
         sys.path.append(os.path.join(os.path.dirname(__file__), '../../../'))
         from GUI.colour_palette import colours as cp
-        from GUI.fonts import title_font, regular_font
+        from GUI.fonts import Fonts
+
+        f = Fonts().get_fonts()
 
         # --------------------------------------------------------------------------------------------------------------
         # MENU LAYOUT---------------------------------------------------------------------------------------------------
@@ -22,7 +24,7 @@ class ArmsGUI(tk.Tk):
 
         # Title frame
         title_frame = tk.Frame(self)
-        self.title = tk.Label(title_frame, text="ARMS", font=title_font, bg=cp['label'], border=3, relief=tk.SUNKEN)
+        self.title = tk.Label(title_frame, text="ARMS", font=f['title'], bg=cp['label'], border=3, relief=tk.SUNKEN)
         self.title.pack(fill=tk.BOTH)
         title_frame.pack(fill=tk.BOTH)
 
@@ -43,26 +45,26 @@ class ArmsGUI(tk.Tk):
         workout_column.pack(anchor=tk.CENTER, expand=True)
 
         # -Labels-------------------------------------------------------------------------------------------------------
-        bicep_label = tk.Label(workout_column, text="Bicep Curls", font=regular_font)
-        tricep_label = tk.Label(workout_column, text="Tricep Pushdown", font=regular_font)
+        bicep_label = tk.Label(workout_column, text="Bicep Curls", font=f['regular'], bg=cp['label'])
+        tricep_label = tk.Label(workout_column, text="Tricep Pushdown", font=f['regular'], bg=cp['label'])
 
         # -Images-------------------------------------------------------------------------------------------------------
         bicep_image = Image.open("assets/bicep_curl.png")
         bicep_image = bicep_image.resize((107, 94))
         bicep_image = ImageTk.PhotoImage(bicep_image)
-        bicep_image_label = tk.Label(workout_column, image=bicep_image)
+        bicep_image_label = tk.Label(workout_column, image=bicep_image, bg=cp['label'])
         bicep_image_label.image = bicep_image
 
         tricep_image = Image.open("assets/tricep_pushdown.png")
         tricep_image = tricep_image.resize((107, 94))
         tricep_image = ImageTk.PhotoImage(tricep_image)
-        tricep_image_label = tk.Label(workout_column, image=tricep_image)
+        tricep_image_label = tk.Label(workout_column, image=tricep_image, bg=cp['label'])
         tricep_image_label.image = tricep_image
 
         # -Buttons------------------------------------------------------------------------------------------------------
-        bicep_button = tk.Button(workout_column, text="Bicep Curls", font=regular_font, bg=cp['button'],
+        bicep_button = tk.Button(workout_column, text="Bicep Curls", font=f['regular'], bg=cp['button'],
                                  command=self.open_curls)
-        tricep_button = tk.Button(workout_column, text="Tricep Pushdown", font=regular_font, bg=cp['button'],
+        tricep_button = tk.Button(workout_column, text="Tricep Pushdown", font=f['regular'], bg=cp['button'],
                                   command=self.not_implemented)
 
         # -Grid layout--------------------------------------------------------------------------------------------------
@@ -86,11 +88,11 @@ class ArmsGUI(tk.Tk):
         button_column.pack(anchor=tk.CENTER, expand=True)
 
         # back button
-        back_button = tk.Button(button_column, text="Back", font=regular_font, bg=cp['button'], command=self.open_menu)
+        back_button = tk.Button(button_column, text="Back", font=f['regular'], bg=cp['button'], command=self.open_menu)
         back_button.pack(side=tk.TOP, padx=10, pady=10)
 
         # exit button
-        exit_button = tk.Button(button_column, text="Exit", font=regular_font, bg=cp['button'], command=self.on_closing)
+        exit_button = tk.Button(button_column, text="Exit", font=f['regular'], bg=cp['button'], command=self.on_closing)
         exit_button.pack(side=tk.TOP, padx=10, pady=10)
 
         self.mainloop()

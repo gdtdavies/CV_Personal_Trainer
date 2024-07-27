@@ -151,15 +151,16 @@ class BicepCurlsApp(ttk.Frame):
 
     def left_side(self):
         self.side = "left"
-        self.rep_stage = "down"
+        self.rep_stage_l = "down"
 
     def right_side(self):
         self.side = "right"
-        self.rep_stage = "down"
+        self.rep_stage_r = "down"
 
     def both_sides(self):
         self.side = "both"
-        self.rep_stage = "down"
+        self.rep_stage_l = "down"
+        self.rep_stage_r = "down"
 
     def save_workout(self):
         print("Workout saved")
