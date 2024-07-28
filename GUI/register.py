@@ -92,7 +92,28 @@ class RegisterGUI(tk.Tk):
     def register_user(self):
         if self.password_entry.get() == self.c_password_entry.get():
             # TODO: Implement user registration (e.g. save to a database and log the user in)
-            pass
+            from src.db.db_connection import DBConnection
+            db = DBConnection()
+            conn = db.connect()
+            cursor = conn.cursor()
+
+            # check if username already exists
+            query = "SELECT * from cv_pt.public.check_user(%s)"
+            cursor.execute(query, (self.username_entry.get(),))
+            if cursor.fetchone()[0]:
+                messagebox.showerror("Error", "Username already exists")
+                return
+
+            query = "SELECT cv_pt.public.create_user(%s, %s)"
+            cursor.execute(query, (self.username_entry.get(), self.password_entry.get()))
+            conn.commit()
+            messagebox.showinfo("Success", "User registered successfully")
+            db.close()
+
+            # open menu window
+            self.destroy()
+            from GUI.menu import MenuGUI
+            MenuGUI()
         else:
             messagebox.showerror("Error", "Passwords do not match")
 
