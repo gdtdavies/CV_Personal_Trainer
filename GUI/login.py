@@ -1,3 +1,4 @@
+import hashlib
 import os
 import sys
 import uuid
@@ -89,36 +90,37 @@ class LoginGUI(tk.Tk):
         conn = db.connect()
         cursor = conn.cursor()
 
-        # Check if username exists
-        query = "SELECT * FROM cv_pt.public.check_user(%s)"
-        cursor.execute(query, (self.username_entry.get(),))
-        if not cursor.fetchone()[0]:
-            messagebox.showerror("Error", "Username does not exist")
+        username = self.username_entry.get()
+        password = self.password_entry.get()
+
+        # Hash the entered password
+        hashed_password = hashlib.sha256(password.encode()).hexdigest()
+
+        # Retrieve the stored hashed password
+        query = "SELECT password FROM cv_pt.public.users WHERE username = %s"
+        cursor.execute(query, (username,))
+        result = cursor.fetchone()
+
+        if result[0] == hashed_password:
+            messagebox.showinfo("Success", "Login successful")
+            # Generate session token
+            session_token = str(uuid.uuid4())
+            query = "SELECT * FROM cv_pt.public.start_session(%s, %s)"
+            cursor.execute(query, (session_token, username))
+            conn.commit()
+
+            # Store session token
+            with open(self.session_token, "w") as f:
+                f.write(session_token)
             db.close()
-            return
 
-        # Check if password is correct
-        query = "SELECT * FROM cv_pt.public.check_password(%s, %s)"
-        cursor.execute(query, (self.username_entry.get(), self.password_entry.get()))
-        if not cursor.fetchone()[0]:
-            messagebox.showerror("Error", "Incorrect password")
+            # open menu window
+            self.destroy()
+            from GUI.menu import MenuGUI
+            MenuGUI()
+        else:
+            messagebox.showerror("Error", "Invalid username or password")
             db.close()
-            return
-
-        # Generate session token
-        session_token = str(uuid.uuid4())
-        query = "SELECT * FROM cv_pt.public.start_session(%s, %s)"
-        cursor.execute(query, (session_token, self.username_entry.get()))
-        conn.commit()
-
-        # Store session token in a file or cookie
-        with open(self.session_token, "w") as f:
-            f.write(session_token)
-        db.close()
-
-        self.destroy()
-        import menu
-        menu.MenuGUI()
 
     def on_closing(self):
         if messagebox.askyesno("Quit", "Do you want to quit?"):

@@ -291,6 +291,9 @@ class BicepCurlsGUI(tk.Tk):
             self.is_resting = False
 
     def start_workout(self):
+        if not os.path.exists(self.session_token_path):
+            print("Session token not found")
+            return None
         print("Starting workout")
         try:
             with open(self.session_token_path, "r") as f:
@@ -308,13 +311,19 @@ class BicepCurlsGUI(tk.Tk):
         conn.commit()
 
     def end_workout(self):
+        if not os.path.exists(self.session_token_path):
+            print("Session token not found")
+            return None
         print("Ending workout")
         from src.db.db_connection import DBConnection
         db = DBConnection()
         conn = db.connect()
         cursor = conn.cursor()
 
-        weight = max(self.set_weights)
+        if self.set_weights:
+            weight = max(self.set_weights)
+        else:
+            weight = 0
         reps = 0
         for r in self.set_reps:
             reps += r[0] if r[0] > r[1] else r[1]

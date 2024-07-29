@@ -1,3 +1,4 @@
+import hashlib
 import os
 import sys
 import uuid
@@ -101,6 +102,9 @@ class RegisterGUI(tk.Tk):
             username = self.username_entry.get()
             password = self.password_entry.get()
 
+            # Hash the password
+            hashed_password = hashlib.sha256(password.encode()).hexdigest()
+
             # check if username already exists
             query = "SELECT * from cv_pt.public.check_user(%s)"
             cursor.execute(query, (username,))
@@ -111,7 +115,7 @@ class RegisterGUI(tk.Tk):
 
             user_id = str(uuid.uuid4())
             query = "SELECT * from cv_pt.public.create_user(%s, %s, %s)"
-            cursor.execute(query, (user_id, username, password))
+            cursor.execute(query, (user_id, username, hashed_password))
             conn.commit()
             messagebox.showinfo("Success", "User registered successfully")
 
