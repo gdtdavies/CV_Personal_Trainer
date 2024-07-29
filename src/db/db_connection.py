@@ -22,6 +22,7 @@ class DBConnection:
             return None
 
     def close(self):
+        self.conn.cursor().close()
         self.conn.close()
 
 

@@ -1,5 +1,6 @@
 import os
 import sys
+import uuid
 import tkinter as tk
 from tkinter import messagebox
 
@@ -91,21 +92,25 @@ class RegisterGUI(tk.Tk):
 
     def register_user(self):
         if self.password_entry.get() == self.c_password_entry.get():
-            # TODO: Implement user registration (e.g. save to a database and log the user in)
             from src.db.db_connection import DBConnection
             db = DBConnection()
             conn = db.connect()
             cursor = conn.cursor()
 
+            username = self.username_entry.get()
+            password = self.password_entry.get()
+
             # check if username already exists
             query = "SELECT * from cv_pt.public.check_user(%s)"
-            cursor.execute(query, (self.username_entry.get(),))
+            cursor.execute(query, (username,))
             if cursor.fetchone()[0]:
                 messagebox.showerror("Error", "Username already exists")
+                db.close()
                 return
 
-            query = "SELECT cv_pt.public.create_user(%s, %s)"
-            cursor.execute(query, (self.username_entry.get(), self.password_entry.get()))
+            user_id = str(uuid.uuid4())
+            query = "SELECT * from cv_pt.public.create_user(%s, %s, %s)"
+            cursor.execute(query, (user_id, username, password))
             conn.commit()
             messagebox.showinfo("Success", "User registered successfully")
             db.close()
@@ -125,6 +130,9 @@ class RegisterGUI(tk.Tk):
     def on_closing(self):
         if messagebox.askyesno("Quit", "Do you want to quit?"):
             self.destroy()
+
+            from src.db.login_session import delete_session
+            delete_session()
 
 
 if __name__ == "__main__":

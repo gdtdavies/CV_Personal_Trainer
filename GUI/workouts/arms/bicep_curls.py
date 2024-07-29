@@ -281,6 +281,9 @@ class BicepCurlsGUI(tk.Tk):
         if messagebox.askyesno("Quit", "Do you want to quit?"):
             self.destroy()
 
+            from src.db.login_session import delete_session
+            delete_session()
+
     def open_menu(self):
         self.app.close()
         self.destroy()

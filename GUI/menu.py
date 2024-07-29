@@ -84,8 +84,11 @@ class MenuGUI(tk.Tk):
         
     def on_closing(self):
         if messagebox.askyesno("Quit", "Do you want to quit?"):
+            from src.db.login_session import delete_session
+            delete_session()
+
             self.destroy()
-            
+
     def open_home(self):
         self.destroy()
         from GUI.home import HomeGUI

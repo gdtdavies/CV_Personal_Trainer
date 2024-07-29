@@ -1,19 +1,23 @@
 import os
 import sys
+import uuid
 import tkinter as tk
 from tkinter import messagebox
+
+sys.path.append(os.path.join(os.path.dirname(__file__), '../'))
+from src.db.login_session import validate_session
 
 
 class LoginGUI(tk.Tk):
 
     entry_width = 15
+    session_token = os.path.join(os.path.dirname(__file__), '../src/db/session_token.txt')
 
     def __init__(self):
         super().__init__()
         self.geometry("440x400")
         self.title("Computer Vision Personal Trainer")
 
-        sys.path.append(os.path.join(os.path.dirname(__file__), '../../../'))
         from GUI.colour_palette import colours as cp
         from GUI.fonts import Fonts
 
@@ -80,17 +84,55 @@ class LoginGUI(tk.Tk):
         self.mainloop()
 
     def login(self):
-        # TODO: Implement login functionality (e.g. check if username and password are correct)
-        if self.username_entry.get() == "admin" and self.password_entry.get() == "admin":
-            self.destroy()
-            import menu
-            menu.MenuGUI()
-        else:
-            messagebox.showerror("Error", "Incorrect username or password")
+        from src.db.db_connection import DBConnection
+        db = DBConnection()
+        conn = db.connect()
+        cursor = conn.cursor()
+
+        # Check if username exists
+        query = "SELECT * FROM cv_pt.public.check_user(%s)"
+        cursor.execute(query, (self.username_entry.get(),))
+        if not cursor.fetchone()[0]:
+            messagebox.showerror("Error", "Username does not exist")
+            db.close()
+            return
+
+        # Check if password is correct
+        query = "SELECT * FROM cv_pt.public.check_password(%s, %s)"
+        cursor.execute(query, (self.username_entry.get(), self.password_entry.get()))
+        if not cursor.fetchone()[0]:
+            messagebox.showerror("Error", "Incorrect password")
+            db.close()
+            return
+
+        # Generate session token
+        session_token = str(uuid.uuid4())
+        query = "SELECT * FROM cv_pt.public.create_user_session(%s, %s)"
+        cursor.execute(query, (self.username_entry.get(), session_token))
+        conn.commit()
+
+        # Store session token in a file or cookie
+        with open(self.session_token, "w") as f:
+            f.write(session_token)
+
+        self.destroy()
+        import menu
+        menu.MenuGUI()
+
+    def logout(self):
+        from src.db.login_session import delete_session
+        delete_session()
+
+        self.destroy()
+        import home
+        home.HomeGUI()
 
     def on_closing(self):
         if messagebox.askyesno("Quit", "Do you want to quit?"):
             self.destroy()
+
+            from src.db.login_session import delete_session
+            delete_session()
 
     def open_home(self):
         self.destroy()

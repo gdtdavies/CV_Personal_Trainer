@@ -106,6 +106,9 @@ class ArmsGUI(tk.Tk):
         if messagebox.askyesno("Quit", "Do you want to quit?"):
             self.destroy()
 
+            from src.db.login_session import delete_session
+            delete_session()
+
     def open_curls(self):
         self.destroy()
         from GUI.workouts.arms.bicep_curls import BicepCurlsGUI
