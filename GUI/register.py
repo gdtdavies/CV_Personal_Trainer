@@ -8,6 +8,7 @@ from tkinter import messagebox
 class RegisterGUI(tk.Tk):
 
     entry_width = 15
+    session_token = os.path.join(os.path.dirname(__file__), '../src/db/session_token.txt')
 
     def __init__(self):
         super().__init__()
@@ -113,6 +114,16 @@ class RegisterGUI(tk.Tk):
             cursor.execute(query, (user_id, username, password))
             conn.commit()
             messagebox.showinfo("Success", "User registered successfully")
+
+            # Generate session token
+            session_token = str(uuid.uuid4())
+            query = "SELECT * FROM cv_pt.public.start_session(%s, %s)"
+            cursor.execute(query, (session_token, self.username_entry.get()))
+            conn.commit()
+
+            # Store session token in a file or cookie
+            with open(self.session_token, "w") as f:
+                f.write(session_token)
             db.close()
 
             # open menu window

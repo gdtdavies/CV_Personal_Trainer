@@ -114,6 +114,7 @@ class LoginGUI(tk.Tk):
         # Store session token in a file or cookie
         with open(self.session_token, "w") as f:
             f.write(session_token)
+        db.close()
 
         self.destroy()
         import menu
