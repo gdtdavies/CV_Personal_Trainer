@@ -8,6 +8,7 @@ from PIL import Image, ImageTk
 class ArmsGUI(tk.Tk):
 
     img_loc = os.path.join(os.path.dirname(__file__), 'assets/')
+
     def __init__(self):
         super().__init__()
         self.geometry("640x480")
@@ -106,8 +107,8 @@ class ArmsGUI(tk.Tk):
         if messagebox.askyesno("Quit", "Do you want to quit?"):
             self.destroy()
 
-            from src.db.login_session import delete_session
-            delete_session()
+            from src.db.login_session import logout
+            logout()
 
     def open_curls(self):
         self.destroy()

@@ -17,7 +17,7 @@ def validate_session():
     conn = db.connect()
     cursor = conn.cursor()
 
-    query = "SELECT user_id FROM cv_pt.public.user_sessions WHERE session_token = %s"
+    query = "SELECT username FROM cv_pt.public.sessions WHERE id = %s"
     cursor.execute(query, (session_token,))
     result = cursor.fetchone()
 
@@ -37,7 +37,7 @@ def get_user_id():
     conn = db.connect()
     cursor = conn.cursor()
 
-    query = "SELECT user_id FROM cv_pt.public.user_sessions WHERE session_token = %s"
+    query = "SELECT username FROM cv_pt.public.sessions WHERE id = %s"
     cursor.execute(query, (session_token,))
     result = cursor.fetchone()[0]
 
@@ -45,24 +45,27 @@ def get_user_id():
     return result if result is not None else None
 
 
-def delete_session():
+def logout():
     try:
         with open(session_token_path, "r") as f:
             session_token = f.read().strip()
     except FileNotFoundError:
-        print("Session token file not found")
-        return
+        return None
 
     from db_connection import DBConnection
     db = DBConnection()
     conn = db.connect()
     cursor = conn.cursor()
 
-    print(session_token)
-    query = 'SELECT * FROM cv_pt.public.delete_user_session(%s)'
+    # Calculate session duration
+    query = "SELECT * FROM cv_pt.public.calculate_session_duration(%s)"
     cursor.execute(query, (session_token,))
+    duration = cursor.fetchone()[0]
+
+    # TODO: Add volume (by multiplying the number of reps by the weight used for each workout in the session)
+    query = "SELECT * FROM cv_pt.public.end_session(%s, %s, %s)"
+    cursor.execute(query, (session_token, duration, 0))
     conn.commit()
 
     db.close()
-
     os.remove(session_token_path)

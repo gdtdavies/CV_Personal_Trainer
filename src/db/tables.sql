@@ -5,7 +5,8 @@ DROP TABLE IF EXISTS sessions CASCADE;
 DROP TABLE IF EXISTS workouts CASCADE;
 
 CREATE TABLE users (
-    username VARCHAR(255) PRIMARY KEY NOT NULL UNIQUE,
+    id uuid PRIMARY KEY NOT NULL UNIQUE,
+    username VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL
 );
 
@@ -13,8 +14,8 @@ CREATE TABLE sessions (
     id uuid PRIMARY KEY NOT NULL UNIQUE,
     username VARCHAR(255) NOT NULL REFERENCES users(username),
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-    duration INTERVAL NOT NULL,
-    volume INT NOT NULL
+    duration INTERVAL,
+    volume INT
 );
 
 CREATE TABLE workouts (

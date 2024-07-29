@@ -107,8 +107,8 @@ class LoginGUI(tk.Tk):
 
         # Generate session token
         session_token = str(uuid.uuid4())
-        query = "SELECT * FROM cv_pt.public.create_user_session(%s, %s)"
-        cursor.execute(query, (self.username_entry.get(), session_token))
+        query = "SELECT * FROM cv_pt.public.start_session(%s, %s)"
+        cursor.execute(query, (session_token, self.username_entry.get()))
         conn.commit()
 
         # Store session token in a file or cookie
@@ -119,20 +119,12 @@ class LoginGUI(tk.Tk):
         import menu
         menu.MenuGUI()
 
-    def logout(self):
-        from src.db.login_session import delete_session
-        delete_session()
-
-        self.destroy()
-        import home
-        home.HomeGUI()
-
     def on_closing(self):
         if messagebox.askyesno("Quit", "Do you want to quit?"):
             self.destroy()
 
-            from src.db.login_session import delete_session
-            delete_session()
+            from src.db.login_session import logout
+            logout()
 
     def open_home(self):
         self.destroy()

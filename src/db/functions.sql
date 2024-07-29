@@ -15,34 +15,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION create_session(
-    _id uuid,
-    _username VARCHAR(255),
-    _created_at TIMESTAMP,
-    _duration INTERVAL,
-    _volume INT
-) RETURNS VOID AS $$
-BEGIN
-    INSERT INTO cv_pt.public.sessions (id, username, created_at, duration, volume)
-    VALUES (_id, _username, _created_at, _duration, _volume);
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE OR REPLACE FUNCTION create_workout(
-    _id uuid,
-    _session_id uuid,
-    _name VARCHAR(255),
-    _created_at TIMESTAMP,
-    _duration INTERVAL,
-    _reps INT,
-    _weight INT
-) RETURNS VOID AS $$
-BEGIN
-    INSERT INTO cv_pt.public.workouts (id, session_id, name, created_at, duration, reps, weight)
-    VALUES (_id, _session_id, _name, _created_at, _duration, _reps, _weight);
-END;
-$$ LANGUAGE plpgsql;
-
 CREATE OR REPLACE FUNCTION check_user(
     _username VARCHAR(255)
 ) RETURNS BOOLEAN AS $$
@@ -68,20 +40,31 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION create_user_session(
-    _username VARCHAR(255),
-    _session_token VARCHAR(255)
+CREATE OR REPLACE FUNCTION start_session(
+    _session_token uuid,
+    _username VARCHAR(255)
 ) RETURNS VOID AS $$
 BEGIN
-    INSERT INTO cv_pt.public.user_sessions (user_id, session_token)
-    VALUES ((SELECT id FROM cv_pt.public.users WHERE username = _username), _session_token);
+    INSERT INTO cv_pt.public.sessions (id, username) VALUES (_session_token, _username);
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION delete_user_session(
-    _session_token VARCHAR(255)
+CREATE OR REPLACE FUNCTION end_session(
+    _session_token uuid,
+    _duration INTERVAL,
+    _volume INT
 ) RETURNS VOID AS $$
 BEGIN
-    DELETE FROM cv_pt.public.user_sessions WHERE session_token = _session_token;
+    UPDATE cv_pt.public.sessions
+    SET duration = _duration, volume = _volume
+    WHERE id = _session_token;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION calculate_session_duration(
+    _session_token uuid
+) RETURNS INTERVAL AS $$
+BEGIN
+    RETURN (SELECT NOW() - created_at FROM cv_pt.public.sessions WHERE id = _session_token);
 END;
 $$ LANGUAGE plpgsql;

@@ -131,8 +131,8 @@ class RegisterGUI(tk.Tk):
         if messagebox.askyesno("Quit", "Do you want to quit?"):
             self.destroy()
 
-            from src.db.login_session import delete_session
-            delete_session()
+            from src.db.login_session import logout
+            logout()
 
 
 if __name__ == "__main__":

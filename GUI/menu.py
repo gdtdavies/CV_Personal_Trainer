@@ -84,16 +84,24 @@ class MenuGUI(tk.Tk):
         
     def on_closing(self):
         if messagebox.askyesno("Quit", "Do you want to quit?"):
-            from src.db.login_session import delete_session
-            delete_session()
-
             self.destroy()
 
+            from src.db.login_session import logout
+            logout()
+
     def open_home(self):
-        self.destroy()
+        # if session is active, ask if logout
         from GUI.home import HomeGUI
-        HomeGUI()
-        
+        if os.path.exists(os.path.join(os.path.dirname(__file__), '../src/db/session_token.txt')):
+            if messagebox.askyesno("Quit", "Do you want to logout?"):
+                from src.db.login_session import logout
+                logout()
+                self.destroy()
+                HomeGUI()
+        else:
+            self.destroy()
+            HomeGUI()
+
     def open_arms(self):
         self.destroy()
         from GUI.workouts.arms.armsGUI import ArmsGUI
