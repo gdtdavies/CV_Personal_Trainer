@@ -25,8 +25,9 @@ CREATE TABLE workouts (
     session_id uuid NOT NULL REFERENCES sessions(id),
     name VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-    duration INTERVAL NOT NULL,
-    reps INT NOT NULL,
-    weight INT NOT NULL
+    duration INTERVAL,
+    reps INT,
+    max_weight INT,
+    volume INT
 );
 

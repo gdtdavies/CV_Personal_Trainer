@@ -68,3 +68,27 @@ BEGIN
     RETURN (SELECT NOW() - created_at FROM cv_pt.public.sessions WHERE id = _session_token);
 END;
 $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION start_workout(
+    _workout_id uuid,
+    _session_id uuid,
+    _name VARCHAR(255)
+) RETURNS VOID AS $$
+BEGIN
+    INSERT INTO cv_pt.public.workouts (id, session_id, name)
+    VALUES (_workout_id, _session_id, _name);
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION end_workout(
+    _workout_id uuid,
+    _reps INT,
+    _weight INT,
+    _volume INT
+) RETURNS VOID AS $$
+BEGIN
+    UPDATE cv_pt.public.workouts
+    SET duration = (NOW() - created_at), reps = _reps, max_weight = _weight, volume = _volume
+    WHERE id = _workout_id;
+END;
+$$ LANGUAGE plpgsql;
