@@ -19,3 +19,40 @@ def calculate_angle(a, b, c):
         angle = 360 - angle
 
     return round(angle, 2)
+
+
+def make_detections(app, frame):
+    img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    img = cv2.flip(img, 1)
+    img.flags.writeable = False
+    results = app.pose.process(img)
+    img.flags.writeable = True
+    img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+
+    return results, img
+
+
+def rep_counter(app, angle, side, min_angle, max_angle, tension_stage="up"):
+    if side != "left" and side != "right":
+        raise ValueError("Side must be 'left' or 'right'")
+
+    # Get the current count
+    count = app.rep_count_l.get() if side == "left" else app.rep_count_r.get()
+    rep_stage = app.rep_stage_l if side == "left" else app.rep_stage_r
+
+    if angle > max_angle and rep_stage == "up":
+        rep_stage = "down"
+        count += 1 if tension_stage == 'down' else 0  # Increment the count
+        print(f'down {count}')
+    elif angle < min_angle and rep_stage == "down":
+        rep_stage = "up"
+        count += 1 if tension_stage == 'up' else 0  # Increment the count
+        print(f'up {count}')
+
+    # Update the IntVar with the new count
+    if side == "left":
+        app.rep_count_l.set(count)
+        app.rep_stage_l = rep_stage
+    else:
+        app.rep_count_r.set(count)
+        app.rep_stage_r = rep_stage

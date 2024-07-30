@@ -9,7 +9,7 @@ from tkinter import ttk
 from PIL import Image, ImageTk
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '../../../'))
-from src.workouts.utils import display_text, calculate_angle
+from src.workouts.utils import display_text, calculate_angle, make_detections, rep_counter
 
 
 class BicepCurlsApp(ttk.Frame):
@@ -25,8 +25,7 @@ class BicepCurlsApp(ttk.Frame):
 
         self.mp_drawing = mp.solutions.drawing_utils
         self.mp_pose = mp.solutions.pose
-        self.pose = self.mp_pose.Pose(
-            min_detection_confidence=0.8, min_tracking_confidence=0.5)
+        self.pose = self.mp_pose.Pose(min_detection_confidence=0.8, min_tracking_confidence=0.5)
 
         self.cap = cv2.VideoCapture(0)
         self.image_label = ttk.Label(self)
@@ -34,17 +33,9 @@ class BicepCurlsApp(ttk.Frame):
 
         self.run()
 
-    def make_detections(self, frame):
-        img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        img = cv2.flip(img, 1)
-        img.flags.writeable = False
-        results = self.pose.process(img)
-        img.flags.writeable = True
-        img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
-
-        return results, img
-
     def display_skeleton(self, img, results):
+        min_angle = 40
+        max_angle = 165
         try:
             landmarks = results.pose_landmarks.landmark
             if self.side != "both":
@@ -72,7 +63,7 @@ class BicepCurlsApp(ttk.Frame):
                 display_text(img, str(a_elbow), tuple(np.multiply(elbow, [640, 480]).astype(int)))
 
                 # count reps
-                self.rep_counter(a_elbow, self.side)
+                rep_counter(self, a_elbow, self.side, min_angle, max_angle)
 
                 # Render detections
                 self.mp_drawing.draw_landmarks(img, landmark_list, [(0, 1), (1, 2)])
@@ -102,38 +93,14 @@ class BicepCurlsApp(ttk.Frame):
                 display_text(img, str(l_a_elbow), tuple(np.multiply(l_elbow, [640, 480]).astype(int)))
 
                 # count reps
-                self.rep_counter(r_a_elbow, 'right')
-                self.rep_counter(l_a_elbow, 'left')
+                rep_counter(self, r_a_elbow, 'right', min_angle, max_angle)
+                rep_counter(self, l_a_elbow, 'left', min_angle, max_angle)
 
                 # Render detections
                 self.mp_drawing.draw_landmarks(img, landmark_list, [(0, 1), (1, 2), (3, 4), (4, 5)])
         except AttributeError:
             # no landmarks detected
             pass
-
-    def rep_counter(self, angle, side):
-        if side != "left" and side != "right":
-            raise ValueError("Side must be 'left' or 'right'")
-
-        # Get the current count
-        count = self.rep_count_l.get() if side == "left" else self.rep_count_r.get()
-        rep_stage = self.rep_stage_l if side == "left" else self.rep_stage_r
-
-        if angle > 160 and rep_stage == "up":
-            rep_stage = "down"
-            print(f'down {count}')
-        elif angle < 30 and rep_stage == "down":
-            rep_stage = "up"
-            count += 1  # Increment the count
-            print(f'up {count}')
-
-        # Update the IntVar with the new count
-        if side == "left":
-            self.rep_count_l.set(count)
-            self.rep_stage_l = rep_stage
-        else:
-            self.rep_count_r.set(count)
-            self.rep_stage_r = rep_stage
 
     def left_side(self):
         self.side = "left"
@@ -157,7 +124,7 @@ class BicepCurlsApp(ttk.Frame):
         ret, frame = self.cap.read()
 
         if ret:
-            results, img = self.make_detections(frame)
+            results, img = make_detections(self, frame)
             self.display_skeleton(img, results)
 
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -182,4 +149,3 @@ if __name__ == '__main__':
     app = BicepCurlsApp(root, [rep_count_l, rep_count_r])
     app.pack()
     root.mainloop()
-    app.close()
