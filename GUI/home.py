@@ -85,9 +85,6 @@ class HomeGUI(tk.Tk):
     def on_closing(self):
         if messagebox.askyesno("Quit", "Do you want to quit?"):
             self.destroy()
-
-            from src.db.login_session import logout
-            logout()
         
         
 if __name__ == "__main__":

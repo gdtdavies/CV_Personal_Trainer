@@ -10,28 +10,28 @@ class ShouldersGUI:
         self.win.geometry("1280x960")
         self.win.title("Computer Vision Personal Trainer")
         
-        #label
+        # label
         self.label = tk.Label(self.win, text="Shoulders", font=("Arial", 24))
         self.label.pack()
 
-        #shoulder press button
+        # shoulder press button
         self.shoulder_press_button = tk.Button(self.win, text="Shoulder Press", font=("Arial", 18), command=self.not_implemented)
         self.shoulder_press_button.pack(pady=10)
         
-        #lateral raise button
+        # lateral raise button
         self.lateral_raise_button = tk.Button(self.win, text="Lateral Raise", font=("Arial", 18), command=self.not_implemented)
         self.lateral_raise_button.pack(pady=10)
         
-        #front raise button
+        # front raise button
         self.front_raise_button = tk.Button(self.win, text="Front Raise", font=("Arial", 18), command=self.not_implemented)
         self.front_raise_button.pack(pady=10)
         
-        #face pull button
+        # face pull button
         self.face_pull_button = tk.Button(self.win, text="Face Pull", font=("Arial", 18), command=self.not_implemented)
         self.face_pull_button.pack(pady=10)
 
-        #back button
-        self.back_button = tk.Button(self.win, text="Back", font=("Arial", 18), command=self.open_menu)
+        # back button
+        self.back_button = tk.Button(self.win, text="Return", font=("Arial", 18), command=self.open_menu)
         self.back_button.pack(pady=10)
         
         # Exit button

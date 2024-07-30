@@ -9,32 +9,32 @@ class LegsGUI:
         self.win.geometry("1280x960")
         self.win.title("Computer Vision Personal Trainer")
         
-        #label
+        # label
         self.label = tk.Label(self.win, text="Legs", font=("Arial", 24))
         self.label.pack()
 
-        #squat button
+        # squat button
         self.squat_button = tk.Button(self.win, text="Squat", font=("Arial", 18), command=self.not_implemented)
         self.squat_button.pack(pady=10)
         
-        #leg press button
+        # leg press button
         self.leg_press_button = tk.Button(self.win, text="Leg Press", font=("Arial", 18), command=self.not_implemented)
         self.leg_press_button.pack(pady=10)
         
-        #leg curl button
+        # leg curl button
         self.leg_curl_button = tk.Button(self.win, text="Leg Curl", font=("Arial", 18), command=self.not_implemented)
         self.leg_curl_button.pack(pady=10)
         
-        #leg extension button
+        # leg extension button
         self.leg_extension_button = tk.Button(self.win, text="Leg Extension", font=("Arial", 18), command=self.not_implemented)
         self.leg_extension_button.pack(pady=10)
         
-        #calf raise button
+        # calf raise button
         self.calf_raise_button = tk.Button(self.win, text="Calf Raise", font=("Arial", 18), command=self.not_implemented)
         self.calf_raise_button.pack(pady=10)
 
-        #back button
-        self.back_button = tk.Button(self.win, text="Back", font=("Arial", 18), command=self.open_menu)
+        # back button
+        self.back_button = tk.Button(self.win, text="Return", font=("Arial", 18), command=self.open_menu)
         self.back_button.pack(pady=10)
         
         # Exit button

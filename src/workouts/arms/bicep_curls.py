@@ -1,3 +1,5 @@
+import os
+import sys
 import mediapipe as mp
 import cv2
 import numpy as np
@@ -5,6 +7,9 @@ from mediapipe.framework.formats.landmark_pb2 import NormalizedLandmarkList
 
 from tkinter import ttk
 from PIL import Image, ImageTk
+
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../../'))
+from src.workouts.utils import display_text, calculate_angle
 
 
 class BicepCurlsApp(ttk.Frame):
@@ -29,20 +34,6 @@ class BicepCurlsApp(ttk.Frame):
 
         self.run()
 
-    @staticmethod
-    def calculate_angle(a, b, c):
-        a = np.array(a)
-        b = np.array(b)
-        c = np.array(c)
-
-        radians = np.arctan2(c[1] - b[1], c[0] - b[0]) - np.arctan2(a[1] - b[1], a[0] - b[0])
-        angle = np.abs(radians * 180.0 / np.pi)
-
-        if angle > 180.0:
-            angle = 360 - angle
-
-        return round(angle, 2)
-
     def make_detections(self, frame):
         img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         img = cv2.flip(img, 1)
@@ -52,11 +43,6 @@ class BicepCurlsApp(ttk.Frame):
         img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
 
         return results, img
-
-    @staticmethod
-    def display_text(img, text, position):
-        cv2.putText(img, text, position, cv2.FONT_HERSHEY_SIMPLEX,
-                    1, (255, 100, 50), 6, cv2.LINE_AA)
 
     def display_skeleton(self, img, results):
         try:
@@ -80,10 +66,10 @@ class BicepCurlsApp(ttk.Frame):
                 landmark_list.landmark.add(x=wrist[0], y=wrist[1], z=0.0)
 
                 # Calculate the angles between the landmarks
-                a_elbow = self.calculate_angle(shoulder, elbow, wrist)
+                a_elbow = calculate_angle(shoulder, elbow, wrist)
 
                 # Display the angles (in degrees) on the screen
-                self.display_text(img, str(a_elbow), tuple(np.multiply(elbow, [640, 480]).astype(int)))
+                display_text(img, str(a_elbow), tuple(np.multiply(elbow, [640, 480]).astype(int)))
 
                 # count reps
                 self.rep_counter(a_elbow, self.side)
@@ -108,12 +94,12 @@ class BicepCurlsApp(ttk.Frame):
                 landmark_list.landmark.add(x=l_wrist[0], y=l_wrist[1], z=0.0)
 
                 # Calculate the angles between the landmarks
-                r_a_elbow = self.calculate_angle(r_shoulder, r_elbow, r_wrist)
-                l_a_elbow = self.calculate_angle(l_shoulder, l_elbow, l_wrist)
+                r_a_elbow = calculate_angle(r_shoulder, r_elbow, r_wrist)
+                l_a_elbow = calculate_angle(l_shoulder, l_elbow, l_wrist)
 
                 # Display the angles (in degrees) on the screen
-                self.display_text(img, str(r_a_elbow), tuple(np.multiply(r_elbow, [640, 480]).astype(int)))
-                self.display_text(img, str(l_a_elbow), tuple(np.multiply(l_elbow, [640, 480]).astype(int)))
+                display_text(img, str(r_a_elbow), tuple(np.multiply(r_elbow, [640, 480]).astype(int)))
+                display_text(img, str(l_a_elbow), tuple(np.multiply(l_elbow, [640, 480]).astype(int)))
 
                 # count reps
                 self.rep_counter(r_a_elbow, 'right')
@@ -185,3 +171,15 @@ class BicepCurlsApp(ttk.Frame):
         self.cap.release()
         self.destroy()
         cv2.destroyAllWindows()
+
+
+if __name__ == '__main__':
+    import tkinter as tk
+    root = tk.Tk()
+    root.title("Bicep Curls")
+    rep_count_l = tk.IntVar()
+    rep_count_r = tk.IntVar()
+    app = BicepCurlsApp(root, [rep_count_l, rep_count_r])
+    app.pack()
+    root.mainloop()
+    app.close()

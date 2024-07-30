@@ -231,7 +231,7 @@ class BicepCurlsGUI(tk.Tk):
 
         self.save_button = tk.Button(button_frame, text='Save', font=f['regular'], bg=cp['button'],
                                      command=self.app.save_workout)
-        self.back_button = tk.Button(button_frame, text='Back', font=f['regular'], bg=cp['button'],
+        self.back_button = tk.Button(button_frame, text='Return', font=f['regular'], bg=cp['button'],
                                      command=self.open_menu)
         self.exit_button = tk.Button(button_frame, text='Exit', font=f['regular'], bg=cp['button'],
                                      command=self.on_closing)

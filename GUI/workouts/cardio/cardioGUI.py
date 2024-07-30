@@ -10,16 +10,16 @@ class CardioGUI:
         self.win.geometry("1280x960")
         self.win.title("Computer Vision Personal Trainer")
         
-        #label
+        # label
         self.label = tk.Label(self.win, text="Cardio", font=("Arial", 24))
         self.label.pack()
 
-        #treadmill button
+        # treadmill button
         self.treadmill_button = tk.Button(self.win, text="Treadmill", font=("Arial", 18), command=self.not_implemented)
         self.treadmill_button.pack(pady=10)
 
-        #back button
-        self.back_button = tk.Button(self.win, text="Back", font=("Arial", 18), command=self.open_menu)
+        # back button
+        self.back_button = tk.Button(self.win, text="Return", font=("Arial", 18), command=self.open_menu)
         self.back_button.pack(pady=10)
         
         # Exit button

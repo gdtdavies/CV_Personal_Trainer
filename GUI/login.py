@@ -75,7 +75,7 @@ class LoginGUI(tk.Tk):
         buttons_frame = tk.Frame(footer_frame, bg=cp['bg'], border=3, relief=tk.RAISED, padx=10, pady=10)
         buttons_frame.pack(anchor=tk.CENTER, expand=True)
 
-        back_button = tk.Button(buttons_frame, text="Back", font=f['regular'], bg=cp['button'], command=self.open_home)
+        back_button = tk.Button(buttons_frame, text="Return", font=f['regular'], bg=cp['button'], command=self.open_home)
         back_button.pack(side=tk.LEFT, padx=10)
 
         exit_button = tk.Button(buttons_frame, text="Exit", font=f['regular'], bg=cp['button'], command=self.on_closing)
@@ -125,9 +125,6 @@ class LoginGUI(tk.Tk):
     def on_closing(self):
         if messagebox.askyesno("Quit", "Do you want to quit?"):
             self.destroy()
-
-            from src.db.login_session import logout
-            logout()
 
     def open_home(self):
         self.destroy()

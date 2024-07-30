@@ -90,7 +90,7 @@ class ArmsGUI(tk.Tk):
         button_column.pack(anchor=tk.CENTER, expand=True)
 
         # back button
-        back_button = tk.Button(button_column, text="Back", font=f['regular'], bg=cp['button'], command=self.open_menu)
+        back_button = tk.Button(button_column, text="Return", font=f['regular'], bg=cp['button'], command=self.open_menu)
         back_button.pack(side=tk.TOP, padx=10, pady=10)
 
         # exit button

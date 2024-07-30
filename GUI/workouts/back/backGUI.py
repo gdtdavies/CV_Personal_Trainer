@@ -10,32 +10,32 @@ class BackGUI:
         self.win.geometry("1280x960")
         self.win.title("Computer Vision Personal Trainer")
         
-        #label
+        # label
         self.label = tk.Label(self.win, text="Back", font=("Arial", 24))
         self.label.pack()
 
-        #deadlift button
+        # deadlift button
         self.deadlift_button = tk.Button(self.win, text="Deadlift", font=("Arial", 18), command=self.not_implemented)
         self.deadlift_button.pack(pady=10)
         
-        #pull up button
+        # pull up button
         self.pull_up_button = tk.Button(self.win, text="Pull Up", font=("Arial", 18), command=self.not_implemented)
         self.pull_up_button.pack(pady=10)
         
-        #row button
+        # row button
         self.row_button = tk.Button(self.win, text="Row", font=("Arial", 18), command=self.not_implemented)
         self.row_button.pack(pady=10)
         
-        #lat pulldown button
+        # lat pulldown button
         self.lat_pulldown_button = tk.Button(self.win, text="Lat Pulldown", font=("Arial", 18), command=self.not_implemented)
         self.lat_pulldown_button.pack(pady=10)
         
-        #straight arm pulldown button
+        # straight arm pulldown button
         self.straight_arm_pulldown_button = tk.Button(self.win, text="Straight Arm Pulldown", font=("Arial", 18), command=self.not_implemented)
         self.straight_arm_pulldown_button.pack(pady=10)
 
-        #back button
-        self.back_button = tk.Button(self.win, text="Back", font=("Arial", 18), command=self.open_menu)
+        # back button
+        self.back_button = tk.Button(self.win, text="Return", font=("Arial", 18), command=self.open_menu)
         self.back_button.pack(pady=10)
         
         # Exit button
