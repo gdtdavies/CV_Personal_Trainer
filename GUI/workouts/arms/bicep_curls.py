@@ -1,15 +1,17 @@
 import os
 import sys
-import uuid
 import tkinter as tk
 from tkinter import messagebox
-from PIL import Image, ImageTk
+
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../../'))
+from GUI.colour_palette import colours as cp
+from src.workouts.arms.bicep_curls import BicepCurlsApp
+from GUI.fonts import Fonts
+import GUI.workouts.utils as utils
 
 
 class BicepCurlsGUI(tk.Tk):
     is_resting = False
-    session_token_path = os.path.join(os.path.dirname(__file__), '../../../src/db/session_token.txt')
-    workout_token = str(uuid.uuid4())
     set_weights = []
     set_reps = []
     max_weight = 0
@@ -20,14 +22,9 @@ class BicepCurlsGUI(tk.Tk):
         self.geometry("1280x480")
         self.title("Computer Vision Personal Trainer")
 
-        sys.path.append(os.path.join(os.path.dirname(__file__), '../../../'))
-        from GUI.colour_palette import colours as cp
-        from src.workouts.arms.bicep_curls import BicepCurlsApp
-        from GUI.fonts import Fonts
-
         f = Fonts().get_fonts()
 
-        self.start_workout()
+        self.workout_token = utils.start_workout("Bicep Curls")
 
         # -Variables----------------------------------------------------------------------------------------------------
 
@@ -197,7 +194,8 @@ class BicepCurlsGUI(tk.Tk):
         self.image_label = tk.Label(image_frame, bg=cp['bg'])
         self.image_label.pack(anchor=tk.S)
 
-        self.load_image()
+        image_path = os.path.join(os.path.dirname(__file__), './assets/bicep_curl.png')
+        utils.load_image(self, image_path)
 
         # --------------------------------------------------------------------------------------------------------------
         # FRAMES FOR RIGHT COLUMN---------------------------------------------------------------------------------------
@@ -247,14 +245,6 @@ class BicepCurlsGUI(tk.Tk):
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
         self.mainloop()
 
-    def load_image(self):
-        image_path = os.path.join(os.path.dirname(__file__), './assets/bicep_curl.png')
-        img = Image.open(image_path)
-        img = img.resize((214, 188))
-        img_tk = ImageTk.PhotoImage(img)
-        self.image_label.imgtk = img_tk
-        self.image_label.configure(image=img_tk)
-
     def next_set(self):
         print("Next set")
         if self.rest_time.get() == 0:
@@ -264,10 +254,7 @@ class BicepCurlsGUI(tk.Tk):
         self.is_resting = True
         self.update_timer()
 
-        self.set_weights.append(self.weight.get())
-        self.set_reps.append((self.left_var.get(), self.right_var.get()))
-        self.left_var.set(0)
-        self.right_var.set(0)
+        utils.save_set(self)
 
     def save_params(self):
         print("Save params")
@@ -277,7 +264,7 @@ class BicepCurlsGUI(tk.Tk):
         self.set_rest_value.config(text=self.rest_time)
         self.weight_entry.delete(0, tk.END)
         self.rest_entry.delete(0, tk.END)
-        
+
     def update_timer(self):
         print("Updating timer")
         if self.rest_time.get() > 0:
@@ -290,67 +277,23 @@ class BicepCurlsGUI(tk.Tk):
             self.rest_timer_value.config(text="Go!")
             self.is_resting = False
 
-    def start_workout(self):
-        if not os.path.exists(self.session_token_path):
-            print("Session token not found")
-            return None
-        print("Starting workout")
-        try:
-            with open(self.session_token_path, "r") as f:
-                session_token = f.read().strip()
-        except FileNotFoundError:
-            return None
-
-        from src.db.db_connection import DBConnection
-        db = DBConnection()
-        conn = db.connect()
-        cursor = conn.cursor()
-
-        query = "SELECT * FROM cv_pt.public.start_workout(%s, %s, %s)"
-        cursor.execute(query, (self.workout_token, session_token, "Bicep Curls"))
-        conn.commit()
-
-    def end_workout(self):
-        if not os.path.exists(self.session_token_path):
-            print("Session token not found")
-            return None
-        print("Ending workout")
-        from src.db.db_connection import DBConnection
-        db = DBConnection()
-        conn = db.connect()
-        cursor = conn.cursor()
-
-        if self.set_weights:
-            weight = max(self.set_weights)
-        else:
-            weight = 0
-        reps = 0
-        for r in self.set_reps:
-            reps += r[0] if r[0] > r[1] else r[1]
-        volume = 0
-        for w, r in zip(self.set_weights, self.set_reps):
-            rep_count = r[0] if r[0] > r[1] else r[1]
-            volume += rep_count * w
-
-        query = "SELECT * FROM cv_pt.public.end_workout(%s, %s, %s, %s)"
-        print(self.workout_token, reps, weight, volume)
-        cursor.execute(query, (self.workout_token, reps, weight, volume))
-        conn.commit()
-
     def on_closing(self):
         if messagebox.askyesno("Quit", "Do you want to quit?"):
             self.destroy()
 
-            self.end_workout()
+            utils.save_set(self)  # save the last set
+            utils.end_workout(self.workout_token, self.set_reps, self.set_weights)
             from src.db.login_session import logout
             logout()
 
     def open_menu(self):
-        self.app.close()
-        self.destroy()
-        self.end_workout()
-        from GUI.workouts.arms.armsGUI import ArmsGUI
-        ArmsGUI()
+        if messagebox.askyesno("Return", "Do you want to finish this workout?"):
+            self.app.close()
+            self.destroy()
+            utils.save_set(self)  # save the last set
+            utils.end_workout(self.workout_token, self.set_reps, self.set_weights)
+            from GUI.workouts.arms.armsGUI import ArmsGUI
+            ArmsGUI()
 
 
 if __name__ == "__main__":

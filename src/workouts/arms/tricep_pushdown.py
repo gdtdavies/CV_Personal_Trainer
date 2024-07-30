@@ -15,12 +15,12 @@ from src.workouts.utils import display_text, calculate_angle, make_detections, r
 
 class TricepPushdownApp(ttk.Frame):
 
-    def __init__(self, parent):
+    def __init__(self, parent, rep_vars):
         super().__init__(parent)
 
         self.side = 'both'
-        self.rep_count_l = tk.IntVar(value=0)
-        self.rep_count_r = tk.IntVar(value=0)
+        self.rep_count_l = rep_vars[0]
+        self.rep_count_r = rep_vars[1]
         self.rep_stage_r = 'down'
         self.rep_stage_l = 'down'
 

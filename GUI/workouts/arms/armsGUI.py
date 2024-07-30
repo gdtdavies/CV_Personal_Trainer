@@ -67,7 +67,7 @@ class ArmsGUI(tk.Tk):
         bicep_button = tk.Button(workout_column, text="Bicep Curls", font=f['regular'], bg=cp['button'],
                                  command=self.open_curls)
         tricep_button = tk.Button(workout_column, text="Tricep Pushdown", font=f['regular'], bg=cp['button'],
-                                  command=self.not_implemented)
+                                  command=self.open_tricep)
 
         # -Grid layout--------------------------------------------------------------------------------------------------
         bicep_label.grid(row=0, column=0)
@@ -100,9 +100,6 @@ class ArmsGUI(tk.Tk):
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
         self.mainloop()
 
-    def not_implemented(self):
-        messagebox.showinfo("Not Implemented", "This feature is not implemented yet.")
-
     def on_closing(self):
         if messagebox.askyesno("Quit", "Do you want to quit?"):
             self.destroy()
@@ -114,6 +111,11 @@ class ArmsGUI(tk.Tk):
         self.destroy()
         from GUI.workouts.arms.bicep_curls import BicepCurlsGUI
         BicepCurlsGUI()
+
+    def open_tricep(self):
+        self.destroy()
+        from GUI.workouts.arms.tricep_pushdown import TricepPushdownGUI
+        TricepPushdownGUI()
 
     def open_menu(self):
         self.destroy()
