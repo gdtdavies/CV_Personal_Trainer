@@ -4,53 +4,48 @@ import tkinter as tk
 from tkinter import messagebox
 from PIL import Image, ImageTk
 
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../../'))
+from GUI.colour_palette import colours as cp
+from GUI.fonts import Fonts
+from GUI.workouts import utils
+
 
 class ArmsGUI(tk.Tk):
 
     img_loc = os.path.join(os.path.dirname(__file__), 'assets/')
+    session_token = os.path.join(os.path.dirname(__file__), '../../../src/db/session_token.txt')
 
     def __init__(self):
         super().__init__()
         self.geometry("640x480")
         self.title("Computer Vision Personal Trainer")
 
-        sys.path.append(os.path.join(os.path.dirname(__file__), '../../../'))
-        from GUI.colour_palette import colours as cp
-        from GUI.fonts import Fonts
-
         f = Fonts().get_fonts()
 
-        # --------------------------------------------------------------------------------------------------------------
-        # MENU LAYOUT---------------------------------------------------------------------------------------------------
-        # --------------------------------------------------------------------------------------------------------------
-
-        # Title frame
+        # Title frame --------------------------------------------------------------------------------------------------
         title_frame = tk.Frame(self)
-        self.title = tk.Label(title_frame, text="ARMS", font=f['title'], bg=cp['label'], border=3, relief=tk.SUNKEN)
-        self.title.pack(fill=tk.BOTH)
+        self.title_label = tk.Label(title_frame, text="ARMS", font=f['title'], bg=cp['label'], border=3,
+                                    relief=tk.SUNKEN)
+        self.title_label.pack(fill=tk.BOTH)
         title_frame.pack(fill=tk.BOTH)
 
-        # Main frame
+        # Main frame --------------------------------------------------------------------------------------------------
         main_frame = tk.Frame(self)
         main_frame.pack(fill=tk.BOTH, expand=True)
 
-        # --------------------------------------------------------------------------------------------------------------
-        # WORKOUT GRID--------------------------------------------------------------------------------------------------
-        # --------------------------------------------------------------------------------------------------------------
-
-        # workout frame
+        # Workout frame ------------------------------------------------------------------------------------------------
         workout_frame = tk.Frame(main_frame, bg=cp['bg'], border=3, relief=tk.RAISED)
         workout_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
-        # workout column
+        # Workout column
         workout_column = tk.Frame(workout_frame, bg=cp['label'], padx=10, pady=10)
         workout_column.pack(anchor=tk.CENTER, expand=True)
 
-        # -Labels-------------------------------------------------------------------------------------------------------
+        # Labels
         bicep_label = tk.Label(workout_column, text="Bicep Curls", font=f['regular'], bg=cp['label'])
         tricep_label = tk.Label(workout_column, text="Tricep Pushdown", font=f['regular'], bg=cp['label'])
 
-        # -Images-------------------------------------------------------------------------------------------------------
+        # Images
         bicep_image = Image.open(self.img_loc + "bicep_curl.png")
         bicep_image = bicep_image.resize((107, 94))
         bicep_image = ImageTk.PhotoImage(bicep_image)
@@ -63,37 +58,34 @@ class ArmsGUI(tk.Tk):
         tricep_image_label = tk.Label(workout_column, image=tricep_image, bg=cp['label'])
         tricep_image_label.image = tricep_image
 
-        # -Buttons------------------------------------------------------------------------------------------------------
+        # Buttons
         bicep_button = tk.Button(workout_column, text="Bicep Curls", font=f['regular'], bg=cp['button'],
                                  command=self.open_curls)
         tricep_button = tk.Button(workout_column, text="Tricep Pushdown", font=f['regular'], bg=cp['button'],
                                   command=self.open_tricep)
 
-        # -Grid layout--------------------------------------------------------------------------------------------------
-        bicep_label.grid(row=0, column=0)
-        tricep_label.grid(row=1, column=0)
-        bicep_image_label.grid(row=0, column=1)
-        tricep_image_label.grid(row=1, column=1)
-        bicep_button.grid(row=0, column=2)
-        tricep_button.grid(row=1, column=2)
+        # Grid layout
+        bicep_label.grid(row=0, column=0, padx=5, pady=5)
+        tricep_label.grid(row=1, column=0, padx=5, pady=5)
+        bicep_image_label.grid(row=0, column=1, padx=5, pady=5)
+        tricep_image_label.grid(row=1, column=1, padx=5, pady=5)
+        bicep_button.grid(row=0, column=2, padx=5, pady=5)
+        tricep_button.grid(row=1, column=2, padx=5, pady=5)
 
-        # --------------------------------------------------------------------------------------------------------------
-        # BUTTONS LAYOUT------------------------------------------------------------------------------------------------
-        # --------------------------------------------------------------------------------------------------------------
-
-        # buttons frame
+        # Buttons frame ------------------------------------------------------------------------------------------------
         buttons_frame = tk.Frame(main_frame, bg=cp['label'])
         buttons_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
-        # button column
+        # Button column
         button_column = tk.Frame(buttons_frame, bg=cp['bg'], border=3, relief=tk.RAISED, padx=10, pady=10)
         button_column.pack(anchor=tk.CENTER, expand=True)
 
-        # back button
-        back_button = tk.Button(button_column, text="Return", font=f['regular'], bg=cp['button'], command=self.open_menu)
+        # Back button
+        back_button = tk.Button(button_column, text="Return", font=f['regular'], bg=cp['button'],
+                                command=self.open_menu)
         back_button.pack(side=tk.TOP, padx=10, pady=10)
 
-        # exit button
+        # Exit button
         exit_button = tk.Button(button_column, text="Exit", font=f['regular'], bg=cp['button'], command=self.on_closing)
         exit_button.pack(side=tk.TOP, padx=10, pady=10)
 
@@ -102,10 +94,14 @@ class ArmsGUI(tk.Tk):
 
     def on_closing(self):
         if messagebox.askyesno("Quit", "Do you want to quit?"):
-            self.destroy()
-
             from src.db.login_session import logout
-            logout()
+            try:
+                mood = utils.get_mood() if os.path.exists(self.session_token) else None
+                logout(mood)
+            except Exception as e:
+                print(f"Error during logout: {e}")
+            finally:
+                self.destroy()
 
     def open_curls(self):
         self.destroy()

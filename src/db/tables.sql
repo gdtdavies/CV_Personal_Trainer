@@ -17,7 +17,9 @@ CREATE TABLE sessions (
     username VARCHAR(255) NOT NULL REFERENCES users(username),
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     duration INTERVAL,
-    volume INT
+    volume INT,
+    start_mood INT,
+    end_mood INT
 );
 
 CREATE TABLE workouts (

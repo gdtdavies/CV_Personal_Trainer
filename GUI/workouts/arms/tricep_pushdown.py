@@ -27,7 +27,6 @@ class TricepPushdownGUI(tk.Tk):
         self.workout_token = utils.start_workout("Tricep Pushdown")
 
         # -Variables----------------------------------------------------------------------------------------------------
-
         self.border = 3
 
         self.left_var = tk.IntVar(value=0)
@@ -36,30 +35,22 @@ class TricepPushdownGUI(tk.Tk):
         self.rest_time = tk.IntVar(value=0)
 
         # -Application--------------------------------------------------------------------------------------------------
-
         self.app = TricepPushdownApp(self, (self.left_var, self.right_var))
         self.app.pack(side=tk.LEFT)
 
-        # --------------------------------------------------------------------------------------------------------------
-        # MENU LAYOUT---------------------------------------------------------------------------------------------------
-        # --------------------------------------------------------------------------------------------------------------
-
-        # Title frame
+        # Title frame --------------------------------------------------------------------------------------------------
         title_frame = tk.Frame(self)
         self.title = tk.Label(title_frame, text="Tricep Pushdown", font=f['title'], bg=cp['label'])
         self.title.pack(fill=tk.BOTH)
         title_frame.pack(fill=tk.BOTH)
 
-        # Main frame for columns
+        # Main frame ---------------------------------------------------------------------------------------------------
         main_frame = tk.Frame(self, border=self.border, relief=tk.RAISED, bg=cp['bg'])
         main_frame.pack(fill=tk.BOTH, expand=True)
 
-        # --------------------------------------------------------------------------------------------------------------
-        # COLUMN LAYOUT FOR MAIN FRAME----------------------------------------------------------------------------------
-        # --------------------------------------------------------------------------------------------------------------
+        # COLUMN LAYOUT ------------------------------------------------------------------------------------------------
 
         # -Left column--------------------------------------------------------------------------------------------------
-
         left_column = tk.Frame(main_frame, border=self.border, relief=tk.RAISED, bg=cp['bg'])
         left_column.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
@@ -69,7 +60,6 @@ class TricepPushdownGUI(tk.Tk):
         left_bottom.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
         # -Middle column------------------------------------------------------------------------------------------------
-
         middle_column = tk.Frame(main_frame, border=self.border, bg=cp['bg'])
         middle_column.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
@@ -80,7 +70,6 @@ class TricepPushdownGUI(tk.Tk):
         middle_bottom.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
         # -Right column-------------------------------------------------------------------------------------------------
-
         right_column = tk.Frame(main_frame, border=self.border, relief=tk.RAISED, bg=cp['bg'])
         right_column.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
@@ -90,12 +79,9 @@ class TricepPushdownGUI(tk.Tk):
         right_top.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
         right_bottom.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
-        # --------------------------------------------------------------------------------------------------------------
-        # FRAMES FOR LEFT COLUMN----------------------------------------------------------------------------------------
-        # --------------------------------------------------------------------------------------------------------------
+        # LEFT COLUMN FRAMES -------------------------------------------------------------------------------------------
 
         # -Parameters frame---------------------------------------------------------------------------------------------
-
         workout_frame = tk.Frame(left_middle, bg=cp['bg'])
         workout_frame.pack(anchor=tk.CENTER, expand=True)
         weight_frame = tk.Frame(workout_frame, bg=cp['bg'])
@@ -133,7 +119,6 @@ class TricepPushdownGUI(tk.Tk):
         self.set_rest_value.pack(side=tk.LEFT)
 
         # -Next set frame-----------------------------------------------------------------------------------------------
-
         next_frame = tk.Frame(left_bottom, bg=cp['bg'])
         next_frame.pack(anchor=tk.CENTER, expand=True)
         next_set_frame = tk.Frame(next_frame, bg=cp['bg'])
@@ -148,12 +133,9 @@ class TricepPushdownGUI(tk.Tk):
         self.rest_timer_value.pack(side=tk.LEFT)
         self.next_set_button.pack(pady=10)
 
-        # --------------------------------------------------------------------------------------------------------------
-        # FRAMES FOR MIDDLE COLUMN--------------------------------------------------------------------------------------
-        # --------------------------------------------------------------------------------------------------------------
+        # MIDDLE COLUMN FRAMES -----------------------------------------------------------------------------------------
 
         # -Message frame------------------------------------------------------------------------------------------------
-
         message_frame = tk.Frame(middle_top, bg=cp['bg'])
         message_frame.pack(anchor=tk.CENTER, expand=True)
 
@@ -161,7 +143,6 @@ class TricepPushdownGUI(tk.Tk):
         self.message_label.pack(anchor=tk.CENTER)
 
         # -Image frame--------------------------------------------------------------------------------------------------
-
         image_frame = tk.Frame(middle_bottom, bg=cp['bg'])
         image_frame.pack(anchor=tk.S, expand=True)
 
@@ -171,12 +152,9 @@ class TricepPushdownGUI(tk.Tk):
         image_path = os.path.join(os.path.dirname(__file__), './assets/tricep_pushdown.png')
         utils.load_image(self, image_path)
 
-        # --------------------------------------------------------------------------------------------------------------
-        # FRAMES FOR RIGHT COLUMN---------------------------------------------------------------------------------------
-        # --------------------------------------------------------------------------------------------------------------
+        # RIGHT COLUMN FRAMES ------------------------------------------------------------------------------------------
 
         # -Reps frame---------------------------------------------------------------------------------------------------
-
         reps_frame = tk.Frame(right_top, bg=cp['bg'])
         reps_frame.pack(anchor=tk.CENTER, expand=True)
 
@@ -197,7 +175,6 @@ class TricepPushdownGUI(tk.Tk):
         right_frame.pack()
 
         # -Buttons frame------------------------------------------------------------------------------------------------
-
         button_frame = tk.Frame(right_bottom, bg=cp['bg'])
         button_frame.pack(anchor=tk.CENTER, expand=True)
 
@@ -211,10 +188,6 @@ class TricepPushdownGUI(tk.Tk):
         self.save_button.pack(side=tk.TOP, padx=10, pady=10)
         self.back_button.pack(side=tk.TOP, padx=10, pady=10)
         self.exit_button.pack(side=tk.TOP, padx=10, pady=10)
-
-        # --------------------------------------------------------------------------------------------------------------
-        # MAIN LOOP-----------------------------------------------------------------------------------------------------
-        # --------------------------------------------------------------------------------------------------------------
 
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
         self.mainloop()
@@ -256,12 +229,17 @@ class TricepPushdownGUI(tk.Tk):
 
     def on_closing(self):
         if messagebox.askyesno("Quit", "Do you want to quit?"):
-            self.destroy()
-
-            utils.save_set(self)  # save the last set
-            utils.end_workout(self.workout_token, self.set_reps, self.set_weights)
             from src.db.login_session import logout
-            logout()
+            utils.save_set(self)  # Save the last set
+            utils.end_workout(self.workout_token, self.set_reps, self.set_weights)
+
+            # Ensure that the widget exists before trying to get its value
+            session_token = os.path.join(os.path.dirname(__file__), '../src/db/session_token.txt')
+            mood = utils.get_mood() if os.path.exists(session_token) else None
+            if mood is not None:
+                logout(mood)
+
+            self.destroy()
 
     def open_menu(self):
         if messagebox.askyesno("Return", "Do you want to finish this workout?"):

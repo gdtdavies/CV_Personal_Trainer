@@ -42,21 +42,23 @@ $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION start_session(
     _session_token uuid,
-    _username VARCHAR(255)
+    _username VARCHAR(255),
+    _start_mood INT
 ) RETURNS VOID AS $$
 BEGIN
-    INSERT INTO cv_pt.public.sessions (id, username) VALUES (_session_token, _username);
+    INSERT INTO cv_pt.public.sessions (id, username, start_mood) VALUES (_session_token, _username, _start_mood);
 END;
 $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION end_session(
     _session_token uuid,
     _duration INTERVAL,
-    _volume INT
+    _volume INT,
+    _end_mood INT
 ) RETURNS VOID AS $$
 BEGIN
     UPDATE cv_pt.public.sessions
-    SET duration = _duration, volume = _volume
+    SET duration = _duration, volume = _volume, end_mood = _end_mood
     WHERE id = _session_token;
 END;
 $$ LANGUAGE plpgsql;
