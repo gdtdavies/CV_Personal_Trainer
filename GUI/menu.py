@@ -64,7 +64,12 @@ class MenuGUI(tk.Tk):
         buttons_frame = tk.Frame(footer_frame, bg=cp['bg'], border=3, relief=tk.RAISED, padx=10, pady=10)
         buttons_frame.pack(anchor=tk.CENTER, expand=True)
 
-        back_button = tk.Button(buttons_frame, text="Return", font=f['regular'], bg=cp['button'],
+        if os.path.exists(os.path.join(os.path.dirname(__file__), '../src/db/session_token.txt')):
+            history_button = tk.Button(buttons_frame, text="History", font=f['regular'], bg=cp['button'],
+                                          command=self.open_history)
+            history_button.pack(side=tk.LEFT, padx=10)
+
+        back_button = tk.Button(buttons_frame, text="Logout", font=f['regular'], bg=cp['button'],
                                 command=self.open_home)
         back_button.pack(side=tk.LEFT, padx=10)
 
@@ -95,6 +100,11 @@ class MenuGUI(tk.Tk):
         else:
             self.destroy()
             HomeGUI()
+
+    def open_history(self):
+        self.destroy()
+        from GUI.history import HistoryGUI
+        HistoryGUI()
 
     def open_arms(self):
         self.destroy()

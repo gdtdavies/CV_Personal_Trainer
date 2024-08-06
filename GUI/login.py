@@ -79,7 +79,7 @@ class LoginGUI(tk.Tk):
         username = self.username_entry.get()
         password = self.password_entry.get()
 
-        mood = get_mood() if os.path.exists(self.session_token) else None
+        mood = get_mood()
         self.destroy()
         login(username, password, mood)
 
