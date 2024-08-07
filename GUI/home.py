@@ -10,6 +10,7 @@ class HomeGUI(tk.Tk):
         super().__init__()
         self.geometry("440x400")
         self.title("Computer Vision Personal Trainer")
+        self.resizable(False, False)
 
         sys.path.append(os.path.join(os.path.dirname(__file__), '../../../'))
         from GUI.colour_palette import colours as cp

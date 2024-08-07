@@ -21,6 +21,7 @@ class BicepCurlsGUI(tk.Tk):
         super().__init__()
         self.geometry("1280x480")
         self.title("Computer Vision Personal Trainer")
+        self.resizable(False, False)
 
         f = Fonts().get_fonts()
 
@@ -82,7 +83,7 @@ class BicepCurlsGUI(tk.Tk):
         right_bottom.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
         # LEFT COLUMN FRAMES -------------------------------------------------------------------------------------------
-
+        left_column.grid_columnconfigure(0, minsize=213)
         # -Radio frame--------------------------------------------------------------------------------------------------
         self.lr_var = tk.StringVar(value="left")
 
@@ -159,13 +160,24 @@ class BicepCurlsGUI(tk.Tk):
         self.next_set_button.pack(pady=10)
 
         # MIDDLE COLUMN FRAMES -----------------------------------------------------------------------------------------
-
+        middle_column.grid_columnconfigure(0, minsize=214)
         # -Message frame------------------------------------------------------------------------------------------------
-        message_frame = tk.Frame(middle_top, bg=cp['bg'])
-        message_frame.pack(anchor=tk.CENTER, expand=True)
+        message_frame = tk.Frame(middle_top, bg=cp['bg'], width=214, height=200)
+        message_frame.pack_propagate(False)  # Prevent the frame from resizing
+        message_frame.pack(fill=tk.BOTH, expand=True)
 
-        self.message_label = tk.Label(message_frame, text="", font=f['regular'], bg=cp['label'])
-        self.message_label.pack(anchor=tk.CENTER)
+        # Scrollbar
+        scrollbar = tk.Scrollbar(message_frame)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        # Text widget
+        self.chat_text = tk.Text(message_frame, wrap=tk.WORD, yscrollcommand=scrollbar.set, font=f['small'],
+                                 bg=cp['bg'])
+        self.chat_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        self.chat_text.config(state=tk.DISABLED)
+
+        # Configure scrollbar
+        scrollbar.config(command=self.chat_text.yview)
 
         # -Image frame--------------------------------------------------------------------------------------------------
         image_frame = tk.Frame(middle_bottom, bg=cp['bg'])
@@ -178,7 +190,7 @@ class BicepCurlsGUI(tk.Tk):
         utils.load_image(self, image_path)
 
         # RIGHT COLUMN FRAMES ------------------------------------------------------------------------------------------
-
+        right_column.grid_columnconfigure(0, minsize=213)
         # -Reps frame---------------------------------------------------------------------------------------------------
         reps_frame = tk.Frame(right_top, bg=cp['bg'])
         reps_frame.pack(anchor=tk.CENTER, expand=True)
@@ -217,11 +229,17 @@ class BicepCurlsGUI(tk.Tk):
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
         self.mainloop()
 
+    def add_message(self, message):
+        self.chat_text.config(state=tk.NORMAL)
+        self.chat_text.insert(tk.END, message + "\n")
+        self.chat_text.config(state=tk.DISABLED)
+        self.chat_text.yview(tk.END)
+
     def next_set(self):
         print("Next set")
         if self.rest_time.get() == 0:
             print("Rest time not set")
-            self.message_label.config(text="Please set rest time.")
+            self.add_message("Please set rest time.")
             return
         self.is_resting = True
         self.update_timer()

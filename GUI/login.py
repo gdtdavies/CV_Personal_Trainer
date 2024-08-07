@@ -15,6 +15,7 @@ class LoginGUI(tk.Tk):
         super().__init__()
         self.geometry("440x400")
         self.title("Computer Vision Personal Trainer")
+        self.resizable(False, False)
 
         from GUI.colour_palette import colours as cp
         from GUI.fonts import Fonts

@@ -15,6 +15,7 @@ class MenuGUI(tk.Tk):
         super().__init__()
         self.geometry("440x300")
         self.title("Computer Vision Personal Trainer")
+        self.resizable(False, False)
 
         f = Fonts().get_fonts()
 

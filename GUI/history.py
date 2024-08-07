@@ -15,6 +15,7 @@ class HistoryGUI(tk.Tk):
         super().__init__()
         self.geometry("640x480")
         self.title("Computer Vision Personal Trainer")
+        self.resizable(False, False)
 
         f = Fonts().get_fonts()
         self.selected_idx = None
