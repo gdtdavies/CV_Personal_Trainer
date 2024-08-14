@@ -7,7 +7,7 @@ from tkinter import messagebox
 
 from PIL import Image, ImageTk
 
-sys.path.append(os.path.join(os.path.dirname(__file__), '../../../'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../'))
 
 
 def load_image(gui, image_path):

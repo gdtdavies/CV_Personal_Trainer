@@ -3,7 +3,7 @@ import sys
 import tkinter as tk
 from tkinter import messagebox
 
-sys.path.append(os.path.join(os.path.dirname(__file__), '../../../'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../'))
 
 from GUI.colour_palette import colours as cp
 from GUI.fonts import Fonts
