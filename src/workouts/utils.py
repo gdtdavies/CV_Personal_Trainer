@@ -4,7 +4,7 @@ import numpy as np
 
 def display_text(img, text, position):
     cv2.putText(img, text, position, cv2.FONT_HERSHEY_SIMPLEX,
-                1, (255, 100, 50), 6, cv2.LINE_AA)
+                1, (255, 100, 50), 3, cv2.LINE_AA)
 
 
 def calculate_angle(a, b, c):
@@ -22,7 +22,8 @@ def calculate_angle(a, b, c):
 
 
 def make_detections(app, frame):
-    img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    img = cv2.resize(frame, (540, 405))
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     img = cv2.flip(img, 1)
     img.flags.writeable = False
     results = app.pose.process(img)

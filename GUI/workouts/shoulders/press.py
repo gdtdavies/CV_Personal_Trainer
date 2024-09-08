@@ -35,29 +35,47 @@ class ShoulderPressGUI(tk.Tk):
         self.weight = tk.IntVar(value=0)
         self.rest_time = tk.IntVar(value=0)
 
+        self.is_set_active = False
+
         # APPLICATION --------------------------------------------------------------------------------------------------
-        app_frame = tk.Frame(self, bg=cp['bg'])
-        app_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        self.app_frame = tk.Frame(self, bg=cp['inactive'], width=640, height=480)
+        self.app_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
         # initialise the ShoulderPressApp here because it is referenced by side buttons, packed later
-        self.app = ShoulderPressApp(app_frame, (self.left_var, self.right_var))
+        self.app = ShoulderPressApp(self.app_frame, (self.left_var, self.right_var))
+        self.app.config(height=40, width=40)
 
-        info_frame = tk.Frame(app_frame, bg=cp['bg'], height=80, relief=tk.RAISED, border=self.border)
+        info_frame = tk.Frame(self.app_frame, bg=cp['bg'], height=80, relief=tk.RAISED, border=self.border)
         info_frame.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
         # -Stage frame--------------------------------------------------------------------------------------------------
         stage_frame = tk.Frame(info_frame, bg=cp['bg'])
         stage_frame.pack(side=tk.LEFT, anchor=tk.W, fill=tk.BOTH, expand=True)
+
         stage_label = tk.Label(stage_frame, text="Stage: ", font=f['regular'], bg=cp['bg'])
-        self.stage_value = tk.Label(stage_frame, text="Down", font=f['regular'], bg=cp['bg'])
         stage_label.pack(side=tk.LEFT)
-        self.stage_value.pack(side=tk.LEFT)
+
+        stage_label_frame = tk.Frame(stage_frame, bg=cp['bg'])
+        stage_label_frame.pack(side=tk.LEFT)
+
+        stage_label_l = tk.Label(stage_label_frame, text="L: ", font=f['regular'], bg=cp['bg'])
+        stage_label_r = tk.Label(stage_label_frame, text="R: ", font=f['regular'], bg=cp['bg'])
+        stage_label_l.pack(side=tk.TOP)
+        stage_label_r.pack(side=tk.TOP)
+
+        stage_val_frame = tk.Frame(stage_frame, bg=cp['bg'])
+        stage_val_frame.pack(side=tk.LEFT)
+
+        self.stage_value_l = tk.Label(stage_val_frame, text="Down", font=f['regular'], bg=cp['bg'])
+        self.stage_value_r = tk.Label(stage_val_frame, text="Down", font=f['regular'], bg=cp['bg'])
+        self.stage_value_l.pack(side=tk.TOP)
+        self.stage_value_r.pack(side=tk.TOP)
 
         # -Side frame---------------------------------------------------------------------------------------------------
         side_frame = tk.Frame(info_frame, bg=cp['bg'])
         side_frame.pack(side=tk.LEFT)
 
-        self.lr_var = tk.StringVar(value="left")
+        self.lr_var = tk.StringVar(value="both")
 
         side_label = tk.Label(side_frame, text="Side ", font=f['regular'], bg=cp['bg'])
         side_label.pack(side=tk.TOP)
@@ -103,19 +121,16 @@ class ShoulderPressGUI(tk.Tk):
         right_frame.pack()
         reps_count_frame.pack(side=tk.LEFT)
 
-
         # packing the app from earlier
         self.app.pack(side=tk.TOP)
 
         # -GUI----------------------------------------------------------------------------------------------------------
-        gui_frame = tk.Frame(self, bg=cp['bg'])
+        gui_frame = tk.Frame(self, bg=cp['bg'], width=640, height=480)
         gui_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
         # Title frame --------------------------------------------------------------------------------------------------
-        # title_frame = tk.Frame(gui_frame, height=80)
         title_label = tk.Label(gui_frame, text="Shoulder Press", font=f['title'], bg=cp['label'])
         title_label.pack(fill=tk.BOTH)
-        # title_frame.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
         # Main frame ---------------------------------------------------------------------------------------------------
         main_frame = tk.Frame(gui_frame, border=self.border, relief=tk.RAISED, bg=cp['bg'], height=380)
@@ -127,21 +142,24 @@ class ShoulderPressGUI(tk.Tk):
         left_column = tk.Frame(main_frame, border=self.border, relief=tk.RAISED, bg=cp['bg'])
         left_column.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
-        left_top = tk.Frame(left_column, border=self.border, relief=tk.FLAT, width=213, bg=cp['bg'])
-        left_middle = tk.Frame(left_column, border=self.border, relief=tk.RAISED, width=213, bg=cp['bg'])
-        left_bottom = tk.Frame(left_column, border=self.border, relief=tk.FLAT, width=213, bg=cp['bg'])
+        left_top = tk.Frame(left_column, border=self.border, relief=tk.FLAT, bg=cp['bg'])
+        left_bottom = tk.Frame(left_column, border=self.border, relief=tk.FLAT, bg=cp['bg'])
         left_top.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
-        left_middle.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
         left_bottom.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
         # -Right column-------------------------------------------------------------------------------------------------
         right_column = tk.Frame(main_frame, border=self.border, relief=tk.RAISED, bg=cp['bg'])
         right_column.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
+        right_top = tk.Frame(right_column, border=self.border, relief=tk.FLAT, bg=cp['bg'])
+        right_bottom = tk.Frame(right_column, border=self.border, relief=tk.FLAT, bg=cp['bg'])
+        right_top.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+        right_bottom.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+
         # LEFT COLUMN FRAMES -------------------------------------------------------------------------------------------
-        left_column.grid_columnconfigure(0, minsize=320)
+        left_column.grid_columnconfigure(0, minsize=340)
         # -Message frame------------------------------------------------------------------------------------------------
-        message_frame = tk.Frame(left_top, bg=cp['bg'], width=214, height=100)
+        message_frame = tk.Frame(left_top, bg=cp['bg'], width=300, height=200)
         message_frame.pack_propagate(False)  # Prevent the frame from resizing
         message_frame.pack(fill=tk.BOTH, expand=True)
 
@@ -159,7 +177,7 @@ class ShoulderPressGUI(tk.Tk):
         scrollbar.config(command=self.chat_text.yview)
 
         # -Parameters frame---------------------------------------------------------------------------------------------
-        workout_frame = tk.Frame(left_middle, bg=cp['bg'])
+        workout_frame = tk.Frame(left_bottom, bg=cp['bg'])
         workout_frame.pack(anchor=tk.CENTER, expand=True)
         weight_frame = tk.Frame(workout_frame, bg=cp['bg'])
         rest_frame = tk.Frame(workout_frame, bg=cp['bg'])
@@ -171,38 +189,38 @@ class ShoulderPressGUI(tk.Tk):
         weight_label.pack(side=tk.LEFT)
         self.weight_entry.pack(side=tk.LEFT)
 
-        rest_label = tk.Label(rest_frame, text="Rest(sec): ", font=f['regular'], bg=cp['bg'])
+        rest_label = tk.Label(rest_frame, text="Rest(sec):  ", font=f['regular'], bg=cp['bg'])
         self.rest_entry = tk.Entry(rest_frame, font=f['regular'], width=5)
         rest_label.pack(side=tk.LEFT)
         self.rest_entry.pack(side=tk.LEFT)
 
         save_params = tk.Button(workout_frame, text='Save', font=f['regular'], bg=cp['button'],
                                 command=self.save_params)
-        save_params.pack(anchor=tk.CENTER, pady=10)
-
-        # -Start/Stop Set frame-----------------------------------------------------------------------------------------
-        start_stop_frame = tk.Frame(left_bottom, bg=cp['bg'])
-        start_stop_frame.pack(anchor=tk.CENTER, pady=10)
-
-        start_button = tk.Button(start_stop_frame, text="Start Set", font=f['regular'], bg=cp['button'],
-                                 command=self.start_set)
-        start_button.pack(side=tk.LEFT)
-
-        end_button = tk.Button(start_stop_frame, text="End Set", font=f['regular'], bg=cp['button'],
-                               command=self.end_set)
-        end_button.pack(side=tk.LEFT)
+        save_params.pack(anchor=tk.CENTER, pady=5)
 
         # RIGHT COLUMN FRAMES ------------------------------------------------------------------------------------------
-        right_column.grid_columnconfigure(0, minsize=320)
+        right_column.grid_columnconfigure(0, minsize=300)
         # -Instructions frame-------------------------------------------------------------------------------------------
-        instructions_frame = tk.Frame(right_column, border=self.border, bg=cp['bg'])
-        instructions_frame.pack(anchor=tk.CENTER, expand=True)
+        instructions_frame = tk.Frame(right_top, relief=tk.RAISED, border=self.border, bg=cp['bg'])
+        instructions_frame.pack(anchor=tk.CENTER, fill=tk.BOTH, expand=True)
 
         self.image_label = tk.Label(instructions_frame, bg=cp['bg'])
         self.image_label.pack(anchor=tk.CENTER)
 
         image_path = os.path.join(os.path.dirname(__file__), './assets/shoulder_press.png')
         utils.load_image(self, image_path)
+
+        # -Start/Stop Set frame-----------------------------------------------------------------------------------------
+        start_stop_frame = tk.Frame(right_bottom, bg=cp['bg'])
+        start_stop_frame.pack(anchor=tk.CENTER, padx=10, pady=20, fill=tk.BOTH, expand=True)
+
+        start_button = tk.Button(start_stop_frame, text="Start Set", font=f['regular'], bg=cp['button'],
+                                 command=self.start_set)
+        end_button = tk.Button(start_stop_frame, text="End Set", font=f['regular'], bg=cp['button'],
+                               command=self.end_set)
+
+        start_button.pack(side=tk.LEFT, anchor=tk.CENTER, fill=tk.BOTH, expand=True, padx=2)
+        end_button.pack(side=tk.LEFT, anchor=tk.CENTER, fill=tk.BOTH, expand=True, padx=2)
 
         # Footer frame -------------------------------------------------------------------------------------------------
         footer_frame = tk.Frame(gui_frame, height=80, bg=cp['label'])
@@ -218,6 +236,13 @@ class ShoulderPressGUI(tk.Tk):
         exit_button = tk.Button(buttons_frame, text="Exit", font=f['regular'], bg=cp['button'], command=self.on_closing)
         exit_button.pack(side=tk.RIGHT, padx=10)
 
+        self.add_message("Welcome to the Shoulder Press workout. Please set the weight and rest time before starting a "
+                         "set. When the set is active, the background will turn green. You can start and end a set "
+                         "using the buttons below. The rep stage and count will be displayed above the camera feed "
+                         "as well as the side selector. The side can be set to left, right, or both. The stage of the "
+                         "rep is displayed on the top right. The image on the right shows the correct form for the "
+                         "exercise.")
+
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
         self.mainloop()
 
@@ -227,12 +252,6 @@ class ShoulderPressGUI(tk.Tk):
         self.chat_text.insert(tk.END, "-------------------------------\n")
         self.chat_text.config(state=tk.DISABLED)
         self.chat_text.yview(tk.END)
-
-    def start_set(self):
-        pass
-
-    def end_set(self):
-        pass
 
     # def next_set(self):
     #     print("Next set")
@@ -244,6 +263,33 @@ class ShoulderPressGUI(tk.Tk):
     #     self.update_timer()
     #
     #     utils.save_set(self)
+
+    def start_set(self):
+        w = self.weight.get()
+        r = self.rest_time.get()
+
+        if w == 0 or r == 0:
+            self.add_message("Please set weight and rest time before starting a set.")
+            return
+        if self.is_set_active:
+            self.add_message("Set already active")
+            return
+
+        self.add_message("Starting set")
+        self.is_set_active = True
+        self.app.toggle_active()
+        self.app_frame.config(bg=cp['active'])
+        pass
+
+    def end_set(self):
+        if not self.is_set_active:
+            self.add_message("no set active")
+            return
+        self.add_message("Ending set")
+        self.is_set_active = False
+        self.app.toggle_active()
+        self.app_frame.config(bg=cp['inactive'])
+        pass
 
     def save_params(self):
         print("Save params")
