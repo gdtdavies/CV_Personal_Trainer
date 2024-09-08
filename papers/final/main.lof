@@ -1,0 +1,37 @@
+\babel@toc {UKenglish}{}\relax 
+\babel@toc {UKenglish}{}\relax 
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {1.1}{\ignorespaces Percentage of people who are either obese or overweight, by year (Source: Health Survey for England, 2018)\relax }}{4}{figure.caption.5}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces Navneet Dalal and Bill Triggs' HOG detectors cue mainly on silhouette contours (especially the head, shoulders and feet). The most active blocks are centred on the image background just outside the contour. (a) The average gradient image over the training examples. (b) Each “pixel” shows the maximum positive SVM weight in the block centred on the pixel. (c) Likewise for the negative SVM weights. (d) A test image. (e) It’s computed R-HOG descriptor. (f,g) The R-HOG descriptor weighted by respectively the positive and the negative SVM weights. \citep {dalal2005histograms}\relax }}{8}{figure.caption.6}%
+\contentsline {figure}{\numberline {2.2}{\ignorespaces Fast R-CNN architecture.\citep {girshick2015fast}\relax }}{8}{figure.caption.7}%
+\contentsline {figure}{\numberline {2.3}{\ignorespaces (a) Parts image, 576 by 454 pixels. (b) Image thesholded at T,. (c) Image thresholded at 2 T,. (d) Image thresholded with hysteresis using both the thresholds in (a) and (b). \citep {canny1986computational}\relax }}{10}{figure.caption.8}%
+\contentsline {figure}{\numberline {2.4}{\ignorespaces DeepLab results based on VGG-16 net or ResNet-101 before and after CRF. The CRF is critical for accurate prediction along object boundaries with VGG-16, whereas ResNet-101 has acceptable performance even before CRF.\citep {chen2017deeplab}\relax }}{11}{figure.caption.9}%
+\contentsline {figure}{\numberline {2.5}{\ignorespaces Top: Multi-person pose estimation. Body parts belonging to the same person are linked. Bottom left: Part Affinity Fields (PAFs) corresponding to the limb connecting right elbow and right wrist. The color encodes orientation. Bottom right: A zoomed in view of the predicted PAFs. At each pixel in the field, a 2D vector encodes the position and orientation of the limbs. \citep {cao2017realtime}\relax }}{12}{figure.caption.10}%
+\contentsline {figure}{\numberline {2.6}{\ignorespaces Here Wei et al. show the increasingly refined estimates for the location of the right elbow in each stage of the sequence. (a) Predicting from local evidence often causes confusion. (b) Multi-part context helps resolve ambiguity. (c) Additional iterations help converge to a certain solution. \citep {wei2016convolutional}\relax }}{13}{figure.caption.11}%
+\contentsline {figure}{\numberline {2.7}{\ignorespaces Best convolutional architecture selected for verification task. Siamese twin is not depicted, but joins immediately after the 4096 unit fully-connected layer where the L1 component-wise distance between vectors is computed \citep {koch2015siamese}\relax }}{15}{figure.caption.12}%
+\contentsline {figure}{\numberline {2.8}{\ignorespaces The architecture of the proposed TrackNet \citep {huang2019tracknet}\relax }}{16}{figure.caption.13}%
+\contentsline {figure}{\numberline {2.9}{\ignorespaces (a) Consistent dual adddignments for NMS-free training. (b) Frequency of one-to-one assignments in Top-1/5/10 of one-to-many results for YOLOv8-S which employs $\alpha _{o2m}$=0.5 and $\beta _{o2m}$=6 by default. (https://docs.ultralytics.com/models/yolov10/)\relax }}{16}{figure.caption.14}%
+\contentsline {figure}{\numberline {2.10}{\ignorespaces Comparision of various models including the YOLO models v6 to v10 (https://docs.ultralytics.com/models/yolov10/)\relax }}{17}{figure.caption.15}%
+\contentsline {figure}{\numberline {2.11}{\ignorespaces The body keypoints used by mediapipe\relax }}{18}{figure.caption.16}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Code Snippet of the make\_detections method in src/workouts/utils.py.\relax }}{38}{figure.caption.22}%
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Code Snippet of the calculate\_angle method in src/workouts/utils.py.\relax }}{39}{figure.caption.23}%
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Code Snippet of the rep\_counter method in src/workouts/utils.py\relax }}{40}{figure.caption.24}%
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Screenshots from the development of the bicep curl app. It shows mediapipe's keypoint detections on the arms and displays the angle between the shoulder-elbow segment and the wrist-elbow segment.\relax }}{40}{figure.caption.25}%
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Screen capture of the home page. (\ref {item:home})\relax }}{41}{figure.caption.26}%
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Screen captures of the register (left \ref {item:register}) and login (right \ref {item:login}) pages.\relax }}{42}{figure.caption.27}%
+\contentsline {figure}{\numberline {4.7}{\ignorespaces Screen captures of the menu page with (right) and without (left) a user logged in. (\ref {item:menu})\relax }}{42}{figure.caption.28}%
+\contentsline {figure}{\numberline {4.8}{\ignorespaces Screen capture of the arms page. (\ref {item:arms})\relax }}{43}{figure.caption.29}%
+\contentsline {figure}{\numberline {4.9}{\ignorespaces Screen capture of the bicep curls page. (\ref {item:bicep})\relax }}{43}{figure.caption.30}%
+\contentsline {figure}{\numberline {4.10}{\ignorespaces Screen capture of the mood query popup. (\ref {item:bicep})\relax }}{44}{figure.caption.31}%
+\contentsline {figure}{\numberline {4.11}{\ignorespaces Code Snippet of the SQL to create the users table\relax }}{45}{figure.caption.33}%
+\contentsline {figure}{\numberline {4.12}{\ignorespaces Code Snippet of the SQL to create the users table\relax }}{46}{figure.caption.34}%
+\contentsline {figure}{\numberline {4.13}{\ignorespaces Code Snippet of the SQL to create the workouts table\relax }}{47}{figure.caption.35}%
+\contentsline {figure}{\numberline {4.14}{\ignorespaces Code Snippet of the register function\relax }}{48}{figure.caption.36}%
+\contentsline {figure}{\numberline {4.15}{\ignorespaces Code Snippet of the login function\relax }}{49}{figure.caption.37}%
+\contentsline {figure}{\numberline {4.16}{\ignorespaces Code Snippet of the DBConnection Class\relax }}{50}{figure.caption.38}%
+\contentsline {figure}{\numberline {4.17}{\ignorespaces Code Snippet of the close method in src/workouts/arms/bicep\_curls.py\relax }}{51}{figure.caption.39}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }

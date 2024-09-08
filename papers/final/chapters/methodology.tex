@@ -1,0 +1,116 @@
+% Drawing upon the research you've conducted; this goal of this chapter is to select and rationalise the research and/or software methods required to meet your project objectives. For example, the choice of quantitative or qualitative methods and the types of statistical or other analysis methods. You should also include software methodologies that are relevant to any development work required to support the project’s research.
+
+% This section will vary greatly depending on your project, and may include sections on topics including (but not limited to) project management, software development methodology, algorithm/model choices, study design, research methods, statistical analysis, performance evaluation, etc. As such, you should discuss the most appropriate approach for developing this section with your supervisor. As this is a Masters-level research project, you must also include a critical discussion on the selected quantitative or qualitative research methods adopted for the project work.
+
+% goal ~2.5k words
+% actual 2483 words
+
+\section{Research Design}
+    %Outline the overall strategy and framework that guided the research. Include the rationale for choosing specific methods and how they align with the objectives.
+    The design of the project follows a qualitative research approach that focuses majorly on user feedback as a way to assess whether or not the effectiveness of the computer-vision-based training coach is at its best. This was done so as to derive specific information touching on the user experience and satisfaction derived from the system by its users.
+    \subsection{Qualitative Methods}
+        The qualitative methods provided subjective data regarding the user's experience and satisfaction. In this case, the system users were subjected to a semi-structured interview so as to gather feedback on usability, intuitiveness, and overall user experience, The data was important in the identification of weak point and thus assuring the usability and meeting of the needs expected of the system.
+    \subsection{Interviews}
+        It included semi-structured, in-depth interviews taken with a set of subjects, both novice and experienced users, On its part, it allowed for open-ended responses and gave rich qualitative data about the experiences of the participants.
+    \subsection{Rational for Qualitative Approach}
+        The qualitative approach was chosen for eliciting in-depth understanding of the user experience. This could be done quantitatively, which would probably be more objective in regard to data about performance of the system, but it would miss fine details about user satisfaction and usability. Interviews were used to gather qualitative data that contributed useful information for the improvement of the system.
+    \subsection{Algorithm Validation}
+        While the focus of this study is on qualitative assessment, it should not go unmentioned that many research studies have already been done regarding the quantitative testing and validation of the Mediapipe algorithm used for human pose detection. This has established the ground for the accuracy and reliability of the algorithm previously to work in different contexts, thus forming a basis for application in this project. This allows for focusing on a review of the user experience, leaving out the technical accuracy matters at the core because of the use of an algorithm with a good performance history.
+\section{System Architecture}
+    %Descruve the overall architecture of the system developed for the study. Include the components of the system, their interactions, and how they contribute to achieving the objectives.
+    Basically, the system architecture of the computer-vision based training coach has three parts: the applications, the GUI, and the database. The modules are very key to attaining the objectives of the study, for they play a role in the correct detection of human pose, user-friendly interaction, and efficiency in managing data.
+    \subsection{Applications}
+        The applications incorporate core system functionality, human pose detection, and infer relevant information like joint angles and repetition counts. Each exercise type (e.g. bicep curls) has its own application script. This component is implemented using advanced computer vision algorithms and machine learning models.
+        \subsubsection{Human Pose Detection}
+            Keypoint detection of the human body is done through the framework MediaPipe, providing strong, real-time human body landmark tracking. It captures video input from a camera, processing frames for the detection of key points on the human body and tracking these points to analyse movements. The application will look only for those keypoints relevant for the individual exercise to optimise the speed of the detections.
+        \subsubsection{Making the Inferences}
+            These inferences are made by processing the detected key points toward calculating joint angles, counting repetitions, and assessing the correctness of exercises performed by the user. It means applying geometric and kinematic principles against detected key points for meaningful metric derivations. The results formed the basis for the user to receive feedback through the GUI.
+    \subsection{Graphical User Interface (GUI)}
+        This GUI component intuitively interacts with the system in a very user-friendly way. It provides real-time feedback, visualises the detected pose, and shows information about the performance of the user.
+        \subsubsection{Design and Layout}
+            The GUI is designed to include both the usability and aesthetic appeal of the system. It will display live video feed, overlay of detected key points, performance metrics, and instruction prompts, among other relevant components. All this has been laid out in a manner that clearly tells a user what is happening and how to interact with a system.
+        \subsubsection{User Interaction}
+            The GUI provides the user with the ability to start and stop a session, view performance metrics, and obtain real-time feedback. Interactive components include buttons, sliders, and textboxes. Feedback provided by the GUI can be used by the users in self-correction of movement to perform better.
+    \subsection{Database}
+        This component is responsible for storing all information about the users, sessions, and workouts. The database component organises this data in a way that it is secure and can be retrieved with much ease for analysis and reporting.
+        \subsubsection{Data Storage}
+            There are three tables: users, sessions, and workouts. The workouts table is related to the sessions table through a foreign key on a many-to-one basis. Correspondingly, the sessions table is also connected to the users table via a foreign key on a many-to-one basis. This relational structure will ensure efficient organisation and retrieval of data.
+        \subsubsection{Data Management}
+            Data Management provides integrity, security, and privacy of data stored. The users' passwords are encrypted in order to protect sensitive information from hackers. The information is placed in a relational database management system. This offers robust integrity and consistency to the data.
+    \subsection{System Integration}
+        The interplay between these three major components of the system is such that it seamlessly provides a cohesive and efficient training experience. Applications digitise and process video data, GUI provisions make real-time feedback and interaction, and database provisions make arrangements for managing and storing all relevant data. This integration will assure that the system works smoothly and effectively to attain the objectives of the project.
+\section{Algorithm selection} % between mediapipe and yolo
+    % Discusse the criteria and rationale for choosing specific algorithms used in the study. Include machine learning models, computer vision techniques, or any other relevant algorithms.
+    The final algorithm to be deployed would have to be driven by considerations of accuracy, real-time performance, and the possibility of future scaling on mobile platforms. With such factors in careful consideration, Mediapipe was selected over YOLO for human pose estimation due to its appropriateness to the task at hand and related objectives and development plans.
+    \subsection{Mediapipe}   
+        Mediapipe is a framework developed by Google that makes available robust and real-time body landmark tracking. The reason it was picked is that it could capture intricate movements in fine detail, necessary in analysing exercises. Due to its high performance in real-time and ease of integration with other tools, Mediapipe was chosen as the best for this project. 
+        \subsubsection{Advantages of Mediapipe}
+            Mediapipe offers several advantages that align with the project's goals:
+            \begin{itemize}
+                \item \textbf{Real-Time Performance}: Mediapipe is optimised for real-time performance, ensuring that the system can provide immediate feedback to users during their training sessions.
+                \item \textbf{Accuracy}: The framework has been extensively tested and validated, demonstrating high accuracy in detecting and tracking human body landmarks.
+                \item \textbf{Cross-Platform Compatibility}: Mediapipe is designed to be cross-platform, making it possible to develop applications that can run on various devices, including smartphones. This aligns with the project's future goal of creating a mobile version of the training coach.
+                \item \textbf{Ease of Integration}: Mediapipe can be easily integrated with other libraries and tools, such as OpenCV, facilitating the development process.
+            \end{itemize}
+    \subsection{YOLO (You Only Look Once)}
+        YOLO is a state-of-the-art object detection algorithm known for its speed and accuracy. While YOLO is highly effective for object detection tasks, it was not chosen for this project due to a couple reasons:
+        \begin{itemize}
+            \item \textbf{Specialisation}: YOLO is primarily designed for object detection rather than detailed human pose estimation. While it can detect human figures, it does not provide the same level of detail in tracking body landmarks as Mediapipe.
+            \item \textbf{Resource Requirements}: YOLO's larger models' computational requirements are higher compared to Mediapipe, making it less suitable for real-time applications on resource-constrained devices such as smartphones. YOLO's smaller models are not as accurate as would be desired for this project.
+        \end{itemize}
+    \subsection{Rationale for Algorithm Selection}
+        Certain requirements in the project, considering the goals of further scaling, conditioned the choice of Mediapipe instead of YOLO. The fact that Mediapipe provides accurate human pose detection in real time, with cross-platform compatibility, made it just the right solution for this project. By using Mediapipe, the system will be able to produce high-quality performance both on desktop and mobile platforms, hence wide applicability and accessibility to users.
+    \subsection{Future Scalability}
+        Another major reason for using Mediapipe was that this would allow easy scaling in the future. A sister program of similar functionality is to be created running on smartphones. This will, in turn, provide users with a portable and convenient training coach. Mediapipe's efficient performance and compatibility with mobile platforms make it fit for this future development. The future-facing attribute within this approach means that, consequently, the evolution and expansion of the project are guaranteed to reach a broader audience, offer greater flexibility in how users engage with the training coach.
+\section{Development Environment}
+    \subsection{Software and Tools}
+        % Detail the specific software, tools, and programming languages used in the implementation. Include libraries (e.g., TensorFlow, OpenCV), development environments (e.g., Jupyter Notebook), and any other relevant tools.
+        Python was selected as the primary language of programming because of its variety of libraries and availability. Also, its flexibility and wide community support made it suitable for developing computer vision algorithms and for gluing a lot of different parts of the system together. The IDE I decided to use for this project was Pycharm as this project is relatively large and Pycharm provides many quality of life features that are not necessarily available in the other code editors I usually use such as VSCode and neovim. Pycharm also has database management tools that allow for easy implementation and testing. 
+
+        \subsubsection{Libraries}
+        Several libraries were utilised to implement the system:
+        \begin{itemize}
+            \item \textbf{tkinter}: This library was used for designing the GUI.
+            \item \textbf{OpenCV}: OpenCV was used for image and video processing tasks. Its comprehensive set of tools and functions made it easy to preprocess and analyse video data.
+            \item \textbf{Mediapipe}: Mediapipe was used for body tracking. Its pre-built models and easy integration with other libraries made it a valuable tool for this project.
+            \item \textbf{psycopg2}: This library provides a link between python and postgresql for easy database manipulation from python.
+        \end{itemize}
+        
+    \subsection{Version Control}
+        For the version control I used git. Git is a distributed version control system developed to deal with small to very large projects. It tracks every single modification done in the code. Changes can be reverted easily to their previous form in case something goes wrong. By pushing your code to a remote repository (e.g. Github), you're basically saving your work and it can be accessed from anywhere, allowing you to use/test the code on multiple machines. You can create branches where you can work on new features or experiments without touching the main codebase. When satisfied with the changes, you can merge into the main branch. Commit messages and logs document what changed and why, which is incredibly useful to understand how your project evolved.
+        
+\section{Ethical Considerations}
+    % Addresses any ethical issues related to the research, such as data privacy, consent from participants, and the ethical use of AI.
+    Ethical considerations were paramount in this project, ensuring that the research was conducted responsibly and ethically.\\
+    There are a few considerations that are necessary to make when dealing with any AI program. The first is about bias and fairness, it is important to ensure that the program doesn't unintentionally discriminate against certain groups. Another consideration is about privacy and data protection, if any data is collected, it must be in compliance with privacy regulations such as GDPR. In the case of this program, it must ensure that it does not put the user in any danger whatsoever, this includes not advising the user to perform dangerous movements that could lead to injury. The final consideration is about the impact this program may have on employment, as this program may disrupt the personal trainer job.
+    
+\section{Risk Analysis}
+    Risk analysis was conducted to identify potential risks associated with the project and to develop strategies for mitigating these risks.
+    \begin{itemize}
+        \item \textbf{Technical Risks}:
+            \begin{itemize}
+                \item \textbf{Model Accuracy}: The vision model performance inside the computer may not be up to standard, thus giving incorrect exercise recommendations. Mitigation strategies then include thorough testing and continuous model evaluation, with incorporation of user feedback in order to improve the model. This is unlikely to happen as the mediapipe model has been extensively tested, but the impact would be high as the program is dependant on its accuracy.
+                \item \textbf{System Reliability}: Technical failures can project from software bugs or hardware malfunction and affect the running of any system. This risk can be minimised by rigorous testing programs and backup systems. This is a likely issue as I am the sole developper, and the level of imapct would depend on the severity of the bug.
+            \end{itemize}
+        \item \textbf{Data Privacy Risks}:
+            \begin{itemize}
+                \item \textbf{Data Breaches}: There is the risk that unauthorised access to user data may result in privacy breaching. In a bid to protect against this, very strong encryption, secure data storage, and frequent security auditing ought to be implemented. This is unlikely for now as there is minimal data stored and it is stored locally, and the impact would be low aswell for now as there is no centralised server. 
+                \item \textbf{Data Misuse}: Unless properly managed, collected data can be misused. This requires that data governance policies are clearly outlined and access controls be strict to avoid its misuse. For the same reasons as for Data Breaches, this is low likelihood and low impact for now.
+            \end{itemize}
+        \item \textbf{User Risks}:
+            \begin{itemize}
+                \item \textbf{Physical Harm}: Wrong exercise recommendations may lead to physical harm. Therefore, it is important that the system ensures safe and relevant exercises in view of the level of health conditions and fitness of the users. It may incorporate disclaimers and encourage users to consult with a professional in healthcare. The impact this may have could be extremely severe,  therefore it is of paramount importance that the likelihood is reduced to a minimum.
+                \item \textbf{User Compliance}: Compliance by the users themselves in performing the recommended exercises may not be proper. Therefore, the effectiveness of the training program could be reduced. Clear instructions, visual aids, and regular feedback can improve user compliance. A lack of user compliance would have a strong impact on the accuracy of the model and recommendations, so as with the risk of physical harm, the mitigation strategies must be followed to reduce the likelihood.
+            \end{itemize}
+        \item \textbf{Ethical Risks}:
+            \begin{itemize}
+                \item \textbf{Bias and Fairness}: It can also be the case that there are biases inherent in the pre-trained model itself and hence give unfair recommendations. Regular evaluation with respect to bias and the respective refinement can be very instrumental in making the model ensure fairness. As with the Model Accuracy, Google has performed the necessary steps to reduce this risk, the impact would be high as the model wouldn't work well on certain groups but the likelihood is low.
+                \item \textbf{Transparency}: The system may also be liable to suffer from a problem of mistrust if it is less than transparent in its recommendations. That is a risk, which can be countered by clear explanations and maintaining transparency in its operation. Mistrust in the program would discourage people from using it, therefore, it would have a high impact. The likelihood of this happening would be moderate.
+            \end{itemize}
+        \item \textbf{Operational Risks}:
+            \begin{itemize}
+                \item \textbf{Scalability}: In case of increase in number of users, there can easily be overload in the system. Making the system scalable at the first instance and eventually moving to a cloud solution will help to deal with the bigger loads. It's worth noting that moving to the cloud would increase the risk to the data integrity. The measures required to protect personal information in the cloud are much more strict. This has a moderate chance of happening, but would have a high impact.
+                \item \textbf{Resource Allocation}: The project may be impacted by low levels of resources, such as time and budget. The entailed risks can be reduced by well-managing the project and ensuring the most important tasks are prioritised. This also has a moderate chance of happening, but would have a high impact.
+            \end{itemize}
+    \end{itemize}
+    
