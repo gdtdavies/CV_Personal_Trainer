@@ -23,6 +23,8 @@ class BicepCurlsApp(ttk.Frame):
         self.rep_stage_r = 'down'
         self.rep_stage_l = 'down'
 
+        self.active = False
+
         self.mp_drawing = mp.solutions.drawing_utils
         self.mp_pose = mp.solutions.pose
         self.pose = self.mp_pose.Pose(min_detection_confidence=0.8, min_tracking_confidence=0.5)
@@ -118,6 +120,16 @@ class BicepCurlsApp(ttk.Frame):
     def save_workout(self):
         print("Workout saved")
         pass
+
+    def start_set(self):
+        self.active = True
+
+    def end_set(self):
+        self.active = False
+        self.rep_count_l.set(0)
+        self.rep_count_r.set(0)
+        self.rep_stage_l = "down"
+        self.rep_stage_r = "down"
 
     def run(self):
         # while self.cap.isOpened():
