@@ -241,15 +241,10 @@ class TricepPushdownGUI(tk.Tk):
 
     def on_closing(self):
         if messagebox.askyesno("Quit", "Do you want to quit?"):
-            from src.db.login_session import logout
             utils.save_set(self)  # Save the last set
             utils.end_workout(self.workout_token, self.set_reps, self.set_weights)
-
-            # Ensure that the widget exists before trying to get its value
-            session_token = os.path.join(os.path.dirname(__file__), '../../../src/db/session_token.txt')
-            mood = utils.get_mood() if os.path.exists(session_token) else None
-            if mood is not None:
-                logout(mood)
+            from src.db.login_session import logout
+            logout()
             
             self.destroy()
 

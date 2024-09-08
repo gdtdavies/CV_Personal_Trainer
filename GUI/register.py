@@ -112,11 +112,13 @@ class RegisterGUI(tk.Tk):
             conn.commit()
             messagebox.showinfo("Success", "User registered successfully")
 
-            from GUI.workouts.utils import login, get_mood
+            from GUI.workouts.utils import login
 
-            mood = get_mood()
+            # mood = get_mood()
             self.destroy()
-            login(username, password, mood)
+            if not login(username, password):
+                messagebox.showerror("Register Error", "Invalid username or password")
+                RegisterGUI()
 
         else:
             messagebox.showerror("Error", "Passwords do not match")

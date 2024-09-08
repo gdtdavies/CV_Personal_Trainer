@@ -96,13 +96,8 @@ class ArmsGUI(tk.Tk):
     def on_closing(self):
         if messagebox.askyesno("Quit", "Do you want to quit?"):
             from src.db.login_session import logout
-            try:
-                mood = utils.get_mood() if os.path.exists(self.session_token) else None
-                logout(mood)
-            except Exception as e:
-                print(f"Error during logout: {e}")
-            finally:
-                self.destroy()
+            logout()
+            self.destroy()
 
     def open_curls(self):
         self.destroy()

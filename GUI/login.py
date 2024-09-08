@@ -76,13 +76,15 @@ class LoginGUI(tk.Tk):
         self.mainloop()
 
     def login(self):
-        from GUI.workouts.utils import login, get_mood
+        from GUI.workouts.utils import login
         username = self.username_entry.get()
         password = self.password_entry.get()
 
-        mood = get_mood()
+        # mood = get_mood()
         self.destroy()
-        login(username, password, mood)
+        if not login(username, password):
+            messagebox.showerror("Login Error", "Invalid username or password")
+            LoginGUI()
 
     def on_closing(self):
         if messagebox.askyesno("Quit", "Do you want to quit?"):

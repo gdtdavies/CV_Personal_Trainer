@@ -78,7 +78,7 @@ def end_workout(workout_token, set_reps, set_weights):
     conn.commit()
 
 
-def login(username, password, mood_rating):
+def login(username, password):
     from src.db.db_connection import DBConnection
     db = DBConnection()
     conn = db.connect()
@@ -93,6 +93,8 @@ def login(username, password, mood_rating):
     result = cursor.fetchone()
 
     if result and result[0] == hashed_password:
+        mood_rating = get_mood()
+
         # Generate session token
         session_token = str(uuid.uuid4())
         query = "SELECT * FROM cv_pt.public.start_session(%s, %s, %s)"
@@ -108,9 +110,11 @@ def login(username, password, mood_rating):
         # open menu window
         from GUI.menu import MenuGUI
         MenuGUI()
+        return True
     else:
-        messagebox.showerror("Error", "Invalid username or password")
+        # messagebox.showerror("Error", "Invalid username or password")
         db.close()
+        return False
 
 
 def get_mood():

@@ -167,9 +167,7 @@ class HistoryGUI(tk.Tk):
     def on_closing(self):
         if messagebox.askyesno("Quit", "Do you want to quit?"):
             from src.db.login_session import logout
-            session_token = os.path.join(os.path.dirname(__file__), '../src/db/session_token.txt')
-            mood = utils.get_mood() if os.path.exists(session_token) else None
-            logout(mood)
+            logout()
             self.destroy()
 
     def open_menu(self):

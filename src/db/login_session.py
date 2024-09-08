@@ -45,13 +45,14 @@ def get_user_id():
     return result if result is not None else None
 
 
-def logout(mood_rating):
+def logout():
     try:
         with open(session_token_path, "r") as f:
             session_token = f.read().strip()
     except FileNotFoundError:
         return None
 
+    from GUI.workouts import utils
     from db_connection import DBConnection
     db = DBConnection()
     conn = db.connect()
@@ -61,10 +62,11 @@ def logout(mood_rating):
     query = "SELECT * FROM cv_pt.public.calculate_session_duration(%s)"
     cursor.execute(query, (session_token,))
     duration = cursor.fetchone()[0]
+    mood = utils.get_mood()
 
     # TODO: Add volume (by multiplying the number of reps by the weight used for each workout in the session)
     query = "SELECT * FROM cv_pt.public.end_session(%s, %s, %s, %s)"
-    cursor.execute(query, (session_token, duration, 0, mood_rating))
+    cursor.execute(query, (session_token, duration, 0, mood))
     conn.commit()
 
     db.close()
