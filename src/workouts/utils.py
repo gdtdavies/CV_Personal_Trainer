@@ -33,7 +33,7 @@ def make_detections(app, frame):
     return results, img
 
 
-def rep_counter(app, angle, side, min_angle, max_angle, tension_stage="up"):
+def rep_counter(app, angle, side, min_angle, max_angle, tension_angle='low'):
     if side != "left" and side != "right":
         raise ValueError("Side must be 'left' or 'right'")
 
@@ -41,14 +41,18 @@ def rep_counter(app, angle, side, min_angle, max_angle, tension_stage="up"):
     count = app.rep_count_l.get() if side == "left" else app.rep_count_r.get()
     rep_stage = app.rep_stage_l.get() if side == "left" else app.rep_stage_r.get()
 
-    if angle > max_angle and rep_stage == "up":
-        rep_stage = "down"
-        count += 1 if tension_stage == 'down' else 0  # Increment the count
-        print(f'down {count}')
-    elif angle < min_angle and rep_stage == "down":
-        rep_stage = "up"
-        count += 1 if tension_stage == 'up' else 0  # Increment the count
-        print(f'up {count}')
+    if tension_angle == 'low': # e.g. bicep curls
+        if angle > max_angle and rep_stage == "up":
+            rep_stage = "down"
+        elif angle < min_angle and rep_stage == "down":
+            rep_stage = "up"
+            count += 1
+    elif tension_angle == 'high': # e.g. shoulder press
+        if angle > max_angle and rep_stage == "down":
+            rep_stage = "up"
+            count += 1
+        elif angle < min_angle and rep_stage == "up":
+            rep_stage = "down"
 
     # Update the IntVar with the new count
     if side == "left":

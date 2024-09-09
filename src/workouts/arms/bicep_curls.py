@@ -14,16 +14,16 @@ from src.workouts.utils import display_text, calculate_angle, make_detections, r
 
 class BicepCurlsApp(ttk.Frame):
 
-    def __init__(self, parent, rep_vars):
+    def __init__(self, parent, rep_vars, stage_vars):
         super().__init__(parent)
 
-        self.side = 'left'
+        self.active = False
+
+        self.side = 'both'
         self.rep_count_l = rep_vars[0]
         self.rep_count_r = rep_vars[1]
-        self.rep_stage_r = 'down'
-        self.rep_stage_l = 'down'
-
-        self.active = False
+        self.rep_stage_l = stage_vars[0]
+        self.rep_stage_r = stage_vars[1]
 
         self.mp_drawing = mp.solutions.drawing_utils
         self.mp_pose = mp.solutions.pose
@@ -65,7 +65,7 @@ class BicepCurlsApp(ttk.Frame):
                 display_text(img, str(a_elbow), tuple(np.multiply(elbow, [640, 480]).astype(int)))
 
                 # count reps
-                rep_counter(self, a_elbow, self.side, min_angle, max_angle)
+                rep_counter(self, a_elbow, self.side, min_angle, max_angle, tension_angle='low')
 
                 # Render detections
                 self.mp_drawing.draw_landmarks(img, landmark_list, [(0, 1), (1, 2)])
@@ -95,8 +95,8 @@ class BicepCurlsApp(ttk.Frame):
                 display_text(img, str(l_a_elbow), tuple(np.multiply(l_elbow, [640, 480]).astype(int)))
 
                 # count reps
-                rep_counter(self, r_a_elbow, 'right', min_angle, max_angle)
-                rep_counter(self, l_a_elbow, 'left', min_angle, max_angle)
+                rep_counter(self, r_a_elbow, 'right', min_angle, max_angle, tension_angle='low')
+                rep_counter(self, l_a_elbow, 'left', min_angle, max_angle, tension_angle='low')
 
                 # Render detections
                 self.mp_drawing.draw_landmarks(img, landmark_list, [(0, 1), (1, 2), (3, 4), (4, 5)])
@@ -106,30 +106,19 @@ class BicepCurlsApp(ttk.Frame):
 
     def left_side(self):
         self.side = "left"
-        self.rep_stage_l = "down"
+        self.rep_stage_l.set("down")
 
     def right_side(self):
         self.side = "right"
-        self.rep_stage_r = "down"
+        self.rep_stage_r.set("down")
 
     def both_sides(self):
         self.side = "both"
-        self.rep_stage_l = "down"
-        self.rep_stage_r = "down"
+        self.rep_stage_l.set("down")
+        self.rep_stage_r.set("down")
 
-    def save_workout(self):
-        print("Workout saved")
-        pass
-
-    def start_set(self):
-        self.active = True
-
-    def end_set(self):
-        self.active = False
-        self.rep_count_l.set(0)
-        self.rep_count_r.set(0)
-        self.rep_stage_l = "down"
-        self.rep_stage_r = "down"
+    def toggle_active(self):
+        self.active = not self.active
 
     def run(self):
         # while self.cap.isOpened():
@@ -137,7 +126,8 @@ class BicepCurlsApp(ttk.Frame):
 
         if ret:
             results, img = make_detections(self, frame)
-            self.display_skeleton(img, results)
+            if self.active:
+                self.display_skeleton(img, results)
 
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             img_pil = Image.fromarray(img)

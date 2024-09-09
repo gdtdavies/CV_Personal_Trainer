@@ -5,7 +5,7 @@ from tkinter import messagebox
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '../../'))
 from GUI.colour_palette import colours as cp
-from src.workouts.shoulders.press import ShoulderPressApp
+from src.workouts.arms.bicep_curls import BicepCurlsApp
 from GUI.fonts import Fonts
 import GUI.workouts.utils as utils
 
@@ -38,8 +38,8 @@ class BicepCurlsGUI(tk.Tk):
         self.app_frame = tk.Frame(self, bg=cp['inactive'], width=640, height=480)
         self.app_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
-        # initialise the ShoulderPressApp here because it is referenced by side buttons, packed later
-        self.app = ShoulderPressApp(self.app_frame, (self.left_var, self.right_var),
+        # initialise the BicepCurlsApp here because it is referenced by side buttons, packed later
+        self.app = BicepCurlsApp(self.app_frame, (self.left_var, self.right_var),
                                     (self.left_stage, self.right_stage))
         self.app.config(height=40, width=40)
 
