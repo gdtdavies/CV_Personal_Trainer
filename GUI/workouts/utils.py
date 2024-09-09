@@ -50,7 +50,7 @@ def start_workout(workout_name):
     return workout_token
 
 
-def end_workout(workout_token, set_reps, set_weights):
+def end_workout(workout_token):
     session_token_path = os.path.join(os.path.dirname(__file__), '../../src/db/session_token.txt')
     if not os.path.exists(session_token_path):
         print("Session token not found")
@@ -61,20 +61,23 @@ def end_workout(workout_token, set_reps, set_weights):
     conn = db.connect()
     cursor = conn.cursor()
 
-    if set_weights:
-        weight = max(set_weights)
-    else:
-        weight = 0
-    reps = 0
-    for r in set_reps:
-        reps += r[0] if r[0] > r[1] else r[1]
+    cursor.execute('SELECT weight FROM cv_pt.public.sets WHERE workout_id = %s', (workout_token,))
+    set_weights = cursor.fetchall()
+    set_weights = [int(row[0]) for row in set_weights]
+
+    cursor.execute('SELECT reps FROM cv_pt.public.sets WHERE workout_id = %s', (workout_token,))
+    set_reps = cursor.fetchall()
+    set_reps = [int(row[0]) for row in set_reps]
+
+    max_weight = max(set_weights) if set_weights else 0
+    reps = sum(set_reps) if set_reps else 0
+
     volume = 0
     for w, r in zip(set_weights, set_reps):
-        rep_count = r[0] if r[0] > r[1] else r[1]
-        volume += rep_count * w
+        volume += r * w
 
     query = "SELECT * FROM cv_pt.public.end_workout(%s, %s, %s, %s)"
-    cursor.execute(query, (workout_token, reps, weight, volume))
+    cursor.execute(query, (workout_token, reps, max_weight, volume))
     conn.commit()
 
 

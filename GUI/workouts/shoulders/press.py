@@ -287,7 +287,12 @@ class ShoulderPressGUI(tk.Tk):
         if not self.set_token:
             self.add_message("no set active")
             return
-        self.add_message("Ending set")
+
+        reps = self.left_var.get() if self.left_var.get() > self.right_var.get() else self.right_var.get()
+        self.left_var.set(0)
+        self.right_var.set(0)
+
+        self.add_message(f"Ending set with {reps} reps at {self.weight.get()}kg")
         self.app.toggle_active()
         self.app_frame.config(bg=cp['inactive'])
 
@@ -295,8 +300,6 @@ class ShoulderPressGUI(tk.Tk):
         db = DBConnection()
         conn = db.connect()
         cursor = conn.cursor()
-
-        reps = self.left_var.get() if self.left_var.get() > self.right_var.get() else self.right_var.get()
 
         query = "SELECT * FROM cv_pt.public.end_set(%s, %s, %s)"
         cursor.execute(query, (self.set_token, reps, self.weight.get()))
@@ -339,7 +342,7 @@ class ShoulderPressGUI(tk.Tk):
     def on_closing(self):
         if messagebox.askyesno("Quit", "Do you want to quit?"):
             utils.save_set(self)  # Save the last set
-            utils.end_workout(self.workout_token, self.set_reps, self.set_weights)
+            utils.end_workout(self.workout_token)
             from src.db.login_session import logout
             logout()
 
@@ -350,7 +353,7 @@ class ShoulderPressGUI(tk.Tk):
             self.app.close()
             self.destroy()
             utils.save_set(self)  # save the last set
-            utils.end_workout(self.workout_token, self.set_reps, self.set_weights)
+            utils.end_workout(self.workout_token)
             from GUI.workouts.arms.armsGUI import ArmsGUI
             ArmsGUI()
 
