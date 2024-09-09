@@ -39,7 +39,7 @@ def rep_counter(app, angle, side, min_angle, max_angle, tension_stage="up"):
 
     # Get the current count
     count = app.rep_count_l.get() if side == "left" else app.rep_count_r.get()
-    rep_stage = app.rep_stage_l if side == "left" else app.rep_stage_r
+    rep_stage = app.rep_stage_l.get() if side == "left" else app.rep_stage_r.get()
 
     if angle > max_angle and rep_stage == "up":
         rep_stage = "down"
@@ -53,7 +53,7 @@ def rep_counter(app, angle, side, min_angle, max_angle, tension_stage="up"):
     # Update the IntVar with the new count
     if side == "left":
         app.rep_count_l.set(count)
-        app.rep_stage_l = rep_stage
+        app.rep_stage_l.set(rep_stage)
     else:
         app.rep_count_r.set(count)
-        app.rep_stage_r = rep_stage
+        app.rep_stage_r.set(rep_stage)

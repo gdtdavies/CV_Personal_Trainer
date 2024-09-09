@@ -15,7 +15,7 @@ import tkinter as tk
 
 class ShoulderPressApp(ttk.Frame):
 
-    def __init__(self, parent, rep_vars):
+    def __init__(self, parent, rep_vars, stage_vars):
         super().__init__(parent, relief=tk.RIDGE, border=10)
 
         self.active = False
@@ -23,8 +23,8 @@ class ShoulderPressApp(ttk.Frame):
         self.side = 'both'
         self.rep_count_l = rep_vars[0]
         self.rep_count_r = rep_vars[1]
-        self.rep_stage_r = 'down'
-        self.rep_stage_l = 'down'
+        self.rep_stage_r = stage_vars[0]
+        self.rep_stage_l = stage_vars[1]
 
         self.mp_drawing = mp.solutions.drawing_utils
         self.mp_pose = mp.solutions.pose
@@ -107,16 +107,16 @@ class ShoulderPressApp(ttk.Frame):
 
     def left_side(self):
         self.side = "left"
-        self.rep_stage_l = "down"
+        self.rep_stage_l.set('down')
 
     def right_side(self):
         self.side = "right"
-        self.rep_stage_r = "down"
+        self.rep_stage_r.set('down')
 
     def both_sides(self):
         self.side = "both"
-        self.rep_stage_l = "down"
-        self.rep_stage_r = "down"
+        self.rep_stage_l.set('down')
+        self.rep_stage_r.set('down')
 
     def toggle_active(self):
         self.active = not self.active

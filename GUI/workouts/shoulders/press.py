@@ -36,13 +36,16 @@ class ShoulderPressGUI(tk.Tk):
         self.right_var = tk.IntVar(value=0)
         self.weight = tk.IntVar(value=0)
         self.rest_time = tk.IntVar(value=0)
+        self.left_stage = tk.StringVar(value="down")
+        self.right_stage = tk.StringVar(value="down")
 
         # APPLICATION --------------------------------------------------------------------------------------------------
         self.app_frame = tk.Frame(self, bg=cp['inactive'], width=640, height=480)
         self.app_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
         # initialise the ShoulderPressApp here because it is referenced by side buttons, packed later
-        self.app = ShoulderPressApp(self.app_frame, (self.left_var, self.right_var))
+        self.app = ShoulderPressApp(self.app_frame, (self.left_var, self.right_var),
+                                    (self.left_stage, self.right_stage))
         self.app.config(height=40, width=40)
 
         info_frame = tk.Frame(self.app_frame, bg=cp['bg'], height=80, relief=tk.RAISED, border=self.border)
@@ -66,8 +69,8 @@ class ShoulderPressGUI(tk.Tk):
         stage_val_frame = tk.Frame(stage_frame, bg=cp['bg'])
         stage_val_frame.pack(side=tk.LEFT)
 
-        self.stage_value_l = tk.Label(stage_val_frame, text="Down", font=f['regular'], bg=cp['bg'])
-        self.stage_value_r = tk.Label(stage_val_frame, text="Down", font=f['regular'], bg=cp['bg'])
+        self.stage_value_l = tk.Label(stage_val_frame, textvariable=str(self.left_stage), font=f['regular'], bg=cp['bg'])
+        self.stage_value_r = tk.Label(stage_val_frame, textvariable=str(self.right_stage), font=f['regular'], bg=cp['bg'])
         self.stage_value_l.pack(side=tk.TOP)
         self.stage_value_r.pack(side=tk.TOP)
 
