@@ -1,7 +1,6 @@
 import os
 import sys
 import tkinter as tk
-import uuid
 from tkinter import messagebox
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '../../'))
@@ -13,10 +12,6 @@ import GUI.workouts.utils as utils
 
 class ShoulderPressGUI(tk.Tk):
     is_resting = False
-    set_weights = []
-    set_reps = []
-    max_weight = 0
-    volume = 0
 
     def __init__(self):
         super().__init__()
@@ -198,7 +193,7 @@ class ShoulderPressGUI(tk.Tk):
         self.rest_entry.pack(side=tk.LEFT)
 
         save_params = tk.Button(workout_frame, text='Save', font=f['regular'], bg=cp['button'],
-                                command=self.save_params)
+                                command=lambda: utils.save_params(self))
         save_params.pack(anchor=tk.CENTER, pady=5)
 
         # RIGHT COLUMN FRAMES ------------------------------------------------------------------------------------------
@@ -218,9 +213,9 @@ class ShoulderPressGUI(tk.Tk):
         start_stop_frame.pack(anchor=tk.CENTER, padx=10, pady=20, fill=tk.BOTH, expand=True)
 
         start_button = tk.Button(start_stop_frame, text="Start Set", font=f['regular'], bg=cp['button'],
-                                 command=self.start_set)
+                                 command=lambda: utils.start_set(self))
         end_button = tk.Button(start_stop_frame, text="End Set", font=f['regular'], bg=cp['button'],
-                               command=self.end_set)
+                               command=lambda: utils.end_set(self))
 
         start_button.pack(side=tk.LEFT, anchor=tk.CENTER, fill=tk.BOTH, expand=True, padx=2)
         end_button.pack(side=tk.LEFT, anchor=tk.CENTER, fill=tk.BOTH, expand=True, padx=2)
@@ -236,120 +231,20 @@ class ShoulderPressGUI(tk.Tk):
                                 command=self.open_menu)
         back_button.pack(side=tk.LEFT, padx=10)
 
-        exit_button = tk.Button(buttons_frame, text="Exit", font=f['regular'], bg=cp['button'], command=self.on_closing)
+        exit_button = tk.Button(buttons_frame, text="Exit", font=f['regular'], bg=cp['button'],
+                                command=lambda: utils.on_closing(self))
         exit_button.pack(side=tk.RIGHT, padx=10)
 
-        self.add_message("Welcome to the Shoulder Press workout. Please set the weight and rest time before starting a "
+        utils.add_message(self, "Welcome to the Shoulder Press workout. Please set the weight and rest time before starting a "
                          "set. When the set is active, the background will turn green. You can start and end a set "
                          "using the buttons below. The rep stage and count will be displayed above the camera feed "
                          "as well as the side selector. The side can be set to left, right, or both. The stage of the "
                          "rep is displayed on the top right. The image on the right shows the correct form for the "
                          "exercise.")
 
-        self.protocol("WM_DELETE_WINDOW", self.on_closing)
+        self.protocol("WM_DELETE_WINDOW", lambda: utils.on_closing(self))
         self.mainloop()
 
-    def add_message(self, message):
-        self.chat_text.config(state=tk.NORMAL)
-        self.chat_text.insert(tk.END, message + "\n")
-        self.chat_text.insert(tk.END, "-------------------------------\n")
-        self.chat_text.config(state=tk.DISABLED)
-        self.chat_text.yview(tk.END)
-
-    def start_set(self):
-        w = self.weight.get()
-        r = self.rest_time.get()
-
-        if w == 0 or r == 0:
-            self.add_message("Please set weight and rest time before starting a set.")
-            return
-        if self.set_token:
-            self.add_message("Set already active")
-            return
-        if self.is_resting:
-            self.add_message("Rest timer is active, please wait.")
-            return
-
-        self.add_message(f"Starting set with weight: {str(w)}kg")
-        self.app.toggle_active()
-        self.app_frame.config(bg=cp['active'])
-
-        from src.db.db_connection import DBConnection
-        db = DBConnection()
-        conn = db.connect()
-        cursor = conn.cursor()
-
-        self.set_token = str(uuid.uuid4())
-        query = "SELECT * FROM cv_pt.public.start_set(%s, %s)"
-        cursor.execute(query, (self.set_token, self.workout_token))
-        conn.commit()
-
-        db.close()
-
-    def end_set(self):
-        if not self.set_token:
-            self.add_message("no set active")
-            return
-
-        reps = self.left_var.get() if self.left_var.get() > self.right_var.get() else self.right_var.get()
-        self.left_var.set(0)
-        self.right_var.set(0)
-
-        self.add_message(f"Ending set with {reps} reps at {self.weight.get()}kg")
-        self.app.toggle_active()
-        self.app_frame.config(bg=cp['inactive'])
-
-        from src.db.db_connection import DBConnection
-        db = DBConnection()
-        conn = db.connect()
-        cursor = conn.cursor()
-
-        query = "SELECT * FROM cv_pt.public.end_set(%s, %s, %s)"
-        cursor.execute(query, (self.set_token, reps, self.weight.get()))
-        conn.commit()
-
-        self.set_token = None
-
-        db.close()
-
-        self.rest_timer(self.rest_time.get())
-
-
-    def save_params(self):
-        print("Save params")
-        w = self.weight_entry.get()
-        r = self.rest_entry.get()
-
-        if not w or not r:
-            self.add_message("Please enter a weight and rest time.")
-            return
-
-        self.weight.set(int(w))
-        self.rest_time.set(int(r))
-        self.weight_entry.delete(0, tk.END)
-        self.rest_entry.delete(0, tk.END)
-
-        self.add_message(f"Set weight to {self.weight.get()}kg and rest time to {self.rest_time.get()}s.")
-
-
-    def rest_timer(self, time_left):
-        self.is_resting = True
-        if time_left > 0:
-            self.add_message(f"Rest time left: {time_left} seconds")
-            self.after(1000, self.rest_timer, time_left - 1)
-        else:
-            self.add_message("Rest time over")
-            self.is_resting = False
-
-
-    def on_closing(self):
-        if messagebox.askyesno("Quit", "Do you want to quit?"):
-            utils.save_set(self)  # Save the last set
-            utils.end_workout(self.workout_token)
-            from src.db.login_session import logout
-            logout()
-
-            self.destroy()
 
     def open_menu(self):
         if messagebox.askyesno("Return", "Do you want to finish this workout?"):
@@ -357,8 +252,8 @@ class ShoulderPressGUI(tk.Tk):
             self.destroy()
             utils.save_set(self)  # save the last set
             utils.end_workout(self.workout_token)
-            from GUI.workouts.arms.armsGUI import ArmsGUI
-            ArmsGUI()
+            from GUI.workouts.shoulders.shouldersGUI import ShouldersGUI
+            ShouldersGUI()
 
 
 if __name__ == "__main__":

@@ -12,7 +12,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '../../'))
 
 def load_image(gui, image_path):
     img = Image.open(image_path)
-    img = img.resize((214, 188))
+    img = img.resize((200, 175))
     img_tk = ImageTk.PhotoImage(img)
     gui.image_label.imgtk = img_tk
     gui.image_label.configure(image=img_tk)
@@ -150,4 +150,106 @@ def get_mood():
     return mood_rating.get()
 
 
+def add_message(gui, message):
+    gui.chat_text.config(state=tk.NORMAL)
+    gui.chat_text.insert(tk.END, message + "\n")
+    gui.chat_text.insert(tk.END, "-------------------------------\n")
+    gui.chat_text.config(state=tk.DISABLED)
+    gui.chat_text.yview(tk.END)
 
+
+def start_set(gui):
+    w = gui.weight.get()
+    r = gui.rest_time.get()
+
+    if w == 0 or r == 0:
+        add_message(gui, "Please set weight and rest time before starting a set.")
+        return
+    if gui.set_token:
+        add_message(gui, "Set already active")
+        return
+    if gui.is_resting:
+        add_message(gui, "Rest timer is active, please wait.")
+        return
+
+    add_message(gui, f"Starting set with weight: {str(w)}kg")
+    gui.app.toggle_active()
+    from GUI.colour_palette import colours as cp
+    gui.app_frame.config(bg=cp['active'])
+
+    from src.db.db_connection import DBConnection
+    db = DBConnection()
+    conn = db.connect()
+    cursor = conn.cursor()
+
+    gui.set_token = str(uuid.uuid4())
+    query = "SELECT * FROM cv_pt.public.start_set(%s, %s)"
+    cursor.execute(query, (gui.set_token, gui.workout_token))
+    conn.commit()
+
+    db.close()
+
+def end_set(gui):
+    if not gui.set_token:
+        add_message(gui, "no set active")
+        return
+
+    reps = gui.left_var.get() if gui.left_var.get() > gui.right_var.get() else gui.right_var.get()
+    gui.left_var.set(0)
+    gui.right_var.set(0)
+
+    add_message(gui, f"Ending set with {reps} reps at {gui.weight.get()}kg")
+    gui.app.toggle_active()
+    from GUI.colour_palette import colours as cp
+    gui.app_frame.config(bg=cp['inactive'])
+
+    from src.db.db_connection import DBConnection
+    db = DBConnection()
+    conn = db.connect()
+    cursor = conn.cursor()
+
+    query = "SELECT * FROM cv_pt.public.end_set(%s, %s, %s)"
+    cursor.execute(query, (gui.set_token, reps, gui.weight.get()))
+    conn.commit()
+
+    gui.set_token = None
+
+    db.close()
+
+    rest_timer(gui, gui.rest_time.get())
+
+
+def save_params(gui):
+    print("Save params")
+    w = gui.weight_entry.get()
+    r = gui.rest_entry.get()
+
+    if not w or not r:
+        add_message(gui, "Please enter a weight and rest time.")
+        return
+
+    gui.weight.set(int(w))
+    gui.rest_time.set(int(r))
+    gui.weight_entry.delete(0, tk.END)
+    gui.rest_entry.delete(0, tk.END)
+
+    add_message(gui, f"Set weight to {gui.weight.get()}kg and rest time to {gui.rest_time.get()}s.")
+
+
+def rest_timer(gui, time_left):
+    gui.is_resting = True
+    if time_left > 0:
+        add_message(gui, f"Rest time left: {time_left} seconds")
+        gui.after(1000, rest_timer, gui, time_left - 1)
+    else:
+        add_message(gui, "Rest time over")
+        gui.is_resting = False
+
+def on_closing(gui):
+    if messagebox.askyesno("Quit", "Do you want to quit?"):
+        end_set(gui)  # Save the last set
+        end_workout(gui.workout_token)
+        from src.db.login_session import logout
+        logout()
+
+        gui.destroy()
