@@ -3,6 +3,7 @@ SET SEARCH_PATH TO cv_pt, PUBLIC;
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS sessions CASCADE;
 DROP TABLE IF EXISTS workouts CASCADE;
+DROP TABLE IF EXISTS sets CASCADE;
 
 CREATE TABLE users (
     id uuid PRIMARY KEY NOT NULL UNIQUE,
@@ -33,3 +34,11 @@ CREATE TABLE workouts (
     volume INT
 );
 
+CREATE TABLE sets (
+    id uuid PRIMARY KEY NOT NULL UNIQUE,
+    workout_id uuid NOT NULL REFERENCES workouts(id),
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    duration INTERVAL,
+    reps INT,
+    weight INT
+);

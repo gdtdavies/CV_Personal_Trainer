@@ -1,6 +1,7 @@
 import os
 import sys
 import tkinter as tk
+import uuid
 from tkinter import messagebox
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '../../'))
@@ -26,6 +27,7 @@ class ShoulderPressGUI(tk.Tk):
         f = Fonts().get_fonts()
 
         self.workout_token = utils.start_workout("Shoulder Press")
+        self.set_token = None
 
         # -Variables----------------------------------------------------------------------------------------------------
         self.border = 3
@@ -34,8 +36,6 @@ class ShoulderPressGUI(tk.Tk):
         self.right_var = tk.IntVar(value=0)
         self.weight = tk.IntVar(value=0)
         self.rest_time = tk.IntVar(value=0)
-
-        self.is_set_active = False
 
         # APPLICATION --------------------------------------------------------------------------------------------------
         self.app_frame = tk.Frame(self, bg=cp['inactive'], width=640, height=480)
@@ -271,25 +271,48 @@ class ShoulderPressGUI(tk.Tk):
         if w == 0 or r == 0:
             self.add_message("Please set weight and rest time before starting a set.")
             return
-        if self.is_set_active:
+        if self.set_token:
             self.add_message("Set already active")
             return
 
         self.add_message("Starting set")
-        self.is_set_active = True
         self.app.toggle_active()
         self.app_frame.config(bg=cp['active'])
-        pass
+
+        from src.db.db_connection import DBConnection
+        db = DBConnection()
+        conn = db.connect()
+        cursor = conn.cursor()
+
+        self.set_token = str(uuid.uuid4())
+        query = "SELECT * FROM cv_pt.public.start_set(%s, %s)"
+        cursor.execute(query, (self.set_token, self.workout_token))
+        conn.commit()
+
+        db.close()
 
     def end_set(self):
-        if not self.is_set_active:
+        if not self.set_token:
             self.add_message("no set active")
             return
         self.add_message("Ending set")
-        self.is_set_active = False
         self.app.toggle_active()
         self.app_frame.config(bg=cp['inactive'])
-        pass
+
+        from src.db.db_connection import DBConnection
+        db = DBConnection()
+        conn = db.connect()
+        cursor = conn.cursor()
+
+        reps = self.left_var.get() if self.left_var.get() > self.right_var.get() else self.right_var.get()
+
+        query = "SELECT * FROM cv_pt.public.end_set(%s, %s, %s)"
+        cursor.execute(query, (self.set_token, reps, self.weight.get()))
+        conn.commit()
+
+        self.set_token = None
+
+        db.close()
 
     def save_params(self):
         print("Save params")

@@ -94,3 +94,25 @@ BEGIN
     WHERE id = _workout_id;
 END;
 $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION start_set(
+    _set_id uuid,
+    _workout_id uuid
+) RETURNS VOID AS $$
+BEGIN
+    INSERT INTO cv_pt.public.sets (id, workout_id)
+    VALUES (_set_id, _workout_id);
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION end_set(
+    _set_id uuid,
+    _reps INT,
+    _weight INT
+) RETURNS VOID AS $$
+BEGIN
+    UPDATE cv_pt.public.sets
+    SET duration = (NOW() - created_at), reps = _reps, weight = _weight
+    WHERE id = _set_id;
+END;
+$$ LANGUAGE plpgsql;
