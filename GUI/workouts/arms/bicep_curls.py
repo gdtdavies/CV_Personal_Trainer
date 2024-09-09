@@ -64,8 +64,10 @@ class BicepCurlsGUI(tk.Tk):
         stage_val_frame = tk.Frame(stage_frame, bg=cp['bg'])
         stage_val_frame.pack(side=tk.LEFT)
 
-        self.stage_value_l = tk.Label(stage_val_frame, textvariable=str(self.left_stage), font=f['regular'], bg=cp['bg'])
-        self.stage_value_r = tk.Label(stage_val_frame, textvariable=str(self.right_stage), font=f['regular'], bg=cp['bg'])
+        self.stage_value_l = tk.Label(stage_val_frame, textvariable=str(self.left_stage), font=f['regular'],
+                                      bg=cp['bg'])
+        self.stage_value_r = tk.Label(stage_val_frame, textvariable=str(self.right_stage), font=f['regular'],
+                                      bg=cp['bg'])
         self.stage_value_l.pack(side=tk.TOP)
         self.stage_value_r.pack(side=tk.TOP)
 
@@ -235,21 +237,24 @@ class BicepCurlsGUI(tk.Tk):
                                 command=lambda :utils.on_closing(self))
         exit_button.pack(side=tk.RIGHT, padx=10)
 
-        utils.add_message(self, "Welcome to the Bicep Curl workout. Please set the weight and rest time before starting a "
-                         "set. When the set is active, the background will turn green. You can start and end a set "
-                         "using the buttons below. The rep stage and count will be displayed above the camera feed "
-                         "as well as the side selector. The side can be set to left, right, or both. The stage of the "
-                         "rep is displayed on the top right. The image on the right shows the correct form for the "
-                         "exercise.")
+        utils.add_message(self, "Welcome to the Bicep Curl workout. Please set the weight and rest time before "
+                                "starting a set. When the set is active, the background will turn green. You can start "
+                                "and end a set using the buttons below. The rep stage and count will be displayed "
+                                "above the camera feed as well as the side selector. The side can be set to left, "
+                                "right, or both. The stage of the rep is displayed on the top right. The image on the "
+                                "right shows the correct form for the exercise.")
 
         self.protocol("WM_DELETE_WINDOW", lambda: utils.on_closing(self))
         self.mainloop()
 
     def open_menu(self):
+        if self.set_token:
+            messagebox.showinfo("Error", "Please end the set before quitting.")
+            return
+
         if messagebox.askyesno("Return", "Do you want to finish this workout?"):
             self.app.close()
             self.destroy()
-            utils.save_set(self)  # save the last set
             utils.end_workout(self.workout_token)
             from GUI.workouts.arms.armsGUI import ArmsGUI
             ArmsGUI()

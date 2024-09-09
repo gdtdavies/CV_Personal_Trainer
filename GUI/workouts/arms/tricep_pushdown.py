@@ -241,8 +241,7 @@ class TricepPushdownGUI(tk.Tk):
 
     def on_closing(self):
         if messagebox.askyesno("Quit", "Do you want to quit?"):
-            utils.save_set(self)  # Save the last set
-            utils.end_workout(self.workout_token, self.set_reps, self.set_weights)
+            utils.end_workout(self.workout_token)
             from src.db.login_session import logout
             logout()
             
@@ -252,8 +251,7 @@ class TricepPushdownGUI(tk.Tk):
         if messagebox.askyesno("Return", "Do you want to finish this workout?"):
             self.app.close()
             self.destroy()
-            utils.save_set(self)  # save the last set
-            utils.end_workout(self.workout_token, self.set_reps, self.set_weights)
+            utils.end_workout(self.workout_token)
             from GUI.workouts.arms.armsGUI import ArmsGUI
             ArmsGUI()
 

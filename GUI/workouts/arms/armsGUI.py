@@ -7,7 +7,6 @@ from PIL import Image, ImageTk
 sys.path.append(os.path.join(os.path.dirname(__file__), '../../../'))
 from GUI.colour_palette import colours as cp
 from GUI.fonts import Fonts
-from GUI.workouts import utils
 
 
 class ArmsGUI(tk.Tk):

@@ -18,13 +18,6 @@ def load_image(gui, image_path):
     gui.image_label.configure(image=img_tk)
 
 
-def save_set(gui):
-    gui.set_weights.append(gui.weight.get())
-    gui.set_reps.append((gui.left_var.get(), gui.right_var.get()))
-    gui.left_var.set(0)
-    gui.right_var.set(0)
-
-
 def start_workout(workout_name):
     workout_token = str(uuid.uuid4())
     session_token_path = os.path.join(os.path.dirname(__file__), '../../src/db/session_token.txt')
