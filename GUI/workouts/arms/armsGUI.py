@@ -52,7 +52,7 @@ class ArmsGUI(tk.Tk):
         bicep_image_label = tk.Label(workout_column, image=bicep_image, bg=cp['label'])
         bicep_image_label.image = bicep_image
 
-        tricep_image = Image.open(self.img_loc + "tricep_pushdown.png")
+        tricep_image = Image.open(self.img_loc + "tricep_extension.png")
         tricep_image = tricep_image.resize((107, 94))
         tricep_image = ImageTk.PhotoImage(tricep_image)
         tricep_image_label = tk.Label(workout_column, image=tricep_image, bg=cp['label'])
@@ -105,8 +105,8 @@ class ArmsGUI(tk.Tk):
 
     def open_tricep(self):
         self.destroy()
-        from GUI.workouts.arms.tricep_pushdown import TricepPushdownGUI
-        TricepPushdownGUI()
+        from GUI.workouts.arms.tricep_extension import TricepExtensionGUI
+        TricepExtensionGUI()
 
     def open_menu(self):
         self.destroy()

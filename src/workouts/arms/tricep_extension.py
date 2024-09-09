@@ -5,6 +5,7 @@ import cv2
 import numpy as np
 from mediapipe.framework.formats.landmark_pb2 import NormalizedLandmarkList
 
+import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk
 
@@ -12,7 +13,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '../../../'))
 from src.workouts.utils import display_text, calculate_angle, make_detections, rep_counter
 
 
-class BicepCurlsApp(ttk.Frame):
+class TricepExtensionApp(ttk.Frame):
 
     def __init__(self, parent, rep_vars, stage_vars):
         super().__init__(parent)
@@ -65,7 +66,7 @@ class BicepCurlsApp(ttk.Frame):
                 display_text(img, str(a_elbow), tuple(np.multiply(elbow, [640, 480]).astype(int)))
 
                 # count reps
-                rep_counter(self, a_elbow, self.side, min_angle, max_angle, tension_angle='low')
+                rep_counter(self, a_elbow, self.side, min_angle, max_angle, tension_angle='high')
 
                 # Render detections
                 self.mp_drawing.draw_landmarks(img, landmark_list, [(0, 1), (1, 2)])
@@ -95,8 +96,8 @@ class BicepCurlsApp(ttk.Frame):
                 display_text(img, str(l_a_elbow), tuple(np.multiply(l_elbow, [640, 480]).astype(int)))
 
                 # count reps
-                rep_counter(self, r_a_elbow, 'right', min_angle, max_angle, tension_angle='low')
-                rep_counter(self, l_a_elbow, 'left', min_angle, max_angle, tension_angle='low')
+                rep_counter(self, r_a_elbow, 'right', min_angle, max_angle, tension_angle='high')
+                rep_counter(self, l_a_elbow, 'left', min_angle, max_angle, tension_angle='high')
 
                 # Render detections
                 self.mp_drawing.draw_landmarks(img, landmark_list, [(0, 1), (1, 2), (3, 4), (4, 5)])
@@ -142,13 +143,13 @@ class BicepCurlsApp(ttk.Frame):
 
 
 if __name__ == '__main__':
-    import tkinter as tk
+
     root = tk.Tk()
-    root.title("Bicep Curls")
+    root.title("Tricep Extension")
     rep_count_l = tk.IntVar()
     rep_count_r = tk.IntVar()
     rep_stage_l = tk.StringVar(value="down")
     rep_stage_r = tk.StringVar(value="down")
-    app = BicepCurlsApp(root, [rep_count_l, rep_count_r], [rep_stage_l, rep_stage_r])
+    app = TricepExtensionApp(root, [rep_count_l, rep_count_r], [rep_stage_l, rep_stage_r])
     app.pack()
     root.mainloop()

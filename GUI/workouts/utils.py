@@ -152,6 +152,7 @@ def add_message(gui, message):
 
 
 def start_set(gui):
+
     w = gui.weight.get()
     r = gui.rest_time.get()
 
@@ -167,15 +168,20 @@ def start_set(gui):
 
     add_message(gui, f"Starting set with weight: {str(w)}kg")
     gui.app.toggle_active()
+
     from GUI.colour_palette import colours as cp
     gui.app_frame.config(bg=cp['active'])
+    gui.set_token = str(uuid.uuid4())
+
+    if not os.path.exists(os.path.join(os.path.dirname(__file__), '../../src/db/session_token.txt')):
+        print("set will not be saved as user is not logged in")
+        return
 
     from src.db.db_connection import DBConnection
     db = DBConnection()
     conn = db.connect()
     cursor = conn.cursor()
 
-    gui.set_token = str(uuid.uuid4())
     query = "SELECT * FROM cv_pt.public.start_set(%s, %s)"
     cursor.execute(query, (gui.set_token, gui.workout_token))
     conn.commit()
