@@ -223,7 +223,7 @@ class ShoulderPressGUI(tk.Tk):
         end_button.pack(side=tk.LEFT, anchor=tk.CENTER, fill=tk.BOTH, expand=True, padx=2)
 
         # Footer frame -------------------------------------------------------------------------------------------------
-        footer_frame = tk.Frame(gui_frame, height=80, bg=cp['label'])
+        footer_frame = tk.Frame(gui_frame, height=80, bg=cp['label'], relief=tk.SUNKEN, border=self.border)
         footer_frame.pack(side=tk.TOP, expand=True, fill=tk.BOTH)
 
         buttons_frame = tk.Frame(footer_frame, bg=cp['bg'], border=3, relief=tk.RAISED, padx=10, pady=10)
@@ -253,17 +253,6 @@ class ShoulderPressGUI(tk.Tk):
         self.chat_text.config(state=tk.DISABLED)
         self.chat_text.yview(tk.END)
 
-    # def next_set(self):
-    #     print("Next set")
-    #     if self.rest_time.get() == 0:
-    #         print("Rest time not set")
-    #         self.add_message("Please set rest time.")
-    #         return
-    #     self.is_resting = True
-    #     self.update_timer()
-    #
-    #     utils.save_set(self)
-
     def start_set(self):
         w = self.weight.get()
         r = self.rest_time.get()
@@ -274,8 +263,11 @@ class ShoulderPressGUI(tk.Tk):
         if self.set_token:
             self.add_message("Set already active")
             return
+        if self.is_resting:
+            self.add_message("Rest timer is active, please wait.")
+            return
 
-        self.add_message("Starting set")
+        self.add_message(f"Starting set with weight: {str(w)}kg")
         self.app.toggle_active()
         self.app_frame.config(bg=cp['active'])
 
@@ -314,6 +306,9 @@ class ShoulderPressGUI(tk.Tk):
 
         db.close()
 
+        self.rest_timer(self.rest_time.get())
+
+
     def save_params(self):
         print("Save params")
         w = self.weight_entry.get()
@@ -330,17 +325,16 @@ class ShoulderPressGUI(tk.Tk):
 
         self.add_message(f"Set weight to {self.weight.get()}kg and rest time to {self.rest_time.get()}s.")
 
-    # def update_timer(self):
-    #     print("Updating timer")
-    #     if self.rest_time.get() > 0:
-    #         mins, secs = divmod(self.rest_time.get(), 60)
-    #         time_format = f"{mins:02d}:{secs:02d}"
-    #         self.rest_timer_value.config(text=time_format)
-    #         self.rest_time.set(self.rest_time.get() - 1)
-    #         self.after(1000, self.update_timer)
-    #     else:
-    #         self.rest_timer_value.config(text="Go!")
-    #         self.is_resting = False
+
+    def rest_timer(self, time_left):
+        self.is_resting = True
+        if time_left > 0:
+            self.add_message(f"Rest time left: {time_left} seconds")
+            self.after(1000, self.rest_timer, time_left - 1)
+        else:
+            self.add_message("Rest time over")
+            self.is_resting = False
+
 
     def on_closing(self):
         if messagebox.askyesno("Quit", "Do you want to quit?"):
