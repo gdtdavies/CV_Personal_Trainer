@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+from PIL import Image, ImageTk
 
 
 def display_text(img, text, position):
@@ -61,3 +62,19 @@ def rep_counter(app, angle, side, min_angle, max_angle, tension_angle='low'):
     else:
         app.rep_count_r.set(count)
         app.rep_stage_r.set(rep_stage)
+
+
+def run(app):
+    ret, frame = app.cap.read()
+
+    if ret:
+        results, img = make_detections(app, frame)
+        if app.active:
+            app.display_skeleton(img, results)
+
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        img_pil = Image.fromarray(img)
+        img_tk = ImageTk.PhotoImage(image=img_pil)
+        app.image_label.imgtk = img_tk
+        app.image_label.configure(image=img_tk)
+    app.after(10, lambda: run(app))

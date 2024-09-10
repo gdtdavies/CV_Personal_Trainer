@@ -47,7 +47,7 @@ class LegsGUI(tk.Tk):
 
         # Buttons
         curl_btn = tk.Button(workout_column, text="Leg Curls", font=f['regular'], bg=cp['button'],
-                                    command=utils.not_implemented)
+                                    command=self.open_curl)
         extension_btn = tk.Button(workout_column, text="Leg Extension", font=f['regular'], bg=cp['button'],
                                     command=utils.not_implemented)
         press_btn = tk.Button(workout_column, text="Leg Press", font=f['regular'], bg=cp['button'],
@@ -87,10 +87,10 @@ class LegsGUI(tk.Tk):
         self.protocol("WM_DELETE_WINDOW", lambda: utils.on_closing(self))
         self.mainloop()
 
-    def open_press(self):
+    def open_curl(self):
         self.destroy()
-        from GUI.workouts.shoulders.press import ShoulderPressGUI
-        ShoulderPressGUI()
+        from GUI.workouts.legs.curl import LegCurlsGUI
+        LegCurlsGUI()
 
 
 if __name__ == "__main__":
