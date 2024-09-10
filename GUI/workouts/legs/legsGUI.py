@@ -22,7 +22,7 @@ class LegsGUI(tk.Tk):
 
         # Title frame --------------------------------------------------------------------------------------------------
         title_frame = tk.Frame(self)
-        self.title_label = tk.Label(title_frame, text="Shoulders", font=f['title'], bg=cp['label'], border=3,
+        self.title_label = tk.Label(title_frame, text="LEGS", font=f['title'], bg=cp['label'], border=3,
                                     relief=tk.SUNKEN)
         self.title_label.pack(fill=tk.BOTH)
         title_frame.pack(fill=tk.BOTH)
@@ -46,13 +46,13 @@ class LegsGUI(tk.Tk):
         squat_img_label = utils.load_image_label(self,"squat.png", workout_column)
 
         # Buttons
-        curl_button = tk.Button(workout_column, text="Face Pull", font=f['regular'], bg=cp['button'],
+        curl_btn = tk.Button(workout_column, text="Leg Curls", font=f['regular'], bg=cp['button'],
                                     command=utils.not_implemented)
-        extension_button = tk.Button(workout_column, text="Front Raise", font=f['regular'], bg=cp['button'],
+        extension_btn = tk.Button(workout_column, text="Leg Extension", font=f['regular'], bg=cp['button'],
                                     command=utils.not_implemented)
-        press_button = tk.Button(workout_column, text="Shoulder Press", font=f['regular'], bg=cp['button'],
-                                    command=self.open_press)
-        squat_button = tk.Button(workout_column, text="Lateral Raise", font=f['regular'], bg=cp['button'],
+        press_btn = tk.Button(workout_column, text="Leg Press", font=f['regular'], bg=cp['button'],
+                                    command=utils.not_implemented)
+        squat_btn = tk.Button(workout_column, text="Squats", font=f['regular'], bg=cp['button'],
                                     command=utils.not_implemented)
 
         # Grid layout
@@ -61,10 +61,10 @@ class LegsGUI(tk.Tk):
         press_img_label.grid(row=2, column=0, padx=5, pady=5)
         squat_img_label.grid(row=3, column=0, padx=5, pady=5)
 
-        curl_button.grid(row=0, column=1, padx=5, pady=5)
-        extension_button.grid(row=1, column=1, padx=5, pady=5)
-        press_button.grid(row=2, column=1, padx=5, pady=5)
-        squat_button.grid(row=3, column=1, padx=5, pady=5)
+        curl_btn.grid(row=0, column=1, padx=5, pady=5)
+        extension_btn.grid(row=1, column=1, padx=5, pady=5)
+        press_btn.grid(row=2, column=1, padx=5, pady=5)
+        squat_btn.grid(row=3, column=1, padx=5, pady=5)
 
         # Buttons frame ------------------------------------------------------------------------------------------------
         buttons_frame = tk.Frame(main_frame, bg=cp['label'])
@@ -75,14 +75,14 @@ class LegsGUI(tk.Tk):
         button_column.pack(anchor=tk.CENTER, expand=True)
 
         # Back button
-        back_button = tk.Button(button_column, text="Return", font=f['regular'], bg=cp['button'],
+        back_btn = tk.Button(button_column, text="Return", font=f['regular'], bg=cp['button'],
                                 command=lambda: utils.open_menu(self))
-        back_button.pack(side=tk.TOP, padx=10, pady=10)
+        back_btn.pack(side=tk.TOP, padx=10, pady=10)
 
         # Exit button
-        exit_button = tk.Button(button_column, text="Exit", font=f['regular'], bg=cp['button'],
+        exit_btn = tk.Button(button_column, text="Exit", font=f['regular'], bg=cp['button'],
                                 command=lambda: utils.on_closing(self))
-        exit_button.pack(side=tk.TOP, padx=10, pady=10)
+        exit_btn.pack(side=tk.TOP, padx=10, pady=10)
 
         self.protocol("WM_DELETE_WINDOW", lambda: utils.on_closing(self))
         self.mainloop()

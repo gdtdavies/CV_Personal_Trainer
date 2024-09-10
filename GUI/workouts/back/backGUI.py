@@ -22,7 +22,7 @@ class BackGUI(tk.Tk):
 
         # Title frame --------------------------------------------------------------------------------------------------
         title_frame = tk.Frame(self)
-        self.title_label = tk.Label(title_frame, text="Back", font=f['title'], bg=cp['label'], border=3,
+        self.title_label = tk.Label(title_frame, text="BACK", font=f['title'], bg=cp['label'], border=3,
                                     relief=tk.SUNKEN)
         self.title_label.pack(fill=tk.BOTH)
         title_frame.pack(fill=tk.BOTH)
@@ -47,13 +47,13 @@ class BackGUI(tk.Tk):
 
         # Buttons
         deadlift_btn = tk.Button(workout_column, text="Deadlift", font=f['regular'], bg=cp['button'],
-                                    command=lambda: utils.not_implemented(self))
+                                    command=utils.not_implemented)
         latpulldown_btn = tk.Button(workout_column, text="Lateral Pulldown", font=f['regular'], bg=cp['button'],
-                                      command=lambda: utils.not_implemented(self))
+                                      command=utils.not_implemented)
         pullups_btn = tk.Button(workout_column, text="Pull-ups", font=f['regular'], bg=cp['button'],
-                                    command=lambda: utils.not_implemented(self))
+                                    command=utils.not_implemented)
         row_btn = tk.Button(workout_column, text="Row", font=f['regular'], bg=cp['button'],
-                                 command=lambda: utils.not_implemented(self))
+                                 command=utils.not_implemented)
 
         deadlift_img_label.grid(row=0, column=0, padx=5, pady=5)
         latpulldown_img_label.grid(row=1, column=0, padx=5, pady=5)

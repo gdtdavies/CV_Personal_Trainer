@@ -22,7 +22,7 @@ class ChestGUI(tk.Tk):
 
         # Title frame --------------------------------------------------------------------------------------------------
         title_frame = tk.Frame(self)
-        self.title_label = tk.Label(title_frame, text="Chest", font=f['title'], bg=cp['label'], border=3,
+        self.title_label = tk.Label(title_frame, text="CHEST", font=f['title'], bg=cp['label'], border=3,
                                     relief=tk.SUNKEN)
         self.title_label.pack(fill=tk.BOTH)
         title_frame.pack(fill=tk.BOTH)
@@ -45,11 +45,11 @@ class ChestGUI(tk.Tk):
         pecfly_img_label = utils.load_image_label(self, "pecfly.png", workout_column)
 
         # Buttons
-        bench_button = tk.Button(workout_column, text="Bench", font=f['regular'], bg=cp['button'],
+        bench_btn = tk.Button(workout_column, text="Bench", font=f['regular'], bg=cp['button'],
                                     command=utils.not_implemented)
-        dumbbell_button = tk.Button(workout_column, text="Dumbbell Press", font=f['regular'], bg=cp['button'],
+        dumbbell_btn = tk.Button(workout_column, text="Dumbbell Press", font=f['regular'], bg=cp['button'],
                                       command=utils.not_implemented)
-        pecfly_button = tk.Button(workout_column, text="Pectoral Fly", font=f['regular'], bg=cp['button'],
+        pecfly_btn = tk.Button(workout_column, text="Pectoral Fly", font=f['regular'], bg=cp['button'],
                                     command=utils.not_implemented)
 
         # Grid layout
@@ -57,9 +57,9 @@ class ChestGUI(tk.Tk):
         dumbbell_img_label.grid(row=1, column=0, padx=5, pady=5)
         pecfly_img_label.grid(row=2, column=0, padx=5, pady=5)
 
-        bench_button.grid(row=0, column=1, padx=5, pady=5)
-        dumbbell_button.grid(row=1, column=1, padx=5, pady=5)
-        pecfly_button.grid(row=2, column=1, padx=5, pady=5)
+        bench_btn.grid(row=0, column=1, padx=5, pady=5)
+        dumbbell_btn.grid(row=1, column=1, padx=5, pady=5)
+        pecfly_btn.grid(row=2, column=1, padx=5, pady=5)
 
         # Buttons frame ------------------------------------------------------------------------------------------------
         buttons_frame = tk.Frame(main_frame, bg=cp['label'])
@@ -70,14 +70,14 @@ class ChestGUI(tk.Tk):
         button_column.pack(anchor=tk.CENTER, expand=True)
 
         # Back button
-        back_button = tk.Button(button_column, text="Return", font=f['regular'], bg=cp['button'],
+        back_btn = tk.Button(button_column, text="Return", font=f['regular'], bg=cp['button'],
                                 command=lambda: utils.open_menu(self))
-        back_button.pack(side=tk.TOP, padx=10, pady=10)
+        back_btn.pack(side=tk.TOP, padx=10, pady=10)
 
         # Exit button
-        exit_button = tk.Button(button_column, text="Exit", font=f['regular'], bg=cp['button'],
+        exit_btn = tk.Button(button_column, text="Exit", font=f['regular'], bg=cp['button'],
                                 command=lambda: utils.on_closing(self))
-        exit_button.pack(side=tk.TOP, padx=10, pady=10)
+        exit_btn.pack(side=tk.TOP, padx=10, pady=10)
 
         self.protocol("WM_DELETE_WINDOW", lambda: utils.on_closing(self))
         self.mainloop()

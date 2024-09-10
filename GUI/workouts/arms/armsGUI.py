@@ -45,17 +45,17 @@ class ArmsGUI(tk.Tk):
         tricep_img_label = utils.load_image_label(self, "tricep_extension.png", workout_column)
 
         # Buttons
-        bicep_button = tk.Button(workout_column, text="Bicep Curls", font=f['regular'], bg=cp['button'],
+        bicep_btn = tk.Button(workout_column, text="Bicep Curls", font=f['regular'], bg=cp['button'],
                                  command=self.open_bicep)
-        tricep_button = tk.Button(workout_column, text="Tricep Pushdown", font=f['regular'], bg=cp['button'],
+        tricep_btn = tk.Button(workout_column, text="Tricep Extension", font=f['regular'], bg=cp['button'],
                                   command=self.open_tricep)
 
         # Grid layout
         bicep_img_label.grid(row=0, column=0, padx=5, pady=5)
         tricep_img_label.grid(row=1, column=0, padx=5, pady=5)
 
-        bicep_button.grid(row=0, column=1, padx=5, pady=5)
-        tricep_button.grid(row=1, column=1, padx=5, pady=5)
+        bicep_btn.grid(row=0, column=1, padx=5, pady=5)
+        tricep_btn.grid(row=1, column=1, padx=5, pady=5)
 
         # Buttons frame ------------------------------------------------------------------------------------------------
         buttons_frame = tk.Frame(main_frame, bg=cp['label'])
@@ -66,14 +66,14 @@ class ArmsGUI(tk.Tk):
         button_column.pack(anchor=tk.CENTER, expand=True)
 
         # Back button
-        back_button = tk.Button(button_column, text="Return", font=f['regular'], bg=cp['button'],
+        back_btn = tk.Button(button_column, text="Return", font=f['regular'], bg=cp['button'],
                                 command=lambda: utils.open_menu(self))
-        back_button.pack(side=tk.TOP, padx=10, pady=10)
+        back_btn.pack(side=tk.TOP, padx=10, pady=10)
 
         # Exit button
-        exit_button = tk.Button(button_column, text="Exit", font=f['regular'], bg=cp['button'],
+        exit_btn = tk.Button(button_column, text="Exit", font=f['regular'], bg=cp['button'],
                                 command=lambda: utils.on_closing(self))
-        exit_button.pack(side=tk.TOP, padx=10, pady=10)
+        exit_btn.pack(side=tk.TOP, padx=10, pady=10)
 
         self.protocol("WM_DELETE_WINDOW", lambda: utils.on_closing(self))
         self.mainloop()
