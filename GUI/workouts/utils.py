@@ -262,5 +262,10 @@ def on_closing(gui, is_in_app=False):
 
         gui.destroy()
 
-def not_implemented(self):
+def not_implemented():
     messagebox.showinfo("Not Implemented", "This feature is not implemented yet.")
+
+def open_menu(gui):
+    gui.destroy()
+    from GUI.menu import MenuGUI
+    MenuGUI()

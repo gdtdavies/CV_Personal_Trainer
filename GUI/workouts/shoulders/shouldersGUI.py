@@ -47,13 +47,13 @@ class ShouldersGUI(tk.Tk):
 
         # Buttons
         facepull_button = tk.Button(workout_column, text="Face Pull", font=f['regular'], bg=cp['button'],
-                                    command=lambda: utils.not_implemented(self))
+                                    command=utils.not_implemented)
         frontraise_button = tk.Button(workout_column, text="Front Raise", font=f['regular'], bg=cp['button'],
-                                    command=lambda: utils.not_implemented(self))
+                                    command=utils.not_implemented)
         latraise_button = tk.Button(workout_column, text="Lateral Raise", font=f['regular'], bg=cp['button'],
-                                    command=lambda: utils.not_implemented(self))
+                                    command=utils.not_implemented)
         press_button = tk.Button(workout_column, text="Shoulder Press", font=f['regular'], bg=cp['button'],
-                                    command=lambda: utils.not_implemented(self))
+                                    command=self.open_press)
 
         # Grid layout
         facepull_img_label.grid(row=0, column=0, padx=5, pady=5)
@@ -76,7 +76,7 @@ class ShouldersGUI(tk.Tk):
 
         # Back button
         back_button = tk.Button(button_column, text="Return", font=f['regular'], bg=cp['button'],
-                                command=self.open_menu)
+                                command=lambda: utils.open_menu(self))
         back_button.pack(side=tk.TOP, padx=10, pady=10)
 
         # Exit button
@@ -91,11 +91,6 @@ class ShouldersGUI(tk.Tk):
         self.destroy()
         from GUI.workouts.shoulders.press import ShoulderPressGUI
         ShoulderPressGUI()
-            
-    def open_menu(self):
-        self.destroy()
-        from GUI.menu import MenuGUI
-        MenuGUI()
 
 
 if __name__ == "__main__":

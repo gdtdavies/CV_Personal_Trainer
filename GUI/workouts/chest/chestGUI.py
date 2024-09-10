@@ -1,51 +1,86 @@
+import os
+import sys
 import tkinter as tk
-from tkinter import messagebox
 
-class ChestGUI:
-    
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../../'))
+from GUI.colour_palette import colours as cp
+from GUI.fonts import Fonts
+import GUI.workouts.utils as utils
+
+
+class ChestGUI(tk.Tk):
+    img_loc = os.path.join(os.path.dirname(__file__), 'assets/')
+    session_token = os.path.join(os.path.dirname(__file__), '../../../src/db/session_token.txt')
+
     def __init__(self):
-        self.win = tk.Tk()
-        
-        self.win.geometry("1280x960")
-        self.win.title("Computer Vision Personal Trainer")
-        
-        # label
-        self.label = tk.Label(self.win, text="Chest", font=("Arial", 24))
-        self.label.pack()
+        super().__init__()
+        self.geometry("640x500")
+        self.title("Computer Vision Personal Trainer")
+        self.resizable(False, False)
 
-        # bench press button
-        self.bench_press_button = tk.Button(self.win, text="Bench Press", font=("Arial", 18), command=self.not_implemented)
-        self.bench_press_button.pack(pady=10)
-        
-        # dumbbell press button
-        self.dumbbell_press_button = tk.Button(self.win, text="Dumbbell Press", font=("Arial", 18), command=self.not_implemented)
-        self.dumbbell_press_button.pack(pady=10)
-        
-        # pec-fly button
-        self.pec_fly_button = tk.Button(self.win, text="Fly", font=("Arial", 18), command=self.not_implemented)
-        self.pec_fly_button.pack(pady=10)
+        f = Fonts().get_fonts()
 
-        # back button
-        self.back_button = tk.Button(self.win, text="Return", font=("Arial", 18), command=self.open_menu)
-        self.back_button.pack(pady=10)
-        
+        # Title frame --------------------------------------------------------------------------------------------------
+        title_frame = tk.Frame(self)
+        self.title_label = tk.Label(title_frame, text="Chest", font=f['title'], bg=cp['label'], border=3,
+                                    relief=tk.SUNKEN)
+        self.title_label.pack(fill=tk.BOTH)
+        title_frame.pack(fill=tk.BOTH)
+
+        # Main frame --------------------------------------------------------------------------------------------------
+        main_frame = tk.Frame(self)
+        main_frame.pack(fill=tk.BOTH, expand=True)
+
+        # Workout frame ------------------------------------------------------------------------------------------------
+        workout_frame = tk.Frame(main_frame, bg=cp['bg'], border=3, relief=tk.RAISED)
+        workout_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+        # Workout column
+        workout_column = tk.Frame(workout_frame, bg=cp['label'], padx=10, pady=10)
+        workout_column.pack(anchor=tk.CENTER, expand=True)
+
+        # Images
+        bench_img_label = utils.load_image_label(self, "bench.png", workout_column)
+        dumbbell_img_label = utils.load_image_label(self, "dumbbell.png", workout_column)
+        pecfly_img_label = utils.load_image_label(self, "pecfly.png", workout_column)
+
+        # Buttons
+        bench_button = tk.Button(workout_column, text="Bench", font=f['regular'], bg=cp['button'],
+                                    command=utils.not_implemented)
+        dumbbell_button = tk.Button(workout_column, text="Dumbbell Press", font=f['regular'], bg=cp['button'],
+                                      command=utils.not_implemented)
+        pecfly_button = tk.Button(workout_column, text="Pectoral Fly", font=f['regular'], bg=cp['button'],
+                                    command=utils.not_implemented)
+
+        # Grid layout
+        bench_img_label.grid(row=0, column=0, padx=5, pady=5)
+        dumbbell_img_label.grid(row=1, column=0, padx=5, pady=5)
+        pecfly_img_label.grid(row=2, column=0, padx=5, pady=5)
+
+        bench_button.grid(row=0, column=1, padx=5, pady=5)
+        dumbbell_button.grid(row=1, column=1, padx=5, pady=5)
+        pecfly_button.grid(row=2, column=1, padx=5, pady=5)
+
+        # Buttons frame ------------------------------------------------------------------------------------------------
+        buttons_frame = tk.Frame(main_frame, bg=cp['label'])
+        buttons_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+        # Button column
+        button_column = tk.Frame(buttons_frame, bg=cp['bg'], border=3, relief=tk.RAISED, padx=10, pady=10)
+        button_column.pack(anchor=tk.CENTER, expand=True)
+
+        # Back button
+        back_button = tk.Button(button_column, text="Return", font=f['regular'], bg=cp['button'],
+                                command=lambda: utils.open_menu(self))
+        back_button.pack(side=tk.TOP, padx=10, pady=10)
+
         # Exit button
-        exit_button = tk.Button(self.win, text="Exit", font=("Arial", 18), command=self.on_closing)
-        exit_button.pack(pady=10)
-        
-        self.win.mainloop()
-        
-    def not_implemented(self):
-        messagebox.showinfo("Not Implemented", "This feature is not implemented yet.")
-        
-    def on_closing(self):
-        if messagebox.askyesno("Quit", "Do you want to quit?"):
-            self.win.destroy()
-            
-    def open_menu(self):
-        self.win.destroy()
-        import menu
-        menu.MenuGUI()
+        exit_button = tk.Button(button_column, text="Exit", font=f['regular'], bg=cp['button'],
+                                command=lambda: utils.on_closing(self))
+        exit_button.pack(side=tk.TOP, padx=10, pady=10)
+
+        self.protocol("WM_DELETE_WINDOW", lambda: utils.on_closing(self))
+        self.mainloop()
 
 
 if __name__ == "__main__":

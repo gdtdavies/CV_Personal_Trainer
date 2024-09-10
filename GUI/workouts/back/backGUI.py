@@ -75,7 +75,7 @@ class BackGUI(tk.Tk):
 
         # Back button
         back_btn = tk.Button(button_column, text="Return", font=f['regular'], bg=cp['button'],
-                                command=self.open_menu)
+                                command=lambda: utils.open_menu(self))
         back_btn.pack(side=tk.TOP, padx=10, pady=10)
 
         # Exit button
@@ -85,16 +85,6 @@ class BackGUI(tk.Tk):
 
         self.protocol("WM_DELETE_WINDOW", lambda: utils.on_closing(self))
         self.mainloop()
-
-    def open_press(self):
-        self.destroy()
-        from GUI.workouts.shoulders.press import ShoulderPressGUI
-        ShoulderPressGUI()
-
-    def open_menu(self):
-        self.destroy()
-        from GUI.menu import MenuGUI
-        MenuGUI()
 
 
 if __name__ == "__main__":

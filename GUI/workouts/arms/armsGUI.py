@@ -67,7 +67,7 @@ class ArmsGUI(tk.Tk):
 
         # Back button
         back_button = tk.Button(button_column, text="Return", font=f['regular'], bg=cp['button'],
-                                command=self.open_menu)
+                                command=lambda: utils.open_menu(self))
         back_button.pack(side=tk.TOP, padx=10, pady=10)
 
         # Exit button
@@ -87,11 +87,6 @@ class ArmsGUI(tk.Tk):
         self.destroy()
         from GUI.workouts.arms.tricep_extension import TricepExtensionGUI
         TricepExtensionGUI()
-
-    def open_menu(self):
-        self.destroy()
-        from GUI.menu import MenuGUI
-        MenuGUI()
 
 
 if __name__ == "__main__":
