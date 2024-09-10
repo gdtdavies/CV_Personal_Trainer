@@ -21,7 +21,7 @@ class LegCurlsGUI(tk.Tk):
 
         f = Fonts().get_fonts()
 
-        self.workout_token = utils.start_workout("Bicep Curl")
+        self.workout_token = utils.start_workout("Leg Curl")
         self.set_token = None
 
         # -Variables----------------------------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ class LegCurlsGUI(tk.Tk):
         self.app_frame = tk.Frame(self, bg=cp['inactive'], width=640, height=480)
         self.app_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
-        # initialise the BicepCurlsApp here because it is referenced by side buttons, packed later
+        # initialise the app here because it is referenced by side buttons, packed later
         self.app = LegCurlsApp(self.app_frame, (self.left_var, self.right_var),
                                     (self.left_stage, self.right_stage))
         self.app.config(height=40, width=40)

@@ -154,7 +154,7 @@ def get_mood():
 def add_message(gui, message):
     gui.chat_text.config(state=tk.NORMAL)
     gui.chat_text.insert(tk.END, message + "\n")
-    gui.chat_text.insert(tk.END, "-------------------------------\n")
+    gui.chat_text.insert(tk.END, "---------------------------------------\n")
     gui.chat_text.config(state=tk.DISABLED)
     gui.chat_text.yview(tk.END)
 

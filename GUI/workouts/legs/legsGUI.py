@@ -49,7 +49,7 @@ class LegsGUI(tk.Tk):
         curl_btn = tk.Button(workout_column, text="Leg Curls", font=f['regular'], bg=cp['button'],
                                     command=self.open_curl)
         extension_btn = tk.Button(workout_column, text="Leg Extension", font=f['regular'], bg=cp['button'],
-                                    command=utils.not_implemented)
+                                    command=self.open_extension)
         press_btn = tk.Button(workout_column, text="Leg Press", font=f['regular'], bg=cp['button'],
                                     command=utils.not_implemented)
         squat_btn = tk.Button(workout_column, text="Squats", font=f['regular'], bg=cp['button'],
@@ -91,6 +91,11 @@ class LegsGUI(tk.Tk):
         self.destroy()
         from GUI.workouts.legs.curl import LegCurlsGUI
         LegCurlsGUI()
+
+    def open_extension(self):
+        self.destroy()
+        from GUI.workouts.legs.extension import LegExtensionGUI
+        LegExtensionGUI()
 
 
 if __name__ == "__main__":
