@@ -232,7 +232,7 @@ class ShoulderPressGUI(tk.Tk):
         back_button.pack(side=tk.LEFT, padx=10)
 
         exit_button = tk.Button(buttons_frame, text="Exit", font=f['regular'], bg=cp['button'],
-                                command=lambda: utils.on_closing(self))
+                                command=lambda: utils.on_closing(self, True))
         exit_button.pack(side=tk.RIGHT, padx=10)
 
         utils.add_message(self, "Welcome to the Shoulder Press workout. Please set the weight and rest time "
@@ -242,7 +242,7 @@ class ShoulderPressGUI(tk.Tk):
                                 "left, right, or both. The stage of the rep is displayed on the top right. The image "
                                 "on the right shows the correct form for the exercise.")
 
-        self.protocol("WM_DELETE_WINDOW", lambda: utils.on_closing(self))
+        self.protocol("WM_DELETE_WINDOW", lambda: utils.on_closing(self, True))
         self.mainloop()
 
 

@@ -1,12 +1,11 @@
 import os
 import sys
 import tkinter as tk
-from tkinter import messagebox
-from PIL import Image, ImageTk
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '../../../'))
 from GUI.colour_palette import colours as cp
 from GUI.fonts import Fonts
+import GUI.workouts.utils as utils
 
 
 class ArmsGUI(tk.Tk):
@@ -16,7 +15,7 @@ class ArmsGUI(tk.Tk):
 
     def __init__(self):
         super().__init__()
-        self.geometry("640x480")
+        self.geometry("640x400")
         self.title("Computer Vision Personal Trainer")
         self.resizable(False, False)
 
@@ -41,36 +40,22 @@ class ArmsGUI(tk.Tk):
         workout_column = tk.Frame(workout_frame, bg=cp['label'], padx=10, pady=10)
         workout_column.pack(anchor=tk.CENTER, expand=True)
 
-        # Labels
-        bicep_label = tk.Label(workout_column, text="Bicep Curls", font=f['regular'], bg=cp['label'])
-        tricep_label = tk.Label(workout_column, text="Tricep Pushdown", font=f['regular'], bg=cp['label'])
-
         # Images
-        bicep_image = Image.open(self.img_loc + "bicep_curl.png")
-        bicep_image = bicep_image.resize((107, 94))
-        bicep_image = ImageTk.PhotoImage(bicep_image)
-        bicep_image_label = tk.Label(workout_column, image=bicep_image, bg=cp['label'])
-        bicep_image_label.image = bicep_image
-
-        tricep_image = Image.open(self.img_loc + "tricep_extension.png")
-        tricep_image = tricep_image.resize((107, 94))
-        tricep_image = ImageTk.PhotoImage(tricep_image)
-        tricep_image_label = tk.Label(workout_column, image=tricep_image, bg=cp['label'])
-        tricep_image_label.image = tricep_image
+        bicep_img_label = utils.load_image_label(self, "bicep_curl.png", workout_column)
+        tricep_img_label = utils.load_image_label(self, "tricep_extension.png", workout_column)
 
         # Buttons
         bicep_button = tk.Button(workout_column, text="Bicep Curls", font=f['regular'], bg=cp['button'],
-                                 command=self.open_curls)
+                                 command=self.open_bicep)
         tricep_button = tk.Button(workout_column, text="Tricep Pushdown", font=f['regular'], bg=cp['button'],
                                   command=self.open_tricep)
 
         # Grid layout
-        bicep_label.grid(row=0, column=0, padx=5, pady=5)
-        tricep_label.grid(row=1, column=0, padx=5, pady=5)
-        bicep_image_label.grid(row=0, column=1, padx=5, pady=5)
-        tricep_image_label.grid(row=1, column=1, padx=5, pady=5)
-        bicep_button.grid(row=0, column=2, padx=5, pady=5)
-        tricep_button.grid(row=1, column=2, padx=5, pady=5)
+        bicep_img_label.grid(row=0, column=0, padx=5, pady=5)
+        tricep_img_label.grid(row=1, column=0, padx=5, pady=5)
+
+        bicep_button.grid(row=0, column=1, padx=5, pady=5)
+        tricep_button.grid(row=1, column=1, padx=5, pady=5)
 
         # Buttons frame ------------------------------------------------------------------------------------------------
         buttons_frame = tk.Frame(main_frame, bg=cp['label'])
@@ -86,19 +71,14 @@ class ArmsGUI(tk.Tk):
         back_button.pack(side=tk.TOP, padx=10, pady=10)
 
         # Exit button
-        exit_button = tk.Button(button_column, text="Exit", font=f['regular'], bg=cp['button'], command=self.on_closing)
+        exit_button = tk.Button(button_column, text="Exit", font=f['regular'], bg=cp['button'],
+                                command=lambda: utils.on_closing(self))
         exit_button.pack(side=tk.TOP, padx=10, pady=10)
 
-        self.protocol("WM_DELETE_WINDOW", self.on_closing)
+        self.protocol("WM_DELETE_WINDOW", lambda: utils.on_closing(self))
         self.mainloop()
 
-    def on_closing(self):
-        if messagebox.askyesno("Quit", "Do you want to quit?"):
-            from src.db.login_session import logout
-            logout()
-            self.destroy()
-
-    def open_curls(self):
+    def open_bicep(self):
         self.destroy()
         from GUI.workouts.arms.bicep_curls import BicepCurlsGUI
         BicepCurlsGUI()

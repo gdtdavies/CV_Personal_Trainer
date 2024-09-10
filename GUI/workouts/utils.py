@@ -17,6 +17,14 @@ def load_image(gui, image_path):
     gui.image_label.imgtk = img_tk
     gui.image_label.configure(image=img_tk)
 
+def load_image_label(self, img_file, frame):
+    img = Image.open(self.img_loc + img_file)
+    img = img.resize((150, 100))
+    img = ImageTk.PhotoImage(img)
+    from GUI.colour_palette import colours as cp
+    img_label = tk.Label(frame, image=img, bg=cp['label'])
+    img_label.image = img
+    return img_label
 
 def start_workout(workout_name):
     workout_token = str(uuid.uuid4())
@@ -244,11 +252,15 @@ def rest_timer(gui, time_left):
         add_message(gui, "Rest time over")
         gui.is_resting = False
 
-def on_closing(gui):
+def on_closing(gui, is_in_app=False):
     if messagebox.askyesno("Quit", "Do you want to quit?"):
-        end_set(gui)  # Save the last set
-        end_workout(gui.workout_token)
+        if is_in_app:
+            end_set(gui)  # Save the last set
+            end_workout(gui.workout_token)
         from src.db.login_session import logout
         logout()
 
         gui.destroy()
+
+def not_implemented(self):
+    messagebox.showinfo("Not Implemented", "This feature is not implemented yet.")

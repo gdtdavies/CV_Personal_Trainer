@@ -1,12 +1,11 @@
 import os
 import sys
 import tkinter as tk
-from tkinter import messagebox
-from PIL import Image, ImageTk
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '../../../'))
 from GUI.colour_palette import colours as cp
 from GUI.fonts import Fonts
+import GUI.workouts.utils as utils
 
 
 class ShouldersGUI(tk.Tk):
@@ -40,44 +39,32 @@ class ShouldersGUI(tk.Tk):
         workout_column = tk.Frame(workout_frame, bg=cp['label'], padx=10, pady=10)
         workout_column.pack(anchor=tk.CENTER, expand=True)
 
-        # Labels
-        facepull_label = tk.Label(workout_column, text="Face Pull", font=f['regular'], bg=cp['label'])
-        frontraise_label = tk.Label(workout_column, text="Front Raise", font=f['regular'], bg=cp['label'])
-        latraise_label = tk.Label(workout_column, text="Lateral Raise", font=f['regular'], bg=cp['label'])
-        press_label = tk.Label(workout_column, text="Shoulder Press", font=f['regular'], bg=cp['label'])
-
-
         # Images
-        facepull_img_label = self.load_image("facepull.png", workout_column)
-        frontraise_img_label = self.load_image("frontraise.png", workout_column)
-        latraise_img_label = self.load_image("latraise.png", workout_column)
-        press_img_label = self.load_image("press.png", workout_column)
+        facepull_img_label = utils.load_image_label(self,"facepull.png", workout_column)
+        frontraise_img_label = utils.load_image_label(self,"frontraise.png", workout_column)
+        latraise_img_label = utils.load_image_label(self,"latraise.png", workout_column)
+        press_img_label = utils.load_image_label(self,"press.png", workout_column)
 
         # Buttons
         facepull_button = tk.Button(workout_column, text="Face Pull", font=f['regular'], bg=cp['button'],
-                                 command=self.not_implemented)
+                                    command=lambda: utils.not_implemented(self))
         frontraise_button = tk.Button(workout_column, text="Front Raise", font=f['regular'], bg=cp['button'],
-                                    command=self.not_implemented)
+                                    command=lambda: utils.not_implemented(self))
         latraise_button = tk.Button(workout_column, text="Lateral Raise", font=f['regular'], bg=cp['button'],
-                                    command=self.not_implemented)
+                                    command=lambda: utils.not_implemented(self))
         press_button = tk.Button(workout_column, text="Shoulder Press", font=f['regular'], bg=cp['button'],
-                                    command=self.open_press)
+                                    command=lambda: utils.not_implemented(self))
 
         # Grid layout
-        facepull_label.grid(row=0, column=0, padx=5, pady=5)
-        frontraise_label.grid(row=1, column=0, padx=5, pady=5)
-        latraise_label.grid(row=2, column=0, padx=5, pady=5)
-        press_label.grid(row=3, column=0, padx=5, pady=5)
+        facepull_img_label.grid(row=0, column=0, padx=5, pady=5)
+        frontraise_img_label.grid(row=1, column=0, padx=5, pady=5)
+        latraise_img_label.grid(row=2, column=0, padx=5, pady=5)
+        press_img_label.grid(row=3, column=0, padx=5, pady=5)
 
-        facepull_img_label.grid(row=0, column=1, padx=5, pady=5)
-        frontraise_img_label.grid(row=1, column=1, padx=5, pady=5)
-        latraise_img_label.grid(row=2, column=1, padx=5, pady=5)
-        press_img_label.grid(row=3, column=1, padx=5, pady=5)
-
-        facepull_button.grid(row=0, column=2, padx=5, pady=5)
-        frontraise_button.grid(row=1, column=2, padx=5, pady=5)
-        latraise_button.grid(row=2, column=2, padx=5, pady=5)
-        press_button.grid(row=3, column=2, padx=5, pady=5)
+        facepull_button.grid(row=0, column=1, padx=5, pady=5)
+        frontraise_button.grid(row=1, column=1, padx=5, pady=5)
+        latraise_button.grid(row=2, column=1, padx=5, pady=5)
+        press_button.grid(row=3, column=1, padx=5, pady=5)
 
         # Buttons frame ------------------------------------------------------------------------------------------------
         buttons_frame = tk.Frame(main_frame, bg=cp['label'])
@@ -93,31 +80,17 @@ class ShouldersGUI(tk.Tk):
         back_button.pack(side=tk.TOP, padx=10, pady=10)
 
         # Exit button
-        exit_button = tk.Button(button_column, text="Exit", font=f['regular'], bg=cp['button'], command=self.on_closing)
+        exit_button = tk.Button(button_column, text="Exit", font=f['regular'], bg=cp['button'],
+                                command=lambda: utils.on_closing(self))
         exit_button.pack(side=tk.TOP, padx=10, pady=10)
 
-        self.protocol("WM_DELETE_WINDOW", self.on_closing)
+        self.protocol("WM_DELETE_WINDOW", lambda: utils.on_closing(self))
         self.mainloop()
-
-    def load_image(self, img_file, frame):
-        img = Image.open(self.img_loc + img_file)
-        img = img.resize((107, 94))
-        img = ImageTk.PhotoImage(img)
-        img_label = tk.Label(frame, image=img, bg=cp['label'])
-        img_label.image = img
-        return img_label
 
     def open_press(self):
         self.destroy()
         from GUI.workouts.shoulders.press import ShoulderPressGUI
         ShoulderPressGUI()
-        
-    def not_implemented(self):
-        messagebox.showinfo("Not Implemented", "This feature is not implemented yet.")
-        
-    def on_closing(self):
-        if messagebox.askyesno("Quit", "Do you want to quit?"):
-            self.destroy()
             
     def open_menu(self):
         self.destroy()
